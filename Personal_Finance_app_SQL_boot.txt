@@ -1,0 +1,314 @@
+-- OwnerOfAccounts Table
+CREATE TABLE OwnerOfAccounts (
+    OwnerID SERIAL PRIMARY KEY,
+    Username VARCHAR(50) UNIQUE NOT NULL,
+    Email VARCHAR(100) UNIQUE NOT NULL,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Deposits Tables
+CREATE TABLE CheckingAccounts (
+    CheckingID SERIAL PRIMARY KEY,
+    OwnerID INT REFERENCES OwnerOfAccounts(OwnerID) ON DELETE CASCADE,
+    AccountIdentifier VARCHAR(100),
+    AccountName VARCHAR(100),
+    Balance DECIMAL(15, 2) DEFAULT 0.00,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE SavingsAccounts (
+    SavingsID SERIAL PRIMARY KEY,
+    OwnerID INT REFERENCES OwnerOfAccounts(OwnerID) ON DELETE CASCADE,
+    AccountIdentifier VARCHAR(100),
+    AccountName VARCHAR(100),
+    Balance DECIMAL(15, 2) DEFAULT 0.00,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE SocialAccounts (
+    SocialID SERIAL PRIMARY KEY,
+    OwnerID INT REFERENCES OwnerOfAccounts(OwnerID) ON DELETE CASCADE,
+    AccountIdentifier VARCHAR(100),
+    AccountName VARCHAR(100),
+    Balance DECIMAL(15, 2) DEFAULT 0.00,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE CreditCards (
+    CreditCardID SERIAL PRIMARY KEY,
+    OwnerID INT REFERENCES OwnerOfAccounts(OwnerID) ON DELETE CASCADE,
+    AccountIdentifier VARCHAR(100) NOT NULL,
+    AccountName VARCHAR(100),
+    CreditLimit DECIMAL(15, 2),
+    Balance DECIMAL(15, 2) DEFAULT 0.00,
+    PaymentDate INT,
+    MinMonthlyPayment DECIMAL(15, 2),
+    AutoPay BOOLEAN DEFAULT FALSE,
+    FromAccount VARCHAR(100),
+    Updated DATE NOT NULL,
+    APR DECIMAL(5, 2),
+    AnnualFee DECIMAL(15, 2),
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Notes VARCHAR(150) -- Added Notes column
+);
+
+
+CREATE TABLE OtherCreditAccounts (
+    OtherCreditAccountID SERIAL PRIMARY KEY,
+    OwnerID INT REFERENCES OwnerOfAccounts(OwnerID) ON DELETE CASCADE,
+    AccountIdentifier VARCHAR(100) NOT NULL,
+    AccountName VARCHAR(100),
+    CreditLimit DECIMAL(15, 2),
+    Balance DECIMAL(15, 2) DEFAULT 0.00,
+    PaymentDate INT,
+    MinMonthlyPayment DECIMAL(15, 2),
+    AutoPay BOOLEAN DEFAULT FALSE,
+    FromAccount VARCHAR(100),
+    Updated DATE NOT NULL,
+    APR DECIMAL(5, 2),
+    AnnualFee DECIMAL(15, 2),
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Notes VARCHAR(150) -- Added Notes column
+);
+
+
+CREATE TABLE StudentLoans (
+    StudentLoanID SERIAL PRIMARY KEY,
+    OwnerID INT REFERENCES OwnerOfAccounts(OwnerID) ON DELETE CASCADE,
+    AccountIdentifier VARCHAR(100) NOT NULL,
+    AccountName VARCHAR(100),
+    Balance DECIMAL(15, 2) DEFAULT 0.00,
+    PaymentDate INT,
+    MinMonthlyPayment DECIMAL(15, 2),
+    AutoPay BOOLEAN DEFAULT FALSE,
+    FromAccount VARCHAR(100),
+    Updated DATE NOT NULL,
+    APR DECIMAL(5, 2),
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE PersonalLoans (
+    PersonalLoanID SERIAL PRIMARY KEY,
+    OwnerID INT REFERENCES OwnerOfAccounts(OwnerID) ON DELETE CASCADE,
+    AccountIdentifier VARCHAR(100) NOT NULL,
+    AccountName VARCHAR(100),
+    Balance DECIMAL(15, 2) DEFAULT 0.00,
+    PaymentDate INT,
+    MinMonthlyPayment DECIMAL(15, 2),
+    AutoPay BOOLEAN DEFAULT FALSE,
+    FromAccount VARCHAR(100),
+    Updated DATE NOT NULL,
+    APR DECIMAL(5, 2),
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE CarLoans (
+    CarLoanID SERIAL PRIMARY KEY,
+    OwnerID INT REFERENCES OwnerOfAccounts(OwnerID) ON DELETE CASCADE,
+    AccountIdentifier VARCHAR(100) NOT NULL,
+    AccountName VARCHAR(100),
+    Balance DECIMAL(15, 2) DEFAULT 0.00,
+    PaymentDate INT,
+    MinMonthlyPayment DECIMAL(15, 2),
+    AutoPay BOOLEAN DEFAULT FALSE,
+    FromAccount VARCHAR(100),
+    Updated DATE NOT NULL,
+    APR DECIMAL(5, 2),
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE Mortgages (
+    MortgageID SERIAL PRIMARY KEY,
+    OwnerID INT REFERENCES OwnerOfAccounts(OwnerID) ON DELETE CASCADE,
+    AccountIdentifier VARCHAR(100) NOT NULL,
+    AccountName VARCHAR(100),
+    Balance DECIMAL(15, 2) DEFAULT 0.00,
+    PaymentDate INT,
+    MinMonthlyPayment DECIMAL(15, 2),
+    AutoPay BOOLEAN DEFAULT FALSE,
+    FromAccount VARCHAR(100),
+    Updated DATE NOT NULL,
+    APR DECIMAL(5, 2),
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create Indexes for Financing Tables
+CREATE INDEX idx_creditcards_ownerid ON CreditCards(OwnerID);
+CREATE INDEX idx_othercreditaccounts_ownerid ON OtherCreditAccounts(OwnerID);
+CREATE INDEX idx_studentloans_ownerid ON StudentLoans(OwnerID);
+CREATE INDEX idx_personalloans_ownerid ON PersonalLoans(OwnerID);
+CREATE INDEX idx_carloans_ownerid ON CarLoans(OwnerID);
+CREATE INDEX idx_mortgages_ownerid ON Mortgages(OwnerID);
+
+-- Transaction Types Table
+CREATE TABLE TransactionTypes (
+    TransactionTypeID SERIAL PRIMARY KEY,
+    TypeName VARCHAR(50) UNIQUE NOT NULL
+);
+
+-- Place of Business Table
+CREATE TABLE PlaceOfBusiness (
+    PlaceOfBusinessID SERIAL PRIMARY KEY,
+    Name VARCHAR(100) UNIQUE NOT NULL
+);
+
+-- Transaction Description Table
+CREATE TABLE TransactionDescription (
+    TransactionDescriptionID SERIAL PRIMARY KEY,
+    Description VARCHAR(255) UNIQUE NOT NULL,
+    PlaceOfBusinessID INT REFERENCES PlaceOfBusiness(PlaceOfBusinessID) ON DELETE SET NULL
+);
+
+-- Create Indexes for Transaction Description Table
+CREATE INDEX idx_transactiondescription_placeofbusinessid ON TransactionDescription(PlaceOfBusinessID);
+
+-- Expense Category Table
+CREATE TABLE ExpenseCategory (
+    ExpenseCategoryID SERIAL PRIMARY KEY,
+    CategoryName VARCHAR(100) UNIQUE NOT NULL,
+    PlaceOfBusinessID INT REFERENCES PlaceOfBusiness(PlaceOfBusinessID) ON DELETE SET NULL
+);
+
+-- Create Indexes for Expense Category Table
+CREATE INDEX idx_expensecategory_placeofbusinessid ON ExpenseCategory(PlaceOfBusinessID);
+
+-- Update Transaction Table to reference TransactionTypes
+CREATE TABLE Transaction (
+    TransactionID SERIAL PRIMARY KEY,
+    OwnerID INT REFERENCES OwnerOfAccounts(OwnerID) ON DELETE CASCADE,
+    DepositID INT,
+    CreditCardID INT,
+    OtherCreditAccountID INT,
+    StudentLoanID INT,
+    PersonalLoanID INT,
+    CarLoanID INT,
+    MortgageID INT,
+    Amount DECIMAL(15, 2) NOT NULL,
+    TransactionTypeID INT REFERENCES TransactionTypes(TransactionTypeID) ON DELETE SET NULL,
+    TransactionDescriptionID INT REFERENCES TransactionDescription(TransactionDescriptionID) ON DELETE SET NULL,
+    ExpenseCategoryID INT REFERENCES ExpenseCategory(ExpenseCategoryID) ON DELETE SET NULL,
+    AssociatedAccountID INT,
+    AssociatedAccountType VARCHAR(50), -- Use VARCHAR for associated account types
+    TransactionDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create Indexes for Transaction Table
+CREATE INDEX idx_transaction_ownerid ON Transaction(OwnerID);
+CREATE INDEX idx_transaction_depositid ON Transaction(DepositID);
+CREATE INDEX idx_transaction_creditcardid ON Transaction(CreditCardID);
+CREATE INDEX idx_transaction_othercreditaccountid ON Transaction(OtherCreditAccountID);
+CREATE INDEX idx_transaction_studentloanid ON Transaction(StudentLoanID);
+CREATE INDEX idx_transaction_personalloanid ON Transaction(PersonalLoanID);
+CREATE INDEX idx_transaction_carloanid ON Transaction(CarLoanID);
+CREATE INDEX idx_transaction_mortgageid ON Transaction(MortgageID);
+CREATE INDEX idx_transaction_transactiontypeid ON Transaction(TransactionTypeID);
+CREATE INDEX idx_transaction_transactiondate ON Transaction(TransactionDate);
+
+-- FinancingAccounts Table
+CREATE TABLE FinancingAccounts (
+    FinancingAccountID SERIAL PRIMARY KEY,
+    AccountType VARCHAR(50) NOT NULL,
+    AccountID INT NOT NULL
+);
+
+-- Indexes for FinancingAccounts Table
+CREATE INDEX idx_financingaccounts_accountid ON FinancingAccounts(AccountID);
+CREATE INDEX idx_financingaccounts_accounttype ON FinancingAccounts(AccountType);
+
+-- DepositAccounts Table
+CREATE TABLE DepositAccounts (
+    DepositAccountID SERIAL PRIMARY KEY,
+    AccountType VARCHAR(50) NOT NULL,
+    AccountID INT NOT NULL
+);
+
+-- Indexes for DepositAccounts Table
+CREATE INDEX idx_depositaccounts_accountid ON DepositAccounts(AccountID);
+CREATE INDEX idx_depositaccounts_accounttype ON DepositAccounts(AccountType);
+
+CREATE TABLE ShortCredit (
+    OwnerID INT,
+    CreditCardID INT,
+    OtherCreditAccountID INT,
+    PRIMARY KEY (OwnerID, CreditCardID, OtherCreditAccountID),
+    FOREIGN KEY (OwnerID) REFERENCES OwnerOfAccounts(OwnerID) ON DELETE CASCADE,
+    FOREIGN KEY (CreditCardID) REFERENCES CreditCards(CreditCardID) ON DELETE CASCADE,
+    FOREIGN KEY (OtherCreditAccountID) REFERENCES OtherCreditAccounts(OtherCreditAccountID) ON DELETE CASCADE
+);
+
+CREATE TABLE LongCredit (
+    LongCreditID SERIAL PRIMARY KEY,
+    OwnerID INT REFERENCES OwnerOfAccounts(OwnerID) ON DELETE CASCADE,
+    MortgageID INT REFERENCES Mortgages(MortgageID) ON DELETE SET NULL,
+    StudentLoanID INT REFERENCES StudentLoans(StudentLoanID) ON DELETE SET NULL,
+    PersonalLoanID INT REFERENCES PersonalLoans(PersonalLoanID) ON DELETE SET NULL,
+    CarLoanID INT REFERENCES CarLoans(CarLoanID) ON DELETE SET NULL
+);
+
+-- Primary Tables Data Insertion Section
+
+-- Insert predefined transaction types
+INSERT INTO TransactionTypes (TypeName) VALUES
+('Purchase'),
+('Payment'),
+('Transfer'),
+('Income');
+
+-- Insert Data into OwnerOfAccounts Table
+INSERT INTO OwnerOfAccounts (Username, Email) VALUES
+('JacobSWPapp', 'jacob.sw.papp@gmail.com');
+
+-- Insert Data into CheckingAccounts Table
+INSERT INTO CheckingAccounts (OwnerID, AccountIdentifier, AccountName, Balance) VALUES
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '7683', 'Aspiration', 0.00),
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '4406', 'SoFo', 0.00),
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '0793', 'Capital One', 0.00);
+
+-- Insert Data into SavingsAccounts Table
+INSERT INTO SavingsAccounts (OwnerID, AccountIdentifier, AccountName, Balance) VALUES
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '1481', 'SoFi', 0.00),
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '0013', 'PenFed', 0.00);
+
+-- Insert Data into SocialAccounts Table
+INSERT INTO SocialAccounts (OwnerID, AccountIdentifier, AccountName, Balance) VALUES
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '@Jacob-Papp-1', 'Venmo', 143.90),
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '@HoosierPappi24', 'CashApp', 0.00),
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), 'jacob.sw.papp@me.com', 'AppleCash', 182.50);
+
+-- Insert Data into CreditCards Table
+INSERT INTO CreditCards (OwnerID, AccountIdentifier, AccountName, CreditLimit, Balance, PaymentDate, MinMonthlyPayment, AutoPay, FromAccount, Updated, APR, AnnualFee, Notes) VALUES
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '1005', 'AMEX Blue Cash', 900.00, 303.75, 7, 40.00, FALSE, 'None', '2024-07-18', 29.99, NULL, NULL),
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '7530', 'Merrick Bank', 2200.00, 586.71, 9, 35.00, FALSE, 'None', '2024-07-18', 28.70, NULL, NULL),
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '9999', 'Blaze by First Savings Bank', 75.00, 0.00, 21, NULL, FALSE, 'None', '2024-07-18', 24.90, NULL, 'APR returns to 29.90% on 7/18/25'),
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '1738', 'Credit One - AMEX', 1400.00, 11.09, 22, NULL, FALSE, 'None', '2024-07-18', 29.65, NULL, NULL),
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '6001', 'Credit One - Visa', 1400.00, 387.05, 23, 30.00, FALSE, 'None', '2024-07-18', 29.24, NULL, NULL),
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '9399', 'Best Buy Visa', 4000.00, 932.31, 23, 30.00, TRUE, 'Capital One', '2024-07-18', 0.00, NULL, NULL),
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '4728', 'Capital One - Quicksilver', 2800.00, 357.00, 28, 25.00, TRUE, 'Capital One', '2024-07-18', 32.24, NULL, NULL),
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '6924', 'Capital One - Savor', 5000.00, 818.70, 30, 30.00, TRUE, 'Capital One', '2024-07-18', 29.99, NULL, NULL);
+
+-- Insert Data into OtherCreditAccounts Table
+INSERT INTO OtherCreditAccounts (OwnerID, AccountIdentifier, AccountName, CreditLimit, Balance, PaymentDate, MinMonthlyPayment, AutoPay, FromAccount, Updated, APR, AnnualFee, CreatedAt, Notes) VALUES
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), 'AfterPay', 'AfterPay', 600, 0, NULL, NULL, FALSE, NULL, CURRENT_DATE, 0, NULL, CURRENT_TIMESTAMP, NULL),
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), 'CitizensPay', '2763', 4200, 1074.5, NULL, NULL, FALSE, NULL, CURRENT_DATE, 11.99, NULL, CURRENT_TIMESTAMP, 'Portion has 0% APR for 3 years'),
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), 'Klarna', 'Klarna', 420, 0, NULL, NULL, FALSE, NULL, CURRENT_DATE, 0, NULL, CURRENT_TIMESTAMP, NULL),
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), 'Affirm', 'Affirm', 3500, 0, NULL, NULL, FALSE, NULL, CURRENT_DATE, 0, NULL, CURRENT_TIMESTAMP, NULL);
+
+
+-- Insert Data into PersonalLoans Table
+INSERT INTO PersonalLoans (OwnerID, AccountIdentifier, AccountName, Balance, PaymentDate, MinMonthlyPayment, AutoPay, FromAccount, Updated, APR) VALUES
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '9999', 'PenFed Personal Loan', 5228.77, 2, 202.50, TRUE, 'SoFi', '2024-07-18', 17.99);
+
+
+-- JOIN Tables Data Insertion Section
+
+-- Insert data into LongCredit
+INSERT INTO LongCredit (OwnerID, MortgageID, StudentLoanID, PersonalLoanID, CarLoanID) VALUES
+(1, NULL, NULL, 1, NULL);  
+
+
+
+
+
+
+
+
