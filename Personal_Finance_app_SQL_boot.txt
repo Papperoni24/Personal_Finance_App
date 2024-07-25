@@ -3,7 +3,8 @@ CREATE TABLE OwnerOfAccounts (
     OwnerID SERIAL PRIMARY KEY,
     Username VARCHAR(50) UNIQUE NOT NULL,
     Email VARCHAR(100) UNIQUE NOT NULL,
-    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Notes VARCHAR(255) -- Added Notes column
 );
 
 -- Deposits Tables
@@ -13,7 +14,8 @@ CREATE TABLE CheckingAccounts (
     AccountIdentifier VARCHAR(100),
     AccountName VARCHAR(100),
     Balance DECIMAL(15, 2) DEFAULT 0.00,
-    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Notes VARCHAR(255) -- Added Notes column
 );
 
 CREATE TABLE SavingsAccounts (
@@ -22,7 +24,8 @@ CREATE TABLE SavingsAccounts (
     AccountIdentifier VARCHAR(100),
     AccountName VARCHAR(100),
     Balance DECIMAL(15, 2) DEFAULT 0.00,
-    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Notes VARCHAR(255) -- Added Notes column
 );
 
 CREATE TABLE SocialAccounts (
@@ -31,7 +34,8 @@ CREATE TABLE SocialAccounts (
     AccountIdentifier VARCHAR(100),
     AccountName VARCHAR(100),
     Balance DECIMAL(15, 2) DEFAULT 0.00,
-    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Notes VARCHAR(255) -- Added Notes column
 );
 
 CREATE TABLE CreditCards (
@@ -49,9 +53,8 @@ CREATE TABLE CreditCards (
     APR DECIMAL(5, 2),
     AnnualFee DECIMAL(15, 2),
     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    Notes VARCHAR(150) -- Added Notes column
+    Notes VARCHAR(255) -- Added Notes column
 );
-
 
 CREATE TABLE OtherCreditAccounts (
     OtherCreditAccountID SERIAL PRIMARY KEY,
@@ -68,9 +71,8 @@ CREATE TABLE OtherCreditAccounts (
     APR DECIMAL(5, 2),
     AnnualFee DECIMAL(15, 2),
     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    Notes VARCHAR(150) -- Added Notes column
+    Notes VARCHAR(255) -- Added Notes column
 );
-
 
 CREATE TABLE StudentLoans (
     StudentLoanID SERIAL PRIMARY KEY,
@@ -84,7 +86,8 @@ CREATE TABLE StudentLoans (
     FromAccount VARCHAR(100),
     Updated DATE NOT NULL,
     APR DECIMAL(5, 2),
-    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Notes VARCHAR(255) -- Added Notes column
 );
 
 CREATE TABLE PersonalLoans (
@@ -99,7 +102,8 @@ CREATE TABLE PersonalLoans (
     FromAccount VARCHAR(100),
     Updated DATE NOT NULL,
     APR DECIMAL(5, 2),
-    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Notes VARCHAR(255) -- Added Notes column
 );
 
 CREATE TABLE CarLoans (
@@ -114,7 +118,8 @@ CREATE TABLE CarLoans (
     FromAccount VARCHAR(100),
     Updated DATE NOT NULL,
     APR DECIMAL(5, 2),
-    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Notes VARCHAR(255) -- Added Notes column
 );
 
 CREATE TABLE Mortgages (
@@ -129,7 +134,8 @@ CREATE TABLE Mortgages (
     FromAccount VARCHAR(100),
     Updated DATE NOT NULL,
     APR DECIMAL(5, 2),
-    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Notes VARCHAR(255) -- Added Notes column
 );
 
 -- Create Indexes for Financing Tables
@@ -143,20 +149,23 @@ CREATE INDEX idx_mortgages_ownerid ON Mortgages(OwnerID);
 -- Transaction Types Table
 CREATE TABLE TransactionTypes (
     TransactionTypeID SERIAL PRIMARY KEY,
-    TypeName VARCHAR(50) UNIQUE NOT NULL
+    TypeName VARCHAR(50) UNIQUE NOT NULL,
+    Notes VARCHAR(255) -- Added Notes column
 );
 
 -- Place of Business Table
 CREATE TABLE PlaceOfBusiness (
     PlaceOfBusinessID SERIAL PRIMARY KEY,
-    Name VARCHAR(100) UNIQUE NOT NULL
+    Name VARCHAR(100) UNIQUE NOT NULL,
+    Notes VARCHAR(255) -- Added Notes column
 );
 
 -- Transaction Description Table
-CREATE TABLE TransactionDescription (
+CREATE TABLE KeyTransactionDescription (
     TransactionDescriptionID SERIAL PRIMARY KEY,
     Description VARCHAR(255) UNIQUE NOT NULL,
-    PlaceOfBusinessID INT REFERENCES PlaceOfBusiness(PlaceOfBusinessID) ON DELETE SET NULL
+    PlaceOfBusinessID INT REFERENCES PlaceOfBusiness(PlaceOfBusinessID) ON DELETE SET NULL,
+    Notes VARCHAR(255) -- Added Notes column
 );
 
 -- Create Indexes for Transaction Description Table
@@ -166,7 +175,8 @@ CREATE INDEX idx_transactiondescription_placeofbusinessid ON TransactionDescript
 CREATE TABLE ExpenseCategory (
     ExpenseCategoryID SERIAL PRIMARY KEY,
     CategoryName VARCHAR(100) UNIQUE NOT NULL,
-    PlaceOfBusinessID INT REFERENCES PlaceOfBusiness(PlaceOfBusinessID) ON DELETE SET NULL
+    PlaceOfBusinessID INT REFERENCES PlaceOfBusiness(PlaceOfBusinessID) ON DELETE SET NULL,
+    Notes VARCHAR(255) -- Added Notes column
 );
 
 -- Create Indexes for Expense Category Table
@@ -189,7 +199,8 @@ CREATE TABLE Transaction (
     ExpenseCategoryID INT REFERENCES ExpenseCategory(ExpenseCategoryID) ON DELETE SET NULL,
     AssociatedAccountID INT,
     AssociatedAccountType VARCHAR(50), -- Use VARCHAR for associated account types
-    TransactionDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    TransactionDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Notes VARCHAR(255) -- Added Notes column
 );
 
 -- Create Indexes for Transaction Table
@@ -204,48 +215,6 @@ CREATE INDEX idx_transaction_mortgageid ON Transaction(MortgageID);
 CREATE INDEX idx_transaction_transactiontypeid ON Transaction(TransactionTypeID);
 CREATE INDEX idx_transaction_transactiondate ON Transaction(TransactionDate);
 
--- FinancingAccounts Table
-CREATE TABLE FinancingAccounts (
-    FinancingAccountID SERIAL PRIMARY KEY,
-    AccountType VARCHAR(50) NOT NULL,
-    AccountID INT NOT NULL
-);
-
--- Indexes for FinancingAccounts Table
-CREATE INDEX idx_financingaccounts_accountid ON FinancingAccounts(AccountID);
-CREATE INDEX idx_financingaccounts_accounttype ON FinancingAccounts(AccountType);
-
--- DepositAccounts Table
-CREATE TABLE DepositAccounts (
-    DepositAccountID SERIAL PRIMARY KEY,
-    AccountType VARCHAR(50) NOT NULL,
-    AccountID INT NOT NULL
-);
-
--- Indexes for DepositAccounts Table
-CREATE INDEX idx_depositaccounts_accountid ON DepositAccounts(AccountID);
-CREATE INDEX idx_depositaccounts_accounttype ON DepositAccounts(AccountType);
-
-CREATE TABLE ShortCredit (
-    OwnerID INT,
-    CreditCardID INT,
-    OtherCreditAccountID INT,
-    PRIMARY KEY (OwnerID, CreditCardID, OtherCreditAccountID),
-    FOREIGN KEY (OwnerID) REFERENCES OwnerOfAccounts(OwnerID) ON DELETE CASCADE,
-    FOREIGN KEY (CreditCardID) REFERENCES CreditCards(CreditCardID) ON DELETE CASCADE,
-    FOREIGN KEY (OtherCreditAccountID) REFERENCES OtherCreditAccounts(OtherCreditAccountID) ON DELETE CASCADE
-);
-
-CREATE TABLE LongCredit (
-    LongCreditID SERIAL PRIMARY KEY,
-    OwnerID INT REFERENCES OwnerOfAccounts(OwnerID) ON DELETE CASCADE,
-    MortgageID INT REFERENCES Mortgages(MortgageID) ON DELETE SET NULL,
-    StudentLoanID INT REFERENCES StudentLoans(StudentLoanID) ON DELETE SET NULL,
-    PersonalLoanID INT REFERENCES PersonalLoans(PersonalLoanID) ON DELETE SET NULL,
-    CarLoanID INT REFERENCES CarLoans(CarLoanID) ON DELETE SET NULL
-);
-
--- Primary Tables Data Insertion Section
 
 -- Insert predefined transaction types
 INSERT INTO TransactionTypes (TypeName) VALUES
@@ -255,25 +224,25 @@ INSERT INTO TransactionTypes (TypeName) VALUES
 ('Income');
 
 -- Insert Data into OwnerOfAccounts Table
-INSERT INTO OwnerOfAccounts (Username, Email) VALUES
-('JacobSWPapp', 'jacob.sw.papp@gmail.com');
+INSERT INTO OwnerOfAccounts (Username, Email, Notes) VALUES
+('JacobSWPapp', 'jacob.sw.papp@gmail.com', NULL);
 
 -- Insert Data into CheckingAccounts Table
-INSERT INTO CheckingAccounts (OwnerID, AccountIdentifier, AccountName, Balance) VALUES
-((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '7683', 'Aspiration', 0.00),
-((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '4406', 'SoFo', 0.00),
-((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '0793', 'Capital One', 0.00);
+INSERT INTO CheckingAccounts (OwnerID, AccountIdentifier, AccountName, Balance, Notes) VALUES
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '7683', 'Aspiration', 0.00, NULL),
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '4406', 'SoFo', 0.00, NULL),
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '0793', 'Capital One', 0.00, NULL);
 
 -- Insert Data into SavingsAccounts Table
-INSERT INTO SavingsAccounts (OwnerID, AccountIdentifier, AccountName, Balance) VALUES
-((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '1481', 'SoFi', 0.00),
-((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '0013', 'PenFed', 0.00);
+INSERT INTO SavingsAccounts (OwnerID, AccountIdentifier, AccountName, Balance, Notes) VALUES
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '1481', 'SoFi', 0.00, NULL),
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '0013', 'PenFed', 0.00, NULL);
 
 -- Insert Data into SocialAccounts Table
-INSERT INTO SocialAccounts (OwnerID, AccountIdentifier, AccountName, Balance) VALUES
-((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '@Jacob-Papp-1', 'Venmo', 143.90),
-((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '@HoosierPappi24', 'CashApp', 0.00),
-((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), 'jacob.sw.papp@me.com', 'AppleCash', 182.50);
+INSERT INTO SocialAccounts (OwnerID, AccountIdentifier, AccountName, Balance, Notes) VALUES
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '@Jacob-Papp-1', 'Venmo', 143.90, NULL),
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '@HoosierPappi24', 'CashApp', 0.00, NULL),
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), 'jacob.sw.papp@me.com', 'AppleCash', 182.50, NULL);
 
 -- Insert Data into CreditCards Table
 INSERT INTO CreditCards (OwnerID, AccountIdentifier, AccountName, CreditLimit, Balance, PaymentDate, MinMonthlyPayment, AutoPay, FromAccount, Updated, APR, AnnualFee, Notes) VALUES
@@ -293,22 +262,7 @@ INSERT INTO OtherCreditAccounts (OwnerID, AccountIdentifier, AccountName, Credit
 ((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), 'Klarna', 'Klarna', 420, 0, NULL, NULL, FALSE, NULL, CURRENT_DATE, 0, NULL, CURRENT_TIMESTAMP, NULL),
 ((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), 'Affirm', 'Affirm', 3500, 0, NULL, NULL, FALSE, NULL, CURRENT_DATE, 0, NULL, CURRENT_TIMESTAMP, NULL);
 
-
 -- Insert Data into PersonalLoans Table
-INSERT INTO PersonalLoans (OwnerID, AccountIdentifier, AccountName, Balance, PaymentDate, MinMonthlyPayment, AutoPay, FromAccount, Updated, APR) VALUES
-((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '9999', 'PenFed Personal Loan', 5228.77, 2, 202.50, TRUE, 'SoFi', '2024-07-18', 17.99);
-
-
--- JOIN Tables Data Insertion Section
-
--- Insert data into LongCredit
-INSERT INTO LongCredit (OwnerID, MortgageID, StudentLoanID, PersonalLoanID, CarLoanID) VALUES
-(1, NULL, NULL, 1, NULL);  
-
-
-
-
-
-
-
+INSERT INTO PersonalLoans (OwnerID, AccountIdentifier, AccountName, Balance, PaymentDate, MinMonthlyPayment, AutoPay, FromAccount, Updated, APR, Notes) VALUES
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '5702', 'PenFed Personal Loan', 5228.77, 2, 202.50, TRUE, 'SoFi', '2024-07-18', 17.99, NULL);
 
