@@ -1,0 +1,321 @@
+// Data Model Definitions for PFA
+
+
+import javax.persistence.*;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+// OwnerOfAccounts Table
+@Entity
+@Table(name = "OwnerOfAccounts")
+public class OwnerOfAccounts {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long ownerId;
+
+    private String username;
+    private String email;
+    private LocalDateTime createdAt;
+    private String notes;
+}
+
+// Deposits Tables
+@Entity
+@Table(name = "CheckingAccounts")
+public class CheckingAccounts {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long checkingId;
+
+    @ManyToOne
+    @JoinColumn(name = "ownerId", nullable = false)
+    private OwnerOfAccounts owner;
+
+    private String accountIdentifier;
+    private String accountName;
+    private BigDecimal balance;
+    private LocalDateTime createdAt;
+    private String notes;
+}
+
+@Entity
+@Table(name = "SavingsAccounts")
+public class SavingsAccounts {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long savingsId;
+
+    @ManyToOne
+    @JoinColumn(name = "ownerId", nullable = false)
+    private OwnerOfAccounts owner;
+
+    private String accountIdentifier;
+    private String accountName;
+    private BigDecimal balance;
+    private LocalDateTime createdAt;
+    private String notes;
+}
+
+@Entity
+@Table(name = "SocialAccounts")
+public class SocialAccounts {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long socialId;
+
+    @ManyToOne
+    @JoinColumn(name = "ownerId", nullable = false)
+    private OwnerOfAccounts owner;
+
+    private String accountIdentifier;
+    private String accountName;
+    private BigDecimal balance;
+    private LocalDateTime createdAt;
+    private String notes;
+}
+
+@Entity
+@Table(name = "CreditCards")
+public class CreditCards {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long creditCardId;
+
+    @ManyToOne
+    @JoinColumn(name = "ownerId", nullable = false)
+    private OwnerOfAccounts owner;
+
+    private String accountIdentifier;
+    private String accountName;
+    private BigDecimal creditLimit;
+    private BigDecimal balance;
+    private Integer paymentDate;
+    private BigDecimal minMonthlyPayment;
+    private Boolean autoPay;
+    private String fromAccount;
+    private LocalDate updated;
+    private BigDecimal apr;
+    private BigDecimal annualFee;
+    private LocalDateTime createdAt;
+    private String notes;
+}
+
+@Entity
+@Table(name = "OtherCreditAccounts")
+public class OtherCreditAccounts {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long otherCreditAccountId;
+
+    @ManyToOne
+    @JoinColumn(name = "ownerId", nullable = false)
+    private OwnerOfAccounts owner;
+
+    private String accountIdentifier;
+    private String accountName;
+    private BigDecimal creditLimit;
+    private BigDecimal balance;
+    private Integer paymentDate;
+    private BigDecimal minMonthlyPayment;
+    private Boolean autoPay;
+    private String fromAccount;
+    private LocalDate updated;
+    private BigDecimal apr;
+    private BigDecimal annualFee;
+    private LocalDateTime createdAt;
+    private String notes;
+}
+
+@Entity
+@Table(name = "StudentLoans")
+public class StudentLoans {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long studentLoanId;
+
+    @ManyToOne
+    @JoinColumn(name = "ownerId", nullable = false)
+    private OwnerOfAccounts owner;
+
+    private String accountIdentifier;
+    private String accountName;
+    private BigDecimal balance;
+    private Integer paymentDate;
+    private BigDecimal minMonthlyPayment;
+    private Boolean autoPay;
+    private String fromAccount;
+    private LocalDate updated;
+    private BigDecimal apr;
+    private LocalDateTime createdAt;
+    private String notes;
+}
+
+@Entity
+@Table(name = "PersonalLoans")
+public class PersonalLoans {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long personalLoanId;
+
+    @ManyToOne
+    @JoinColumn(name = "ownerId", nullable = false)
+    private OwnerOfAccounts owner;
+
+    private String accountIdentifier;
+    private String accountName;
+    private BigDecimal balance;
+    private Integer paymentDate;
+    private BigDecimal minMonthlyPayment;
+    private Boolean autoPay;
+    private String fromAccount;
+    private LocalDate updated;
+    private BigDecimal apr;
+    private LocalDateTime createdAt;
+    private String notes;
+}
+
+@Entity
+@Table(name = "CarLoans")
+public class CarLoans {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long carLoanId;
+
+    @ManyToOne
+    @JoinColumn(name = "ownerId", nullable = false)
+    private OwnerOfAccounts owner;
+
+    private String accountIdentifier;
+    private String accountName;
+    private BigDecimal balance;
+    private Integer paymentDate;
+    private BigDecimal minMonthlyPayment;
+    private Boolean autoPay;
+    private String fromAccount;
+    private LocalDate updated;
+    private BigDecimal apr;
+    private LocalDateTime createdAt;
+    private String notes;
+}
+
+@Entity
+@Table(name = "Mortgages")
+public class Mortgages {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long mortgageId;
+
+    @ManyToOne
+    @JoinColumn(name = "ownerId", nullable = false)
+    private OwnerOfAccounts owner;
+
+    private String accountIdentifier;
+    private String accountName;
+    private BigDecimal balance;
+    private Integer paymentDate;
+    private BigDecimal minMonthlyPayment;
+    private Boolean autoPay;
+    private String fromAccount;
+    private LocalDate updated;
+    private BigDecimal apr;
+    private LocalDateTime createdAt;
+    private String notes;
+}
+
+// Transaction Types Table
+@Entity
+@Table(name = "TransactionTypes")
+public class TransactionTypes {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long transactionTypeId;
+
+    private String typeName;
+    private String notes;
+}
+
+// Place of Business Table
+@Entity
+@Table(name = "PlaceOfBusiness")
+public class PlaceOfBusiness {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long placeOfBusinessId;
+
+    private String name;
+    private String notes;
+}
+
+// Transaction Description Table
+@Entity
+@Table(name = "KeyTransactionDescription")
+public class KeyTransactionDescription {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long transactionDescriptionId;
+
+    private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "placeOfBusinessId")
+    private PlaceOfBusiness placeOfBusiness;
+
+    private String notes;
+}
+
+// Expense Category Table
+@Entity
+@Table(name = "ExpenseCategory")
+public class ExpenseCategory {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long expenseCategoryId;
+
+    private String categoryName;
+
+    @ManyToOne
+    @JoinColumn(name = "placeOfBusinessId")
+    private PlaceOfBusiness placeOfBusiness;
+
+    private String notes;
+}
+
+// Transaction Table
+@Entity
+@Table(name = "Transaction")
+public class Transaction {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long transactionId;
+
+    @ManyToOne
+    @JoinColumn(name = "ownerId", nullable = false)
+    private OwnerOfAccounts owner;
+
+    private Long depositId;
+    private Long creditCardId;
+    private Long otherCreditAccountId;
+    private Long studentLoanId;
+    private Long personalLoanId;
+    private Long carLoanId;
+    private Long mortgageId;
+
+    private BigDecimal amount;
+
+    @ManyToOne
+    @JoinColumn(name = "transactionTypeId")
+    private TransactionTypes transactionType;
+
+    @ManyToOne
+    @JoinColumn(name = "transactionDescriptionId")
+    private KeyTransactionDescription transactionDescription;
+
+    @ManyToOne
+    @JoinColumn(name = "expenseCategoryId")
+    private ExpenseCategory expenseCategory;
+
+    private Long associatedAccountId;
+    private String associatedAccountType;
+    private LocalDateTime transactionDate;
+    private String notes;
+}
