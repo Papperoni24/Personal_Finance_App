@@ -1,6 +1,8 @@
 package com.papperoni.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.Objects;
 
@@ -11,12 +13,15 @@ public class TransactionDescription {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long transactionDescriptionId;
 
+    @NotBlank
+    @Size(max = 255)
     private String description;
 
     @ManyToOne
     @JoinColumn(name = "placeOfBusinessId")
     private PlaceOfBusiness placeOfBusiness;
 
+    @Size(max = 500)
     private String notes;
 
     public TransactionDescription() {

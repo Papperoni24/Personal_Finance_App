@@ -93,3 +93,45 @@ public class SocialAccount {
         this.balance = balance;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SocialAccount that = (SocialAccount) o;
+        return Objects.equals(socialId, that.socialId) && Objects.equals(owner, that.owner) && Objects.equals(accountIdentifier, that.accountIdentifier) && Objects.equals(accountName, that.accountName) && Objects.equals(balance, that.balance) && Objects.equals(createdAt, that.createdAt) && Objects.equals(notes, that.notes);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(socialId, owner, accountIdentifier, accountName, balance, createdAt, notes);
+    }
+
+    @Override
+    public String toString() {
+        return "SocialAccount{" +
+                "socialId=" + socialId +
+                ", owner=" + owner +
+                ", accountIdentifier='" + accountIdentifier + '\'' +
+                ", accountName='" + accountName + '\'' +
+                ", balance=" + balance +
+                ", createdAt=" + createdAt +
+                ", notes='" + notes + '\'' +
+                '}';
+    }
+}

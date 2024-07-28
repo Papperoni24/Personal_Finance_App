@@ -1,6 +1,11 @@
 package com.papperoni.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -14,6 +19,7 @@ public class Transaction {
 
     @ManyToOne
     @JoinColumn(name = "ownerId", nullable = false)
+    @NotNull
     private OwnerOfAccount owner;
 
     private Long depositId;
@@ -24,6 +30,8 @@ public class Transaction {
     private Long carLoanId;
     private Long mortgageId;
 
+    @NotNull
+    @PositiveOrZero
     private BigDecimal amount;
 
     @ManyToOne
@@ -39,8 +47,14 @@ public class Transaction {
     private ExpenseCategory expenseCategory;
 
     private Long associatedAccountId;
+
+    @Size(max = 50)
     private String associatedAccountType;
+
+    @NotNull
     private LocalDateTime transactionDate;
+
+    @Size(max = 500)
     private String notes;
 
     public Transaction() {
@@ -122,20 +136,20 @@ public class Transaction {
         this.personalLoanId = personalLoanId;
     }
 
-    public Long getMortgageId() {
-        return mortgageId;
-    }
-
-    public void setMortgageId(Long mortgageId) {
-        this.mortgageId = mortgageId;
-    }
-
     public Long getCarLoanId() {
         return carLoanId;
     }
 
     public void setCarLoanId(Long carLoanId) {
         this.carLoanId = carLoanId;
+    }
+
+    public Long getMortgageId() {
+        return mortgageId;
+    }
+
+    public void setMortgageId(Long mortgageId) {
+        this.mortgageId = mortgageId;
     }
 
     public BigDecimal getAmount() {
@@ -238,4 +252,3 @@ public class Transaction {
                 '}';
     }
 }
-

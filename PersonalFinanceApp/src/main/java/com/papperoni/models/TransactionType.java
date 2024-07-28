@@ -1,6 +1,8 @@
 package com.papperoni.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.Objects;
 
@@ -11,7 +13,11 @@ public class TransactionType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long transactionTypeId;
 
+    @NotBlank
+    @Size(max = 255)
     private String typeName;
+
+    @Size(max = 500)
     private String notes;
 
     public TransactionType() {
