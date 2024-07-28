@@ -1,6 +1,7 @@
 package com.papperoni.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,19 +16,44 @@ public class CarLoan {
 
     @ManyToOne
     @JoinColumn(name = "ownerId", nullable = false)
+    @NotNull(message = "Owner is mandatory")
     private OwnerOfAccount owner;
 
+    @Size(max = 50, message = "Account identifier should not exceed 50 characters")
     private String accountIdentifier;
+
+    @Size(max = 100, message = "Account name should not exceed 100 characters")
     private String accountName;
+
+    @DecimalMin(value = "0.0", inclusive = false, message = "Balance must be positive")
     private BigDecimal balance;
+
+    @Min(value = 1, message = "Payment date must be between 1 and 31")
+    @Max(value = 31, message = "Payment date must be between 1 and 31")
     private Integer paymentDate;
+
+    @DecimalMin(value = "0.0", inclusive = false, message = "Minimum monthly payment must be positive")
     private BigDecimal minMonthlyPayment;
+
     private Boolean autoPay;
+
+    @Size(max = 50, message = "From account should not exceed 50 characters")
     private String fromAccount;
+
+    @PastOrPresent(message = "Updated date cannot be in the future")
     private LocalDate updated;
+
+    @DecimalMin(value = "0.0", inclusive = false, message = "APR must be positive")
+    @DecimalMax(value = "100.0", message = "APR must be less than or equal to 100")
     private BigDecimal apr;
+
+    @PastOrPresent(message = "Creation date cannot be in the future")
     private LocalDateTime createdAt;
+
+    @Size(max = 255, message = "Notes should not exceed 255 characters")
     private String notes;
+
+    // Constructors, getters, setters, equals, hashCode, and toString methods
 
     public CarLoan() {
     }
@@ -112,20 +138,20 @@ public class CarLoan {
         this.autoPay = autoPay;
     }
 
-    public LocalDate getUpdated() {
-        return updated;
-    }
-
-    public void setUpdated(LocalDate updated) {
-        this.updated = updated;
-    }
-
     public String getFromAccount() {
         return fromAccount;
     }
 
     public void setFromAccount(String fromAccount) {
         this.fromAccount = fromAccount;
+    }
+
+    public LocalDate getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(LocalDate updated) {
+        this.updated = updated;
     }
 
     public BigDecimal getApr() {

@@ -1,6 +1,7 @@
 package com.papperoni.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,18 +16,42 @@ public class PersonalLoan {
 
     @ManyToOne
     @JoinColumn(name = "ownerId", nullable = false)
+    @NotNull
     private OwnerOfAccount owner;
 
+    @NotBlank
     private String accountIdentifier;
+
+    @NotBlank
     private String accountName;
+
+    @NotNull
+    @DecimalMin(value = "0.0", inclusive = true)
     private BigDecimal balance;
+
+    @NotNull
+    @Min(1)
+    @Max(31)
     private Integer paymentDate;
+
+    @NotNull
+    @DecimalMin(value = "0.0", inclusive = true)
     private BigDecimal minMonthlyPayment;
+
     private Boolean autoPay;
+
     private String fromAccount;
+
+    @PastOrPresent
     private LocalDate updated;
+
+    @NotNull
+    @DecimalMin(value = "0.0", inclusive = true)
     private BigDecimal apr;
+
+    @PastOrPresent
     private LocalDateTime createdAt;
+
     private String notes;
 
     public PersonalLoan() {
@@ -184,4 +209,3 @@ public class PersonalLoan {
                 '}';
     }
 }
-

@@ -1,6 +1,7 @@
 package com.papperoni.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,18 +16,44 @@ public class Mortgage {
 
     @ManyToOne
     @JoinColumn(name = "ownerId", nullable = false)
+    @NotNull(message = "Owner is required")
     private OwnerOfAccount owner;
 
+    @NotBlank(message = "Account identifier is required")
     private String accountIdentifier;
+
+    @NotBlank(message = "Account name is required")
     private String accountName;
+
+    @NotNull(message = "Balance is required")
+    @DecimalMin(value = "0.0", inclusive = false, message = "Balance must be greater than 0")
     private BigDecimal balance;
+
+    @NotNull(message = "Payment date is required")
+    @Min(value = 1, message = "Payment date must be between 1 and 31")
+    @Max(value = 31, message = "Payment date must be between 1 and 31")
     private Integer paymentDate;
+
+    @NotNull(message = "Minimum monthly payment is required")
+    @DecimalMin(value = "0.0", inclusive = false, message = "Minimum monthly payment must be greater than 0")
     private BigDecimal minMonthlyPayment;
+
+    @NotNull(message = "AutoPay setting is required")
     private Boolean autoPay;
+
     private String fromAccount;
+
+    @NotNull(message = "Updated date is required")
     private LocalDate updated;
+
+    @NotNull(message = "APR is required")
+    @DecimalMin(value = "0.0", inclusive = false, message = "APR must be greater than 0")
     private BigDecimal apr;
+
+    @NotNull(message = "Creation date is required")
     private LocalDateTime createdAt;
+
+    @Size(max = 255, message = "Notes cannot exceed 255 characters")
     private String notes;
 
     public Mortgage() {
@@ -72,20 +99,20 @@ public class Mortgage {
         this.accountIdentifier = accountIdentifier;
     }
 
-    public BigDecimal getBalance() {
-        return balance;
-    }
-
-    public void setBalance(BigDecimal balance) {
-        this.balance = balance;
-    }
-
     public String getAccountName() {
         return accountName;
     }
 
     public void setAccountName(String accountName) {
         this.accountName = accountName;
+    }
+
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
     }
 
     public Integer getPaymentDate() {

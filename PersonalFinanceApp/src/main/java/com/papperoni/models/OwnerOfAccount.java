@@ -1,6 +1,7 @@
 package com.papperoni.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -11,9 +12,16 @@ public class OwnerOfAccount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ownerId;
 
+    @NotBlank
     private String username;
+
+    @Email
+    @NotBlank
     private String email;
+
+    @PastOrPresent
     private LocalDateTime createdAt;
+
     private String notes;
 
     public OwnerOfAccount() {
@@ -35,20 +43,20 @@ public class OwnerOfAccount {
         this.ownerId = ownerId;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getUsername() {
         return username;
     }
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public LocalDateTime getCreatedAt() {

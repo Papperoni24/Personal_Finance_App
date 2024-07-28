@@ -1,6 +1,7 @@
 package com.papperoni.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -14,12 +15,22 @@ public class CheckingAccount {
 
     @ManyToOne
     @JoinColumn(name = "ownerId", nullable = false)
+    @NotNull(message = "Owner is mandatory")
     private OwnerOfAccount owner;
 
+    @Size(max = 50, message = "Account identifier should not exceed 50 characters")
     private String accountIdentifier;
+
+    @Size(max = 100, message = "Account name should not exceed 100 characters")
     private String accountName;
+
+    @DecimalMin(value = "0.0", inclusive = false, message = "Balance must be positive")
     private BigDecimal balance;
+
+    @PastOrPresent(message = "Creation date cannot be in the future")
     private LocalDateTime createdAt;
+
+    @Size(max = 255, message = "Notes should not exceed 255 characters")
     private String notes;
 
     public CheckingAccount() {

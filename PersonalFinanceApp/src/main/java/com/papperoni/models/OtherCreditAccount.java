@@ -1,6 +1,7 @@
 package com.papperoni.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,20 +16,44 @@ public class OtherCreditAccount {
 
     @ManyToOne
     @JoinColumn(name = "ownerId", nullable = false)
+    @NotNull(message = "Owner cannot be null")
     private OwnerOfAccount owner;
 
+    @NotBlank(message = "Account identifier cannot be blank")
     private String accountIdentifier;
+
+    @NotBlank(message = "Account name cannot be blank")
     private String accountName;
+
+    @DecimalMin(value = "0.0", inclusive = true, message = "Credit limit must be positive")
     private BigDecimal creditLimit;
+
+    @DecimalMin(value = "0.0", inclusive = true, message = "Balance must be positive")
     private BigDecimal balance;
+
+    @Min(value = 1, message = "Payment date must be between 1 and 31")
+    @Max(value = 31, message = "Payment date must be between 1 and 31")
     private Integer paymentDate;
+
+    @DecimalMin(value = "0.0", inclusive = true, message = "Minimum monthly payment must be positive")
     private BigDecimal minMonthlyPayment;
+
     private Boolean autoPay;
+
     private String fromAccount;
+
+    @PastOrPresent(message = "Updated date cannot be in the future")
     private LocalDate updated;
+
+    @DecimalMin(value = "0.0", inclusive = true, message = "APR must be positive")
     private BigDecimal apr;
+
+    @DecimalMin(value = "0.0", inclusive = true, message = "Annual fee must be positive")
     private BigDecimal annualFee;
+
+    @PastOrPresent(message = "Created date cannot be in the future")
     private LocalDateTime createdAt;
+
     private String notes;
 
     public OtherCreditAccount() {
@@ -148,12 +173,12 @@ public class OtherCreditAccount {
         this.apr = apr;
     }
 
-    public String getNotes() {
-        return notes;
+    public BigDecimal getAnnualFee() {
+        return annualFee;
     }
 
-    public void setNotes(String notes) {
-        this.notes = notes;
+    public void setAnnualFee(BigDecimal annualFee) {
+        this.annualFee = annualFee;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -164,12 +189,12 @@ public class OtherCreditAccount {
         this.createdAt = createdAt;
     }
 
-    public BigDecimal getAnnualFee() {
-        return annualFee;
+    public String getNotes() {
+        return notes;
     }
 
-    public void setAnnualFee(BigDecimal annualFee) {
-        this.annualFee = annualFee;
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     @Override

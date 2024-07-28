@@ -1,6 +1,7 @@
 package com.papperoni.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,20 +16,49 @@ public class CreditCard {
 
     @ManyToOne
     @JoinColumn(name = "ownerId", nullable = false)
+    @NotNull(message = "Owner cannot be null")
     private OwnerOfAccount owner;
 
+    @NotBlank(message = "Account Identifier cannot be blank")
     private String accountIdentifier;
+
+    @NotBlank(message = "Account Name cannot be blank")
     private String accountName;
+
+    @DecimalMin(value = "0.0", inclusive = true, message = "Credit Limit must be non-negative")
+    @Digits(integer = 10, fraction = 2, message = "Credit Limit must be a valid monetary amount")
     private BigDecimal creditLimit;
+
+    @DecimalMin(value = "0.0", inclusive = true, message = "Balance must be non-negative")
+    @Digits(integer = 10, fraction = 2, message = "Balance must be a valid monetary amount")
     private BigDecimal balance;
+
+    @Min(value = 1, message = "Payment Date must be between 1 and 31")
+    @Max(value = 31, message = "Payment Date must be between 1 and 31")
     private Integer paymentDate;
+
+    @DecimalMin(value = "0.0", inclusive = true, message = "Minimum Monthly Payment must be non-negative")
+    @Digits(integer = 10, fraction = 2, message = "Minimum Monthly Payment must be a valid monetary amount")
     private BigDecimal minMonthlyPayment;
+
     private Boolean autoPay;
+
     private String fromAccount;
+
+    @PastOrPresent(message = "Updated date cannot be in the future")
     private LocalDate updated;
+
+    @DecimalMin(value = "0.0", inclusive = true, message = "APR must be non-negative")
+    @Digits(integer = 5, fraction = 2, message = "APR must be a valid percentage")
     private BigDecimal apr;
+
+    @DecimalMin(value = "0.0", inclusive = true, message = "Annual Fee must be non-negative")
+    @Digits(integer = 10, fraction = 2, message = "Annual Fee must be a valid monetary amount")
     private BigDecimal annualFee;
+
+    @PastOrPresent(message = "Creation date cannot be in the future")
     private LocalDateTime createdAt;
+
     private String notes;
 
     public CreditCard() {
@@ -52,6 +82,9 @@ public class CreditCard {
         this.owner = owner;
     }
 
+    // Getters and Setters
+
+
     public Long getCreditCardId() {
         return creditCardId;
     }
@@ -60,59 +93,59 @@ public class CreditCard {
         this.creditCardId = creditCardId;
     }
 
-    public OwnerOfAccount getOwner() {
+    public @NotNull(message = "Owner cannot be null") OwnerOfAccount getOwner() {
         return owner;
     }
 
-    public void setOwner(OwnerOfAccount owner) {
+    public void setOwner(@NotNull(message = "Owner cannot be null") OwnerOfAccount owner) {
         this.owner = owner;
     }
 
-    public String getAccountIdentifier() {
+    public @NotBlank(message = "Account Identifier cannot be blank") String getAccountIdentifier() {
         return accountIdentifier;
     }
 
-    public void setAccountIdentifier(String accountIdentifier) {
+    public void setAccountIdentifier(@NotBlank(message = "Account Identifier cannot be blank") String accountIdentifier) {
         this.accountIdentifier = accountIdentifier;
     }
 
-    public String getAccountName() {
+    public @NotBlank(message = "Account Name cannot be blank") String getAccountName() {
         return accountName;
     }
 
-    public void setAccountName(String accountName) {
+    public void setAccountName(@NotBlank(message = "Account Name cannot be blank") String accountName) {
         this.accountName = accountName;
     }
 
-    public BigDecimal getCreditLimit() {
+    public @DecimalMin(value = "0.0", inclusive = true, message = "Credit Limit must be non-negative") @Digits(integer = 10, fraction = 2, message = "Credit Limit must be a valid monetary amount") BigDecimal getCreditLimit() {
         return creditLimit;
     }
 
-    public void setCreditLimit(BigDecimal creditLimit) {
+    public void setCreditLimit(@DecimalMin(value = "0.0", inclusive = true, message = "Credit Limit must be non-negative") @Digits(integer = 10, fraction = 2, message = "Credit Limit must be a valid monetary amount") BigDecimal creditLimit) {
         this.creditLimit = creditLimit;
     }
 
-    public BigDecimal getBalance() {
+    public @DecimalMin(value = "0.0", inclusive = true, message = "Balance must be non-negative") @Digits(integer = 10, fraction = 2, message = "Balance must be a valid monetary amount") BigDecimal getBalance() {
         return balance;
     }
 
-    public void setBalance(BigDecimal balance) {
+    public void setBalance(@DecimalMin(value = "0.0", inclusive = true, message = "Balance must be non-negative") @Digits(integer = 10, fraction = 2, message = "Balance must be a valid monetary amount") BigDecimal balance) {
         this.balance = balance;
     }
 
-    public Integer getPaymentDate() {
+    public @Min(value = 1, message = "Payment Date must be between 1 and 31") @Max(value = 31, message = "Payment Date must be between 1 and 31") Integer getPaymentDate() {
         return paymentDate;
     }
 
-    public void setPaymentDate(Integer paymentDate) {
+    public void setPaymentDate(@Min(value = 1, message = "Payment Date must be between 1 and 31") @Max(value = 31, message = "Payment Date must be between 1 and 31") Integer paymentDate) {
         this.paymentDate = paymentDate;
     }
 
-    public BigDecimal getMinMonthlyPayment() {
+    public @DecimalMin(value = "0.0", inclusive = true, message = "Minimum Monthly Payment must be non-negative") @Digits(integer = 10, fraction = 2, message = "Minimum Monthly Payment must be a valid monetary amount") BigDecimal getMinMonthlyPayment() {
         return minMonthlyPayment;
     }
 
-    public void setMinMonthlyPayment(BigDecimal minMonthlyPayment) {
+    public void setMinMonthlyPayment(@DecimalMin(value = "0.0", inclusive = true, message = "Minimum Monthly Payment must be non-negative") @Digits(integer = 10, fraction = 2, message = "Minimum Monthly Payment must be a valid monetary amount") BigDecimal minMonthlyPayment) {
         this.minMonthlyPayment = minMonthlyPayment;
     }
 
@@ -132,35 +165,35 @@ public class CreditCard {
         this.fromAccount = fromAccount;
     }
 
-    public LocalDate getUpdated() {
+    public @PastOrPresent(message = "Updated date cannot be in the future") LocalDate getUpdated() {
         return updated;
     }
 
-    public void setUpdated(LocalDate updated) {
+    public void setUpdated(@PastOrPresent(message = "Updated date cannot be in the future") LocalDate updated) {
         this.updated = updated;
     }
 
-    public BigDecimal getApr() {
+    public @DecimalMin(value = "0.0", inclusive = true, message = "APR must be non-negative") @Digits(integer = 5, fraction = 2, message = "APR must be a valid percentage") BigDecimal getApr() {
         return apr;
     }
 
-    public void setApr(BigDecimal apr) {
+    public void setApr(@DecimalMin(value = "0.0", inclusive = true, message = "APR must be non-negative") @Digits(integer = 5, fraction = 2, message = "APR must be a valid percentage") BigDecimal apr) {
         this.apr = apr;
     }
 
-    public BigDecimal getAnnualFee() {
+    public @DecimalMin(value = "0.0", inclusive = true, message = "Annual Fee must be non-negative") @Digits(integer = 10, fraction = 2, message = "Annual Fee must be a valid monetary amount") BigDecimal getAnnualFee() {
         return annualFee;
     }
 
-    public void setAnnualFee(BigDecimal annualFee) {
+    public void setAnnualFee(@DecimalMin(value = "0.0", inclusive = true, message = "Annual Fee must be non-negative") @Digits(integer = 10, fraction = 2, message = "Annual Fee must be a valid monetary amount") BigDecimal annualFee) {
         this.annualFee = annualFee;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public @PastOrPresent(message = "Creation date cannot be in the future") LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(@PastOrPresent(message = "Creation date cannot be in the future") LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -206,4 +239,3 @@ public class CreditCard {
                 '}';
     }
 }
-

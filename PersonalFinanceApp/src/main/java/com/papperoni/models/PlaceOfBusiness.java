@@ -1,6 +1,7 @@
 package com.papperoni.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.Objects;
 
@@ -11,7 +12,9 @@ public class PlaceOfBusiness {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long placeOfBusinessId;
 
+    @NotBlank
     private String name;
+
     private String notes;
 
     public PlaceOfBusiness() {
