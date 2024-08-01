@@ -12,54 +12,64 @@ import java.util.Objects;
 public class Mortgage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "MortgageID")
     private Long mortgageId;
 
     @ManyToOne
-    @JoinColumn(name = "ownerId", nullable = false)
+    @JoinColumn(name = "OwnerID", nullable = false)
     @NotNull(message = "Owner is required")
     private OwnerOfAccount owner;
 
     @NotBlank(message = "Account identifier is required")
+    @Column(name = "AccountIdentifier", nullable = false, length = 100)
     private String accountIdentifier;
 
-    @NotBlank(message = "Account name is required")
+    @Column(name = "AccountName", length = 100)
     private String accountName;
 
-    @NotNull(message = "Balance is required")
     @DecimalMin(value = "0.0", inclusive = false, message = "Balance must be greater than 0")
+    @Digits(integer = 15, fraction = 2, message = "Balance must be a valid monetary amount")
+    @Column(name = "Balance", precision = 15, scale = 2, columnDefinition = "DECIMAL(15, 2) DEFAULT 0.00")
     private BigDecimal balance;
 
-    @NotNull(message = "Payment date is required")
     @Min(value = 1, message = "Payment date must be between 1 and 31")
     @Max(value = 31, message = "Payment date must be between 1 and 31")
+    @Column(name = "PaymentDate")
     private Integer paymentDate;
 
-    @NotNull(message = "Minimum monthly payment is required")
     @DecimalMin(value = "0.0", inclusive = false, message = "Minimum monthly payment must be greater than 0")
+    @Digits(integer = 15, fraction = 2, message = "Minimum monthly payment must be a valid monetary amount")
+    @Column(name = "MinMonthlyPayment", precision = 15, scale = 2)
     private BigDecimal minMonthlyPayment;
 
-    @NotNull(message = "AutoPay setting is required")
-    private Boolean autoPay;
+    @Column(name = "AutoPay", nullable = false)
+    private Boolean autoPay = false;
 
-    private String fromAccount;
+    @Column(name = "DefaultPayment", length = 100)
+    private String defaultPayment;
 
     @NotNull(message = "Updated date is required")
+    @Column(name = "Updated", nullable = false)
     private LocalDate updated;
 
-    @NotNull(message = "APR is required")
     @DecimalMin(value = "0.0", inclusive = false, message = "APR must be greater than 0")
+    @DecimalMax(value = "100.0", message = "APR must be less than or equal to 100")
+    @Digits(integer = 5, fraction = 2, message = "APR must be a valid percentage")
+    @Column(name = "APR", precision = 5, scale = 2)
     private BigDecimal apr;
 
     @NotNull(message = "Creation date is required")
+    @Column(name = "CreatedAt", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
 
     @Size(max = 255, message = "Notes cannot exceed 255 characters")
+    @Column(name = "Notes", length = 255)
     private String notes;
 
     public Mortgage() {
     }
 
-    public Mortgage(Long mortgageId, OwnerOfAccount owner, String accountIdentifier, String accountName, BigDecimal balance, Integer paymentDate, BigDecimal minMonthlyPayment, Boolean autoPay, String fromAccount, LocalDate updated, BigDecimal apr, LocalDateTime createdAt, String notes) {
+    public Mortgage(Long mortgageId, OwnerOfAccount owner, String accountIdentifier, String accountName, BigDecimal balance, Integer paymentDate, BigDecimal minMonthlyPayment, Boolean autoPay, String defaultPayment, LocalDate updated, BigDecimal apr, LocalDateTime createdAt, String notes) {
         this.mortgageId = mortgageId;
         this.owner = owner;
         this.accountIdentifier = accountIdentifier;
@@ -68,7 +78,7 @@ public class Mortgage {
         this.paymentDate = paymentDate;
         this.minMonthlyPayment = minMonthlyPayment;
         this.autoPay = autoPay;
-        this.fromAccount = fromAccount;
+        this.defaultPayment = defaultPayment;
         this.updated = updated;
         this.apr = apr;
         this.createdAt = createdAt;
@@ -139,12 +149,12 @@ public class Mortgage {
         this.autoPay = autoPay;
     }
 
-    public String getFromAccount() {
-        return fromAccount;
+    public String getDefaultPayment() {
+        return defaultPayment;
     }
 
-    public void setFromAccount(String fromAccount) {
-        this.fromAccount = fromAccount;
+    public void setDefaultPayment(String defaultPayment) {
+        this.defaultPayment = defaultPayment;
     }
 
     public LocalDate getUpdated() {
@@ -184,12 +194,12 @@ public class Mortgage {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Mortgage mortgage = (Mortgage) o;
-        return Objects.equals(mortgageId, mortgage.mortgageId) && Objects.equals(owner, mortgage.owner) && Objects.equals(accountIdentifier, mortgage.accountIdentifier) && Objects.equals(accountName, mortgage.accountName) && Objects.equals(balance, mortgage.balance) && Objects.equals(paymentDate, mortgage.paymentDate) && Objects.equals(minMonthlyPayment, mortgage.minMonthlyPayment) && Objects.equals(autoPay, mortgage.autoPay) && Objects.equals(fromAccount, mortgage.fromAccount) && Objects.equals(updated, mortgage.updated) && Objects.equals(apr, mortgage.apr) && Objects.equals(createdAt, mortgage.createdAt) && Objects.equals(notes, mortgage.notes);
+        return Objects.equals(mortgageId, mortgage.mortgageId) && Objects.equals(owner, mortgage.owner) && Objects.equals(accountIdentifier, mortgage.accountIdentifier) && Objects.equals(accountName, mortgage.accountName) && Objects.equals(balance, mortgage.balance) && Objects.equals(paymentDate, mortgage.paymentDate) && Objects.equals(minMonthlyPayment, mortgage.minMonthlyPayment) && Objects.equals(autoPay, mortgage.autoPay) && Objects.equals(defaultPayment, mortgage.defaultPayment) && Objects.equals(updated, mortgage.updated) && Objects.equals(apr, mortgage.apr) && Objects.equals(createdAt, mortgage.createdAt) && Objects.equals(notes, mortgage.notes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(mortgageId, owner, accountIdentifier, accountName, balance, paymentDate, minMonthlyPayment, autoPay, fromAccount, updated, apr, createdAt, notes);
+        return Objects.hash(mortgageId, owner, accountIdentifier, accountName, balance, paymentDate, minMonthlyPayment, autoPay, defaultPayment, updated, apr, createdAt, notes);
     }
 
     @Override
@@ -203,7 +213,7 @@ public class Mortgage {
                 ", paymentDate=" + paymentDate +
                 ", minMonthlyPayment=" + minMonthlyPayment +
                 ", autoPay=" + autoPay +
-                ", fromAccount='" + fromAccount + '\'' +
+                ", defaultPayment='" + defaultPayment + '\'' +
                 ", updated=" + updated +
                 ", apr=" + apr +
                 ", createdAt=" + createdAt +

@@ -1,0 +1,209 @@
+-- OwnerOfAccounts Table
+CREATE TABLE OwnerOfAccounts (
+    OwnerID SERIAL PRIMARY KEY,
+    Username VARCHAR(50) UNIQUE NOT NULL,
+    Email VARCHAR(100) UNIQUE NOT NULL,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Notes VARCHAR(255) -- Added Notes column
+);
+
+-- Transaction Types Table
+CREATE TABLE AccountTypes (
+    AccountTypeID SERIAL PRIMARY KEY,
+    AccountTypeName VARCHAR(50) UNIQUE NOT NULL,
+    Notes VARCHAR(255) -- Added Notes column
+);
+
+CREATE TABLE AllAccounts (
+    AccountID SERIAL PRIMARY KEY,
+    OwnerID INT REFERENCES OwnerOfAccounts(OwnerID) ON DELETE CASCADE,
+    AccountIdentifier VARCHAR(100) UNIQUE NOT NULL,
+    AccountName VARCHAR(100),
+    AccountTypeID INT REFERENCES AccountTypes(AccountTypeID) ON DELETE SET NULL, -- Updated to reference AccountTypes
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Notes VARCHAR(255) -- Added Notes column
+);
+
+-- Deposits Tables
+CREATE TABLE CheckingAccounts (
+    CheckingID SERIAL PRIMARY KEY,
+    OwnerID INT REFERENCES OwnerOfAccounts(OwnerID) ON DELETE CASCADE,
+    AccountIdentifier VARCHAR(100),
+    AccountName VARCHAR(100),
+    Balance DECIMAL(15, 2) DEFAULT 0.00,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Notes VARCHAR(255) -- Added Notes column
+);
+
+CREATE TABLE SavingsAccounts (
+    SavingsID SERIAL PRIMARY KEY,
+    OwnerID INT REFERENCES OwnerOfAccounts(OwnerID) ON DELETE CASCADE,
+    AccountIdentifier VARCHAR(100),
+    AccountName VARCHAR(100),
+    Balance DECIMAL(15, 2) DEFAULT 0.00,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Notes VARCHAR(255) -- Added Notes column
+);
+
+CREATE TABLE OtherDepositAccounts (
+    OtherDepositID SERIAL PRIMARY KEY,
+    OwnerID INT REFERENCES OwnerOfAccounts(OwnerID) ON DELETE CASCADE,
+    AccountIdentifier VARCHAR(100),
+    AccountName VARCHAR(100),
+    Balance DECIMAL(15, 2) DEFAULT 0.00,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Notes VARCHAR(255) -- Added Notes column
+);
+
+CREATE TABLE CreditCards (
+    CreditCardID SERIAL PRIMARY KEY,
+    OwnerID INT REFERENCES OwnerOfAccounts(OwnerID) ON DELETE CASCADE,
+    AccountIdentifier VARCHAR(100) NOT NULL,
+    AccountName VARCHAR(100),
+    CreditLimit DECIMAL(15, 2),
+    Balance DECIMAL(15, 2) DEFAULT 0.00,
+    PaymentDate INT,
+    MinMonthlyPayment DECIMAL(15, 2),
+    AutoPay BOOLEAN DEFAULT FALSE,
+    DefaultPayment VARCHAR(100) REFERENCES AllAccounts(AccountIdentifier), -- Must populate from AllAccounts table
+    Updated DATE NOT NULL,
+    APR DECIMAL(5, 2),
+    AnnualFee DECIMAL(15, 2),
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Notes VARCHAR(255) -- Added Notes column
+);
+
+CREATE TABLE OtherCreditAccounts (
+    OtherCreditAccountID SERIAL PRIMARY KEY,
+    OwnerID INT REFERENCES OwnerOfAccounts(OwnerID) ON DELETE CASCADE,
+    AccountIdentifier VARCHAR(100) NOT NULL,
+    AccountName VARCHAR(100),
+    CreditLimit DECIMAL(15, 2),
+    Balance DECIMAL(15, 2) DEFAULT 0.00,
+    PaymentDate INT,
+    MinMonthlyPayment DECIMAL(15, 2),
+    AutoPay BOOLEAN DEFAULT FALSE,
+    DefaultPayment VARCHAR(100) REFERENCES AllAccounts(AccountIdentifier), -- Must populate from AllAccounts table
+    Updated DATE NOT NULL,
+    APR DECIMAL(5, 2),
+    AnnualFee DECIMAL(15, 2),
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Notes VARCHAR(255) -- Added Notes column
+);
+
+CREATE TABLE StudentLoans (
+    StudentLoanID SERIAL PRIMARY KEY,
+    OwnerID INT REFERENCES OwnerOfAccounts(OwnerID) ON DELETE CASCADE,
+    AccountIdentifier VARCHAR(100) NOT NULL,
+    AccountName VARCHAR(100),
+    Balance DECIMAL(15, 2) DEFAULT 0.00,
+    PaymentDate INT,
+    MinMonthlyPayment DECIMAL(15, 2),
+    AutoPay BOOLEAN DEFAULT FALSE,
+    DefaultPayment VARCHAR(100) REFERENCES AllAccounts(AccountIdentifier), -- Must populate from AllAccounts table
+    Updated DATE NOT NULL,
+    APR DECIMAL(5, 2),
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Notes VARCHAR(255) -- Added Notes column
+);
+
+CREATE TABLE PersonalLoans (
+    PersonalLoanID SERIAL PRIMARY KEY,
+    OwnerID INT REFERENCES OwnerOfAccounts(OwnerID) ON DELETE CASCADE,
+    AccountIdentifier VARCHAR(100) NOT NULL,
+    AccountName VARCHAR(100),
+    Balance DECIMAL(15, 2) DEFAULT 0.00,
+    PaymentDate INT,
+    MinMonthlyPayment DECIMAL(15, 2),
+    AutoPay BOOLEAN DEFAULT FALSE,
+    DefaultPayment VARCHAR(100) REFERENCES AllAccounts(AccountIdentifier), -- Must populate from AllAccounts table
+    Updated DATE NOT NULL,
+    APR DECIMAL(5, 2),
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Notes VARCHAR(255) -- Added Notes column
+);
+
+CREATE TABLE CarLoans (
+    CarLoanID SERIAL PRIMARY KEY,
+    OwnerID INT REFERENCES OwnerOfAccounts(OwnerID) ON DELETE CASCADE,
+    AccountIdentifier VARCHAR(100) NOT NULL,
+    AccountName VARCHAR(100),
+    Balance DECIMAL(15, 2) DEFAULT 0.00,
+    PaymentDate INT,
+    MinMonthlyPayment DECIMAL(15, 2),
+    AutoPay BOOLEAN DEFAULT FALSE,
+    DefaultPayment VARCHAR(100) REFERENCES AllAccounts(AccountIdentifier), -- Must populate from AllAccounts table
+    Updated DATE NOT NULL,
+    APR DECIMAL(5, 2),
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Notes VARCHAR(255) -- Added Notes column
+);
+
+CREATE TABLE Mortgages (
+    MortgageID SERIAL PRIMARY KEY,
+    OwnerID INT REFERENCES OwnerOfAccounts(OwnerID) ON DELETE CASCADE,
+    AccountIdentifier VARCHAR(100) NOT NULL,
+    AccountName VARCHAR(100),
+    Balance DECIMAL(15, 2) DEFAULT 0.00,
+    PaymentDate INT,
+    MinMonthlyPayment DECIMAL(15, 2),
+    AutoPay BOOLEAN DEFAULT FALSE,
+    DefaultPayment VARCHAR(100) REFERENCES AllAccounts(AccountIdentifier), -- Must populate from AllAccounts table
+    Updated DATE NOT NULL,
+    APR DECIMAL(5, 2),
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Notes VARCHAR(255) -- Added Notes column
+);
+
+-- Transaction Types Table
+CREATE TABLE TransactionTypes (
+    TransactionTypeID SERIAL PRIMARY KEY,
+    TypeName VARCHAR(50) UNIQUE NOT NULL,
+    Notes VARCHAR(255) -- Added Notes column
+);
+
+-- Place of Business Table
+CREATE TABLE PlaceOfBusiness (
+    PlaceOfBusinessID SERIAL PRIMARY KEY,
+    Name VARCHAR(100) UNIQUE NOT NULL,
+    DefaultPayment VARCHAR(100) REFERENCES AllAccounts(AccountIdentifier), -- Must populate from AllAccounts table
+    Notes VARCHAR(255) -- Added Notes column
+);
+
+-- Transaction Description Table
+CREATE TABLE TransactionDescription (
+    TransactionDescriptionID SERIAL PRIMARY KEY,
+    Description VARCHAR(255) UNIQUE NOT NULL,
+    PlaceOfBusinessID INT REFERENCES PlaceOfBusiness(PlaceOfBusinessID) ON DELETE SET NULL,
+    Notes VARCHAR(255) -- Added Notes column
+);
+
+-- Expense Category Table
+CREATE TABLE ExpenseCategory (
+    ExpenseCategoryID SERIAL PRIMARY KEY,
+    CategoryName VARCHAR(100) UNIQUE NOT NULL,
+    PlaceOfBusinessID INT REFERENCES PlaceOfBusiness(PlaceOfBusinessID) ON DELETE SET NULL,
+    Notes VARCHAR(255) -- Added Notes column
+);
+
+-- Create Transaction Table
+CREATE TABLE Transaction (
+    TransactionID SERIAL PRIMARY KEY,
+    Amount DECIMAL(15, 2) NOT NULL,
+    Description VARCHAR(255), -- Added Description column
+    AccountID INT NOT NULL, -- Required to associate the transaction with an account
+    PlaceOfBusinessID INT REFERENCES PlaceOfBusiness(PlaceOfBusinessID) ON DELETE SET NULL,
+    TransactionTypeID INT REFERENCES TransactionTypes(TransactionTypeID) ON DELETE SET NULL,
+    AssociatedAccountID INT,
+    AssociatedAccountType VARCHAR(50), -- Use VARCHAR for associated account types
+    TransactionDate TIMESTAMP NOT NULL, -- Required TransactionDate
+    UploadDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Reflects when the row was first created
+    LastUpdated TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- No ON UPDATE CURRENT_TIMESTAMP support in PostgreSQL
+    IsRecurring BOOLEAN -- Added IsRecurring column
+);
+
+
+
+
+
+

@@ -52,7 +52,7 @@ public class OtherCreditAccountServiceImpl implements OtherCreditAccountService 
         otherCreditAccount.setPaymentDate(otherCreditAccountDetails.getPaymentDate());
         otherCreditAccount.setMinMonthlyPayment(otherCreditAccountDetails.getMinMonthlyPayment());
         otherCreditAccount.setAutoPay(otherCreditAccountDetails.getAutoPay());
-        otherCreditAccount.setFromAccount(otherCreditAccountDetails.getFromAccount());
+        otherCreditAccount.setDefaultPayment(otherCreditAccountDetails.getDefaultPayment());
         otherCreditAccount.setUpdated(otherCreditAccountDetails.getUpdated());
         otherCreditAccount.setApr(otherCreditAccountDetails.getApr());
         otherCreditAccount.setAnnualFee(otherCreditAccountDetails.getAnnualFee());

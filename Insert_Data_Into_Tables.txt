@@ -1,0 +1,121 @@
+-- Insert predefined transaction types
+INSERT INTO TransactionTypes (TypeName) VALUES
+('Purchase'),
+('Payment'),
+('Transfer'),
+('Income');
+
+-- Insert predefined account types
+INSERT INTO AccountTypes (AccountTypeName) VALUES
+('Checking'),
+('Savings'),
+('Loan'),
+('Car Loan'),
+('Personal Loan'),
+('Student Loan'),
+('Mortgage'),
+('Other Credit'),
+('Other Debit');
+
+-- Insert Data into OwnerOfAccounts Table
+INSERT INTO OwnerOfAccounts (Username, Email, Notes) VALUES
+('JacobSWPapp', 'jacob.sw.papp@gmail.com', NULL);
+
+-- Insert Data into CheckingAccounts Table
+INSERT INTO CheckingAccounts (OwnerID, AccountIdentifier, AccountName, Balance, Notes) VALUES
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '7683', 'Aspiration', 0.00, NULL),
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '4406', 'SoFo', 0.00, NULL),
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '0793', 'Capital One', 0.00, NULL);
+
+-- Insert Data into SavingsAccounts Table
+INSERT INTO SavingsAccounts (OwnerID, AccountIdentifier, AccountName, Balance, Notes) VALUES
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '1481', 'SoFi', 0.00, NULL),
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '0013', 'PenFed', 0.00, NULL);
+
+-- Insert Data into OtherDepositAccounts Table
+INSERT INTO OtherDepositAccounts (OwnerID, AccountIdentifier, AccountName, Balance, Notes) VALUES
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '@Jacob-Papp-1', 'Venmo', 143.90, NULL), 
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '@HoosierPappi24', 'CashApp', 0.00, NULL),
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), 'jacob.sw.papp@me.com', 'AppleCash', 182.50, NULL);
+
+-- Insert Data into CreditCards Table
+INSERT INTO CreditCards (OwnerID, AccountIdentifier, AccountName, CreditLimit, Balance, PaymentDate, MinMonthlyPayment, AutoPay, DefaultPayment, Updated, APR, AnnualFee, Notes) VALUES
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '1005', 'AMEX Blue Cash', 900.00, 303.75, 7, 40.00, FALSE, NULL, '2024-07-18', 29.99, NULL, NULL),
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '7530', 'Merrick Bank', 2200.00, 586.71, 9, 35.00, FALSE, NULL, '2024-07-18', 28.70, NULL, NULL),
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '9999', 'Blaze by First Savings Bank', 800, 75.00, 0.00, 21, FALSE, NULL, '2024-07-18', 24.90, NULL, 'APR returns to 29.90% on 7/18/25'),
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '1738', 'Credit One - AMEX', 1400.00, 11.09, 22, 25.00, FALSE, NULL, '2024-07-18', 29.65, NULL, NULL),
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '6001', 'Credit One - Visa', 1400.00, 387.05, 23, 30.00, FALSE, NULL, '2024-07-18', 29.24, NULL, NULL),
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '9399', 'Best Buy Visa', 4000.00, 932.31, 23, 30.00, TRUE, NULL, '4-07-18', 0.00, NULL, NULL),
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '4728', 'Capital One - Quicksilver', 2800.00, 357.00, 28, 25.00, TRUE, NULL, '2024-07-18', 32.24, NULL, NULL),
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '6924', 'Capital One - Savor', 5000.00, 818.70, 30, 30.00, TRUE, NULL, '2024-07-18', 29.99, NULL, NULL);
+
+
+-- Insert Data into OtherCreditAccounts Table
+INSERT INTO OtherCreditAccounts (OwnerID, AccountIdentifier, AccountName, CreditLimit, Balance, PaymentDate, MinMonthlyPayment, AutoPay, DefaultPayment, Updated, APR, AnnualFee, CreatedAt, Notes) VALUES
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), 'AfterPay', 'AfterPay', 600, 0, NULL, NULL, FALSE, NULL, CURRENT_DATE, 0, NULL, CURRENT_TIMESTAMP, NULL),
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), 'CitizensPay', '2763', 4200, 1074.5, NULL, NULL, FALSE, NULL, CURRENT_DATE, 11.99, NULL, CURRENT_TIMESTAMP, 'Portion has 0% APR for 3 years'),
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), 'Klarna', 'Klarna', 420, 0, NULL, NULL, FALSE, NULL, CURRENT_DATE, 0, NULL, CURRENT_TIMESTAMP, NULL),
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), 'Affirm', 'Affirm', 3500, 0, NULL, NULL, FALSE, NULL, CURRENT_DATE, 0, NULL, CURRENT_TIMESTAMP, NULL);
+
+
+-- Insert Data into PersonalLoans Table
+INSERT INTO PersonalLoans (OwnerID, AccountIdentifier, AccountName, Balance, PaymentDate, MinMonthlyPayment, AutoPay, DefaultPayment, Updated, APR, Notes) VALUES
+((SELECT OwnerID FROM OwnerOfAccounts WHERE Username = 'JacobSWPapp'), '5702', 'PenFed Personal Loan', 5228.77, 2, 202.50, TRUE, NULL, '2024-07-18', 17.99, NULL);
+
+-- Insert Checking Accounts
+INSERT INTO AllAccounts (OwnerID, AccountIdentifier, AccountName, AccountTypeId)
+SELECT 
+    OwnerID, 
+    AccountIdentifier, 
+    AccountName, 
+    (SELECT AccountTypeId FROM AccountTypes WHERE AccountTypeName = 'Checking') AS AccountTypeId
+FROM CheckingAccounts;
+
+-- Insert Savings Accounts
+INSERT INTO AllAccounts (OwnerID, AccountIdentifier, AccountName, AccountTypeId)
+SELECT 
+    OwnerID, 
+    AccountIdentifier, 
+    AccountName, 
+    (SELECT AccountTypeId FROM AccountTypes WHERE AccountTypeName = 'Savings') AS AccountTypeId
+FROM SavingsAccounts;
+
+-- Insert Other Deposit Accounts
+INSERT INTO AllAccounts (OwnerID, AccountIdentifier, AccountName, AccountTypeId)
+SELECT 
+    OwnerID, 
+    AccountIdentifier, 
+    AccountName, 
+    (SELECT AccountTypeId FROM AccountTypes WHERE AccountTypeName = 'Other Debit') AS AccountTypeId
+FROM OtherDepositAccounts;
+
+-- Insert Credit Cards
+INSERT INTO AllAccounts (OwnerID, AccountIdentifier, AccountName, AccountTypeId)
+SELECT 
+    OwnerID, 
+    AccountIdentifier, 
+    AccountName, 
+    (SELECT AccountTypeId FROM AccountTypes WHERE AccountTypeName = 'Other Credit') AS AccountTypeId
+FROM CreditCards;
+
+-- Insert Other Credit Accounts
+INSERT INTO AllAccounts (OwnerID, AccountIdentifier, AccountName, AccountTypeId)
+SELECT 
+    OwnerID, 
+    AccountIdentifier, 
+    AccountName, 
+    (SELECT AccountTypeId FROM AccountTypes WHERE AccountTypeName = 'Other Credit') AS AccountTypeId
+FROM OtherCreditAccounts;
+
+-- Insert Personal Loans
+INSERT INTO AllAccounts (OwnerID, AccountIdentifier, AccountName, AccountTypeId)
+SELECT 
+    OwnerID, 
+    AccountIdentifier, 
+    AccountName, 
+    (SELECT AccountTypeId FROM AccountTypes WHERE AccountTypeName = 'Personal Loan') AS AccountTypeId
+FROM PersonalLoans;
+
+
+
+

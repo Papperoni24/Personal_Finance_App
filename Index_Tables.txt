@@ -1,0 +1,26 @@
+
+-- Create Indexes for Financing Tables
+CREATE INDEX idx_creditcards_ownerid ON CreditCards(OwnerID);
+CREATE INDEX idx_othercreditaccounts_ownerid ON OtherCreditAccounts(OwnerID);
+CREATE INDEX idx_studentloans_ownerid ON StudentLoans(OwnerID);
+CREATE INDEX idx_personalloans_ownerid ON PersonalLoans(OwnerID);
+CREATE INDEX idx_carloans_ownerid ON CarLoans(OwnerID);
+CREATE INDEX idx_mortgages_ownerid ON Mortgages(OwnerID);
+
+
+-- Create Indexes for Transaction Description Table
+CREATE INDEX idx_transactiondescription_placeofbusinessid ON TransactionDescription(PlaceOfBusinessID);
+
+
+-- Create Indexes for Expense Category Table
+CREATE INDEX idx_expensecategory_placeofbusinessid ON ExpenseCategory(PlaceOfBusinessID);
+
+-- Create Indexes for Transaction Table
+CREATE INDEX idx_transaction_accountid ON Transaction(AccountID);
+CREATE INDEX idx_transaction_placeofbusinessid ON Transaction(PlaceOfBusinessID);
+CREATE INDEX idx_transaction_transactiontypeid ON Transaction(TransactionTypeID);
+CREATE INDEX idx_transaction_associatedaccountid ON Transaction(AssociatedAccountID);
+CREATE INDEX idx_transaction_transactiondate ON Transaction(TransactionDate);
+
+
+

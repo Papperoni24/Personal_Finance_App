@@ -1,20 +1,20 @@
 package com.papperoni.services;
 
-import com.papperoni.models.SocialAccount;
+import com.papperoni.models.OtherDepositAccount;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface SocialAccountService {
 
-    List<SocialAccount> getAllSocialAccounts();
+    List<OtherDepositAccount> getAllSocialAccounts();
 
-    Optional<SocialAccount> getSocialAccountById(Long id);
+    Optional<OtherDepositAccount> getSocialAccountById(Long id);
 
-    SocialAccount saveSocialAccount(SocialAccount socialAccount);
+    OtherDepositAccount saveSocialAccount(OtherDepositAccount otherDepositAccount);
 
     void deleteSocialAccount(Long id);
 
-    SocialAccount updateSocialAccount(Long id, SocialAccount socialAccountDetails);
+    OtherDepositAccount updateSocialAccount(Long id, OtherDepositAccount otherDepositAccountDetails);
 }
 

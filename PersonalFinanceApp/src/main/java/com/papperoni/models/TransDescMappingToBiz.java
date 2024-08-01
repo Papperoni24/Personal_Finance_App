@@ -7,27 +7,30 @@ import jakarta.validation.constraints.Size;
 import java.util.Objects;
 
 @Entity
-@Table(name = "KeyTransactionDescription")
-public class TransactionDescription {
+@Table(name = "TransDescMappingToBiz")
+public class TransDescMappingToBiz {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "TransactionDescriptionID")
     private Long transactionDescriptionId;
 
     @NotBlank
     @Size(max = 255)
+    @Column(name = "Description", nullable = false, unique = true)
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "placeOfBusinessId")
+    @JoinColumn(name = "PlaceOfBusinessID")
     private PlaceOfBusiness placeOfBusiness;
 
-    @Size(max = 500)
+    @Size(max = 255)
+    @Column(name = "Notes")
     private String notes;
 
-    public TransactionDescription() {
+    public TransDescMappingToBiz() {
     }
 
-    public TransactionDescription(Long transactionDescriptionId, String description, PlaceOfBusiness placeOfBusiness, String notes) {
+    public TransDescMappingToBiz(Long transactionDescriptionId, String description, PlaceOfBusiness placeOfBusiness, String notes) {
         this.transactionDescriptionId = transactionDescriptionId;
         this.description = description;
         this.placeOfBusiness = placeOfBusiness;
@@ -70,8 +73,11 @@ public class TransactionDescription {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TransactionDescription that = (TransactionDescription) o;
-        return Objects.equals(transactionDescriptionId, that.transactionDescriptionId) && Objects.equals(description, that.description) && Objects.equals(placeOfBusiness, that.placeOfBusiness) && Objects.equals(notes, that.notes);
+        TransDescMappingToBiz that = (TransDescMappingToBiz) o;
+        return Objects.equals(transactionDescriptionId, that.transactionDescriptionId) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(placeOfBusiness, that.placeOfBusiness) &&
+                Objects.equals(notes, that.notes);
     }
 
     @Override
@@ -81,7 +87,7 @@ public class TransactionDescription {
 
     @Override
     public String toString() {
-        return "TransactionDescription{" +
+        return "TransDescMappingToBiz{" +
                 "transactionDescriptionId=" + transactionDescriptionId +
                 ", description='" + description + '\'' +
                 ", placeOfBusiness=" + placeOfBusiness +

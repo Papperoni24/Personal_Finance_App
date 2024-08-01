@@ -51,7 +51,7 @@ public class PersonalLoanServiceImpl implements PersonalLoanService {
         personalLoan.setPaymentDate(personalLoanDetails.getPaymentDate());
         personalLoan.setMinMonthlyPayment(personalLoanDetails.getMinMonthlyPayment());
         personalLoan.setAutoPay(personalLoanDetails.getAutoPay());
-        personalLoan.setFromAccount(personalLoanDetails.getFromAccount());
+        personalLoan.setDefaultPayment(personalLoanDetails.getDefaultPayment());
         personalLoan.setUpdated(personalLoanDetails.getUpdated());
         personalLoan.setApr(personalLoanDetails.getApr());
         personalLoan.setCreatedAt(personalLoanDetails.getCreatedAt());

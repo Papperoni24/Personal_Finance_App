@@ -10,19 +10,26 @@ import java.util.Objects;
 public class PlaceOfBusiness {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "PlaceOfBusinessID")
     private Long placeOfBusinessId;
 
-    @NotBlank
+    @NotBlank(message = "Name cannot be blank")
+    @Column(name = "Name", nullable = false, unique = true, length = 100)
     private String name;
 
+    @Column(name = "DefaultPayment", length = 100)
+    private String defaultPayment;
+
+    @Column(name = "Notes", length = 255)
     private String notes;
 
     public PlaceOfBusiness() {
     }
 
-    public PlaceOfBusiness(Long placeOfBusinessId, String name, String notes) {
+    public PlaceOfBusiness(Long placeOfBusinessId, String name, String defaultPayment, String notes) {
         this.placeOfBusinessId = placeOfBusinessId;
         this.name = name;
+        this.defaultPayment = defaultPayment;
         this.notes = notes;
     }
 
@@ -42,6 +49,14 @@ public class PlaceOfBusiness {
         this.name = name;
     }
 
+    public String getDefaultPayment() {
+        return defaultPayment;
+    }
+
+    public void setDefaultPayment(String defaultPayment) {
+        this.defaultPayment = defaultPayment;
+    }
+
     public String getNotes() {
         return notes;
     }
@@ -55,12 +70,12 @@ public class PlaceOfBusiness {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PlaceOfBusiness that = (PlaceOfBusiness) o;
-        return Objects.equals(placeOfBusinessId, that.placeOfBusinessId) && Objects.equals(name, that.name) && Objects.equals(notes, that.notes);
+        return Objects.equals(placeOfBusinessId, that.placeOfBusinessId) && Objects.equals(name, that.name) && Objects.equals(defaultPayment, that.defaultPayment) && Objects.equals(notes, that.notes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(placeOfBusinessId, name, notes);
+        return Objects.hash(placeOfBusinessId, name, defaultPayment, notes);
     }
 
     @Override
@@ -68,6 +83,7 @@ public class PlaceOfBusiness {
         return "PlaceOfBusiness{" +
                 "placeOfBusinessId=" + placeOfBusinessId +
                 ", name='" + name + '\'' +
+                ", defaultPayment='" + defaultPayment + '\'' +
                 ", notes='" + notes + '\'' +
                 '}';
     }

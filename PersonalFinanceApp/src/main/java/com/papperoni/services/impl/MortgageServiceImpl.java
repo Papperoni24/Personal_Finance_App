@@ -51,7 +51,7 @@ public class MortgageServiceImpl implements MortgageService {
         mortgage.setPaymentDate(mortgageDetails.getPaymentDate());
         mortgage.setMinMonthlyPayment(mortgageDetails.getMinMonthlyPayment());
         mortgage.setAutoPay(mortgageDetails.getAutoPay());
-        mortgage.setFromAccount(mortgageDetails.getFromAccount());
+        mortgage.setDefaultPayment(mortgageDetails.getDefaultPayment());
         mortgage.setUpdated(mortgageDetails.getUpdated());
         mortgage.setApr(mortgageDetails.getApr());
         mortgage.setCreatedAt(mortgageDetails.getCreatedAt());

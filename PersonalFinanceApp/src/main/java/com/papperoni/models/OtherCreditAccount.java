@@ -12,54 +12,74 @@ import java.util.Objects;
 public class OtherCreditAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "OtherCreditAccountID")
     private Long otherCreditAccountId;
 
     @ManyToOne
-    @JoinColumn(name = "ownerId", nullable = false)
+    @JoinColumn(name = "OwnerID", nullable = false)
     @NotNull(message = "Owner cannot be null")
     private OwnerOfAccount owner;
 
     @NotBlank(message = "Account identifier cannot be blank")
+    @Column(name = "AccountIdentifier", nullable = false, length = 100)
     private String accountIdentifier;
 
-    @NotBlank(message = "Account name cannot be blank")
+    @Column(name = "AccountName", length = 100)
     private String accountName;
 
     @DecimalMin(value = "0.0", inclusive = true, message = "Credit limit must be positive")
+    @Digits(integer = 15, fraction = 2, message = "Credit limit must be a valid monetary amount")
+    @Column(name = "CreditLimit", precision = 15, scale = 2)
     private BigDecimal creditLimit;
 
     @DecimalMin(value = "0.0", inclusive = true, message = "Balance must be positive")
+    @Digits(integer = 15, fraction = 2, message = "Balance must be a valid monetary amount")
+    @Column(name = "Balance", precision = 15, scale = 2, columnDefinition = "DECIMAL(15, 2) DEFAULT 0.00")
     private BigDecimal balance;
 
     @Min(value = 1, message = "Payment date must be between 1 and 31")
     @Max(value = 31, message = "Payment date must be between 1 and 31")
+    @Column(name = "PaymentDate")
     private Integer paymentDate;
 
     @DecimalMin(value = "0.0", inclusive = true, message = "Minimum monthly payment must be positive")
+    @Digits(integer = 15, fraction = 2, message = "Minimum monthly payment must be a valid monetary amount")
+    @Column(name = "MinMonthlyPayment", precision = 15, scale = 2)
     private BigDecimal minMonthlyPayment;
 
-    private Boolean autoPay;
+    @Column(name = "AutoPay", nullable = false)
+    private Boolean autoPay = false;
 
-    private String fromAccount;
+    @Column(name = "DefaultPayment", length = 100)
+    private String defaultPayment;
 
-    @PastOrPresent(message = "Updated date cannot be in the future")
+    @NotNull(message = "Updated date is required")
+    @Column(name = "Updated", nullable = false)
     private LocalDate updated;
 
     @DecimalMin(value = "0.0", inclusive = true, message = "APR must be positive")
+    @DecimalMax(value = "100.0", message = "APR must be less than or equal to 100")
+    @Digits(integer = 5, fraction = 2, message = "APR must be a valid percentage")
+    @Column(name = "APR", precision = 5, scale = 2)
     private BigDecimal apr;
 
     @DecimalMin(value = "0.0", inclusive = true, message = "Annual fee must be positive")
+    @Digits(integer = 15, fraction = 2, message = "Annual fee must be a valid monetary amount")
+    @Column(name = "AnnualFee", precision = 15, scale = 2)
     private BigDecimal annualFee;
 
-    @PastOrPresent(message = "Created date cannot be in the future")
+    @NotNull(message = "Creation date is required")
+    @Column(name = "CreatedAt", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
 
+    @Size(max = 255, message = "Notes cannot exceed 255 characters")
+    @Column(name = "Notes", length = 255)
     private String notes;
 
     public OtherCreditAccount() {
     }
 
-    public OtherCreditAccount(Long otherCreditAccountId, OwnerOfAccount owner, String accountIdentifier, String accountName, BigDecimal creditLimit, BigDecimal balance, Integer paymentDate, BigDecimal minMonthlyPayment, String fromAccount, Boolean autoPay, LocalDate updated, BigDecimal apr, BigDecimal annualFee, LocalDateTime createdAt, String notes) {
+    public OtherCreditAccount(Long otherCreditAccountId, OwnerOfAccount owner, String accountIdentifier, String accountName, BigDecimal creditLimit, BigDecimal balance, Integer paymentDate, BigDecimal minMonthlyPayment, String defaultPayment, Boolean autoPay, LocalDate updated, BigDecimal apr, BigDecimal annualFee, LocalDateTime createdAt, String notes) {
         this.otherCreditAccountId = otherCreditAccountId;
         this.owner = owner;
         this.accountIdentifier = accountIdentifier;
@@ -68,7 +88,7 @@ public class OtherCreditAccount {
         this.balance = balance;
         this.paymentDate = paymentDate;
         this.minMonthlyPayment = minMonthlyPayment;
-        this.fromAccount = fromAccount;
+        this.defaultPayment = defaultPayment;
         this.autoPay = autoPay;
         this.updated = updated;
         this.apr = apr;
@@ -149,12 +169,12 @@ public class OtherCreditAccount {
         this.autoPay = autoPay;
     }
 
-    public String getFromAccount() {
-        return fromAccount;
+    public String getDefaultPayment() {
+        return defaultPayment;
     }
 
-    public void setFromAccount(String fromAccount) {
-        this.fromAccount = fromAccount;
+    public void setDefaultPayment(String defaultPayment) {
+        this.defaultPayment = defaultPayment;
     }
 
     public LocalDate getUpdated() {
@@ -202,12 +222,12 @@ public class OtherCreditAccount {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OtherCreditAccount that = (OtherCreditAccount) o;
-        return Objects.equals(otherCreditAccountId, that.otherCreditAccountId) && Objects.equals(owner, that.owner) && Objects.equals(accountIdentifier, that.accountIdentifier) && Objects.equals(accountName, that.accountName) && Objects.equals(creditLimit, that.creditLimit) && Objects.equals(balance, that.balance) && Objects.equals(paymentDate, that.paymentDate) && Objects.equals(minMonthlyPayment, that.minMonthlyPayment) && Objects.equals(autoPay, that.autoPay) && Objects.equals(fromAccount, that.fromAccount) && Objects.equals(updated, that.updated) && Objects.equals(apr, that.apr) && Objects.equals(annualFee, that.annualFee) && Objects.equals(createdAt, that.createdAt) && Objects.equals(notes, that.notes);
+        return Objects.equals(otherCreditAccountId, that.otherCreditAccountId) && Objects.equals(owner, that.owner) && Objects.equals(accountIdentifier, that.accountIdentifier) && Objects.equals(accountName, that.accountName) && Objects.equals(creditLimit, that.creditLimit) && Objects.equals(balance, that.balance) && Objects.equals(paymentDate, that.paymentDate) && Objects.equals(minMonthlyPayment, that.minMonthlyPayment) && Objects.equals(autoPay, that.autoPay) && Objects.equals(defaultPayment, that.defaultPayment) && Objects.equals(updated, that.updated) && Objects.equals(apr, that.apr) && Objects.equals(annualFee, that.annualFee) && Objects.equals(createdAt, that.createdAt) && Objects.equals(notes, that.notes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(otherCreditAccountId, owner, accountIdentifier, accountName, creditLimit, balance, paymentDate, minMonthlyPayment, autoPay, fromAccount, updated, apr, annualFee, createdAt, notes);
+        return Objects.hash(otherCreditAccountId, owner, accountIdentifier, accountName, creditLimit, balance, paymentDate, minMonthlyPayment, autoPay, defaultPayment, updated, apr, annualFee, createdAt, notes);
     }
 
     @Override
@@ -222,7 +242,7 @@ public class OtherCreditAccount {
                 ", paymentDate=" + paymentDate +
                 ", minMonthlyPayment=" + minMonthlyPayment +
                 ", autoPay=" + autoPay +
-                ", fromAccount='" + fromAccount + '\'' +
+                ", defaultPayment='" + defaultPayment + '\'' +
                 ", updated=" + updated +
                 ", apr=" + apr +
                 ", annualFee=" + annualFee +

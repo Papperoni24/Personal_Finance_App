@@ -1,6 +1,6 @@
 package com.papperoni.controllers;
 
-import com.papperoni.models.SocialAccount;
+import com.papperoni.models.OtherDepositAccount;
 import com.papperoni.services.SocialAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,26 +20,26 @@ public class SocialAccountController {
     }
 
     @GetMapping
-    public List<SocialAccount> getAllSocialAccounts() {
+    public List<OtherDepositAccount> getAllSocialAccounts() {
         return socialAccountService.getAllSocialAccounts();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SocialAccount> getSocialAccountById(@PathVariable Long id) {
-        SocialAccount socialAccount = socialAccountService.getSocialAccountById(id)
-                .orElseThrow(() -> new RuntimeException("SocialAccount not found"));
-        return ResponseEntity.ok(socialAccount);
+    public ResponseEntity<OtherDepositAccount> getSocialAccountById(@PathVariable Long id) {
+        OtherDepositAccount otherDepositAccount = socialAccountService.getSocialAccountById(id)
+                .orElseThrow(() -> new RuntimeException("OtherDepositAccount not found"));
+        return ResponseEntity.ok(otherDepositAccount);
     }
 
     @PostMapping
-    public SocialAccount createSocialAccount(@RequestBody SocialAccount socialAccount) {
-        return socialAccountService.saveSocialAccount(socialAccount);
+    public OtherDepositAccount createSocialAccount(@RequestBody OtherDepositAccount otherDepositAccount) {
+        return socialAccountService.saveSocialAccount(otherDepositAccount);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SocialAccount> updateSocialAccount(@PathVariable Long id, @RequestBody SocialAccount socialAccountDetails) {
-        SocialAccount updatedSocialAccount = socialAccountService.updateSocialAccount(id, socialAccountDetails);
-        return ResponseEntity.ok(updatedSocialAccount);
+    public ResponseEntity<OtherDepositAccount> updateSocialAccount(@PathVariable Long id, @RequestBody OtherDepositAccount otherDepositAccountDetails) {
+        OtherDepositAccount updatedOtherDepositAccount = socialAccountService.updateSocialAccount(id, otherDepositAccountDetails);
+        return ResponseEntity.ok(updatedOtherDepositAccount);
     }
 
     @DeleteMapping("/{id}")

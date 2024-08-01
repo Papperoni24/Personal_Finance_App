@@ -44,22 +44,15 @@ public class TransactionServiceImpl implements TransactionService {
         Transaction transaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Transaction not found"));
 
-        transaction.setOwner(transactionDetails.getOwner());
-        transaction.setDepositId(transactionDetails.getDepositId());
-        transaction.setCreditCardId(transactionDetails.getCreditCardId());
-        transaction.setOtherCreditAccountId(transactionDetails.getOtherCreditAccountId());
-        transaction.setStudentLoanId(transactionDetails.getStudentLoanId());
-        transaction.setPersonalLoanId(transactionDetails.getPersonalLoanId());
-        transaction.setCarLoanId(transactionDetails.getCarLoanId());
-        transaction.setMortgageId(transactionDetails.getMortgageId());
         transaction.setAmount(transactionDetails.getAmount());
+        transaction.setDescription(transactionDetails.getDescription());
+        transaction.setAccountId(transactionDetails.getAccountId());
+        transaction.setPlaceOfBusiness(transactionDetails.getPlaceOfBusiness());
         transaction.setTransactionType(transactionDetails.getTransactionType());
-        transaction.setTransactionDescription(transactionDetails.getTransactionDescription());
-        transaction.setExpenseCategory(transactionDetails.getExpenseCategory());
         transaction.setAssociatedAccountId(transactionDetails.getAssociatedAccountId());
         transaction.setAssociatedAccountType(transactionDetails.getAssociatedAccountType());
         transaction.setTransactionDate(transactionDetails.getTransactionDate());
-        transaction.setNotes(transactionDetails.getNotes());
+        transaction.setIsRecurring(transactionDetails.getIsRecurring());
 
         return transactionRepository.save(transaction);
     }

@@ -1,12 +1,7 @@
 package com.papperoni.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
-import jakarta.validation.constraints.Size;
-
+import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,50 +12,54 @@ import java.util.Objects;
 public class StudentLoan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "StudentLoanID")
     private Long studentLoanId;
 
     @ManyToOne
-    @JoinColumn(name = "ownerId", nullable = false)
-    @NotNull
+    @JoinColumn(name = "OwnerID", nullable = false)
+    @NotNull(message = "Owner is required")
     private OwnerOfAccount owner;
 
-    @NotBlank
-    @Size(max = 50)
+    @NotBlank(message = "Account identifier is required")
+    @Size(max = 100, message = "Account identifier cannot exceed 100 characters")
+    @Column(name = "AccountIdentifier", length = 100, nullable = false)
     private String accountIdentifier;
 
-    @NotBlank
-    @Size(max = 100)
+    @Size(max = 100, message = "Account name cannot exceed 100 characters")
+    @Column(name = "AccountName", length = 100)
     private String accountName;
 
-    @NotNull
-    @PositiveOrZero
+    @NotNull(message = "Balance must be specified")
+    @PositiveOrZero(message = "Balance must be zero or positive")
+    @Column(name = "Balance", precision = 15, scale = 2, nullable = false)
     private BigDecimal balance;
 
-    @NotNull
-    @Positive
+    @Column(name = "PaymentDate")
     private Integer paymentDate;
 
-    @NotNull
-    @PositiveOrZero
+    @Column(name = "MinMonthlyPayment", precision = 15, scale = 2)
     private BigDecimal minMonthlyPayment;
 
-    @NotNull
+    @Column(name = "AutoPay", nullable = false)
     private Boolean autoPay;
 
-    @Size(max = 50)
+    @Size(max = 100, message = "From account cannot exceed 100 characters")
+    @Column(name = "DefaultPayment", length = 100)
     private String fromAccount;
 
-    @NotNull
+    @NotNull(message = "Updated date is required")
+    @Column(name = "Updated", nullable = false)
     private LocalDate updated;
 
-    @NotNull
-    @PositiveOrZero
+    @Column(name = "APR", precision = 5, scale = 2)
     private BigDecimal apr;
 
-    @NotNull
+    @NotNull(message = "Creation date is required")
+    @Column(name = "CreatedAt", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
 
-    @Size(max = 500)
+    @Size(max = 255, message = "Notes cannot exceed 255 characters")
+    @Column(name = "Notes", length = 255)
     private String notes;
 
     public StudentLoan() {
@@ -130,20 +129,20 @@ public class StudentLoan {
         this.paymentDate = paymentDate;
     }
 
-    public Boolean getAutoPay() {
-        return autoPay;
-    }
-
-    public void setAutoPay(Boolean autoPay) {
-        this.autoPay = autoPay;
-    }
-
     public BigDecimal getMinMonthlyPayment() {
         return minMonthlyPayment;
     }
 
     public void setMinMonthlyPayment(BigDecimal minMonthlyPayment) {
         this.minMonthlyPayment = minMonthlyPayment;
+    }
+
+    public Boolean getAutoPay() {
+        return autoPay;
+    }
+
+    public void setAutoPay(Boolean autoPay) {
+        this.autoPay = autoPay;
     }
 
     public String getFromAccount() {
@@ -191,7 +190,19 @@ public class StudentLoan {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         StudentLoan that = (StudentLoan) o;
-        return Objects.equals(studentLoanId, that.studentLoanId) && Objects.equals(owner, that.owner) && Objects.equals(accountIdentifier, that.accountIdentifier) && Objects.equals(accountName, that.accountName) && Objects.equals(balance, that.balance) && Objects.equals(paymentDate, that.paymentDate) && Objects.equals(minMonthlyPayment, that.minMonthlyPayment) && Objects.equals(autoPay, that.autoPay) && Objects.equals(fromAccount, that.fromAccount) && Objects.equals(updated, that.updated) && Objects.equals(apr, that.apr) && Objects.equals(createdAt, that.createdAt) && Objects.equals(notes, that.notes);
+        return Objects.equals(studentLoanId, that.studentLoanId) &&
+                Objects.equals(owner, that.owner) &&
+                Objects.equals(accountIdentifier, that.accountIdentifier) &&
+                Objects.equals(accountName, that.accountName) &&
+                Objects.equals(balance, that.balance) &&
+                Objects.equals(paymentDate, that.paymentDate) &&
+                Objects.equals(minMonthlyPayment, that.minMonthlyPayment) &&
+                Objects.equals(autoPay, that.autoPay) &&
+                Objects.equals(fromAccount, that.fromAccount) &&
+                Objects.equals(updated, that.updated) &&
+                Objects.equals(apr, that.apr) &&
+                Objects.equals(createdAt, that.createdAt) &&
+                Objects.equals(notes, that.notes);
     }
 
     @Override

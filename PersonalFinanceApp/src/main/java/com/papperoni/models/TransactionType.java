@@ -11,13 +11,16 @@ import java.util.Objects;
 public class TransactionType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "TransactionTypeID")
     private Long transactionTypeId;
 
     @NotBlank
-    @Size(max = 255)
+    @Size(max = 50)
+    @Column(name = "TypeName", unique = true, nullable = false)
     private String typeName;
 
-    @Size(max = 500)
+    @Size(max = 255)
+    @Column(name = "Notes")
     private String notes;
 
     public TransactionType() {
@@ -58,7 +61,9 @@ public class TransactionType {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TransactionType that = (TransactionType) o;
-        return Objects.equals(transactionTypeId, that.transactionTypeId) && Objects.equals(typeName, that.typeName) && Objects.equals(notes, that.notes);
+        return Objects.equals(transactionTypeId, that.transactionTypeId) &&
+                Objects.equals(typeName, that.typeName) &&
+                Objects.equals(notes, that.notes);
     }
 
     @Override

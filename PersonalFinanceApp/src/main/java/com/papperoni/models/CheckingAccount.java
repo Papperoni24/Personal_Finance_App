@@ -11,26 +11,32 @@ import java.util.Objects;
 public class CheckingAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "CheckingID")
     private Long checkingId;
 
     @ManyToOne
-    @JoinColumn(name = "ownerId", nullable = false)
+    @JoinColumn(name = "OwnerID", nullable = false)
     @NotNull(message = "Owner is mandatory")
     private OwnerOfAccount owner;
 
-    @Size(max = 50, message = "Account identifier should not exceed 50 characters")
+    @Size(max = 100, message = "Account identifier should not exceed 100 characters")
+    @Column(name = "AccountIdentifier", length = 100)
     private String accountIdentifier;
 
     @Size(max = 100, message = "Account name should not exceed 100 characters")
+    @Column(name = "AccountName", length = 100)
     private String accountName;
 
-    @DecimalMin(value = "0.0", inclusive = false, message = "Balance must be positive")
+    @DecimalMin(value = "0.00", inclusive = false, message = "Balance must be positive")
+    @Column(name = "Balance", precision = 15, scale = 2, columnDefinition = "DECIMAL(15, 2) DEFAULT 0.00")
     private BigDecimal balance;
 
     @PastOrPresent(message = "Creation date cannot be in the future")
+    @Column(name = "CreatedAt", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
 
     @Size(max = 255, message = "Notes should not exceed 255 characters")
+    @Column(name = "Notes", length = 255)
     private String notes;
 
     public CheckingAccount() {

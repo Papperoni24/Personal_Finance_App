@@ -2,7 +2,6 @@ package com.papperoni.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.util.Objects;
@@ -12,18 +11,20 @@ import java.util.Objects;
 public class ExpenseCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ExpenseCategoryID")
     private Long expenseCategoryId;
 
     @NotBlank(message = "Category name is required")
     @Size(max = 100, message = "Category name cannot exceed 100 characters")
+    @Column(name = "CategoryName", length = 100, unique = true)
     private String categoryName;
 
     @ManyToOne
-    @JoinColumn(name = "placeOfBusinessId")
-    @NotNull(message = "Place of business is required")
+    @JoinColumn(name = "PlaceOfBusinessID", nullable = true)
     private PlaceOfBusiness placeOfBusiness;
 
     @Size(max = 255, message = "Notes cannot exceed 255 characters")
+    @Column(name = "Notes", length = 255)
     private String notes;
 
     public ExpenseCategory() {

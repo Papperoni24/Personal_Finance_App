@@ -15,39 +15,43 @@ import java.util.Objects;
 public class SavingsAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "SavingsID")
     private Long savingsId;
 
     @ManyToOne
-    @JoinColumn(name = "ownerId", nullable = false)
-    @NotNull
+    @JoinColumn(name = "OwnerID", nullable = false)
+    @NotNull(message = "Owner is mandatory")
     private OwnerOfAccount owner;
 
-    @NotBlank
-    @Size(max = 50)
+    @Size(max = 100, message = "Account identifier cannot exceed 100 characters")
+    @Column(name = "AccountIdentifier", length = 100)
     private String accountIdentifier;
 
-    @NotBlank
-    @Size(max = 100)
+    @Size(max = 100, message = "Account name cannot exceed 100 characters")
+    @Column(name = "AccountName", length = 100)
     private String accountName;
 
-    @NotNull
-    @PositiveOrZero
+    @NotNull(message = "Balance must be specified")
+    @PositiveOrZero(message = "Balance must be zero or positive")
+    @Column(name = "Balance", precision = 15, scale = 2, nullable = false)
     private BigDecimal balance;
 
-    @NotNull
+    @NotNull(message = "Creation date is mandatory")
+    @Column(name = "CreatedAt", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
 
-    @Size(max = 500)
+    @Size(max = 255, message = "Notes cannot exceed 255 characters")
+    @Column(name = "Notes", length = 255)
     private String notes;
 
     public SavingsAccount() {
     }
 
-    public SavingsAccount(Long savingsId, BigDecimal balance, String accountName, String accountIdentifier, OwnerOfAccount owner, LocalDateTime createdAt, String notes) {
+    public SavingsAccount(Long savingsId, String accountIdentifier, String accountName, BigDecimal balance, OwnerOfAccount owner, LocalDateTime createdAt, String notes) {
         this.savingsId = savingsId;
-        this.balance = balance;
-        this.accountName = accountName;
         this.accountIdentifier = accountIdentifier;
+        this.accountName = accountName;
+        this.balance = balance;
         this.owner = owner;
         this.createdAt = createdAt;
         this.notes = notes;
@@ -114,7 +118,13 @@ public class SavingsAccount {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SavingsAccount that = (SavingsAccount) o;
-        return Objects.equals(savingsId, that.savingsId) && Objects.equals(owner, that.owner) && Objects.equals(accountIdentifier, that.accountIdentifier) && Objects.equals(accountName, that.accountName) && Objects.equals(balance, that.balance) && Objects.equals(createdAt, that.createdAt) && Objects.equals(notes, that.notes);
+        return Objects.equals(savingsId, that.savingsId) &&
+                Objects.equals(owner, that.owner) &&
+                Objects.equals(accountIdentifier, that.accountIdentifier) &&
+                Objects.equals(accountName, that.accountName) &&
+                Objects.equals(balance, that.balance) &&
+                Objects.equals(createdAt, that.createdAt) &&
+                Objects.equals(notes, that.notes);
     }
 
     @Override

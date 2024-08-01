@@ -1,6 +1,6 @@
 package com.papperoni.services.impl;
 
-import com.papperoni.models.SocialAccount;
+import com.papperoni.models.OtherDepositAccount;
 import com.papperoni.repositories.SocialAccountRepo;
 import com.papperoni.services.SocialAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,18 +20,18 @@ public class SocialAccountServiceImpl implements SocialAccountService {
     }
 
     @Override
-    public List<SocialAccount> getAllSocialAccounts() {
+    public List<OtherDepositAccount> getAllSocialAccounts() {
         return socialAccountRepository.findAll();
     }
 
     @Override
-    public Optional<SocialAccount> getSocialAccountById(Long id) {
+    public Optional<OtherDepositAccount> getSocialAccountById(Long id) {
         return socialAccountRepository.findById(id);
     }
 
     @Override
-    public SocialAccount saveSocialAccount(SocialAccount socialAccount) {
-        return socialAccountRepository.save(socialAccount);
+    public OtherDepositAccount saveSocialAccount(OtherDepositAccount otherDepositAccount) {
+        return socialAccountRepository.save(otherDepositAccount);
     }
 
     @Override
@@ -40,15 +40,15 @@ public class SocialAccountServiceImpl implements SocialAccountService {
     }
 
     @Override
-    public SocialAccount updateSocialAccount(Long id, SocialAccount socialAccountDetails) {
-        SocialAccount socialAccount = socialAccountRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("SocialAccount not found"));
+    public OtherDepositAccount updateSocialAccount(Long id, OtherDepositAccount otherDepositAccountDetails) {
+        OtherDepositAccount otherDepositAccount = socialAccountRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("OtherDepositAccount not found"));
 
-        socialAccount.setAccountName(socialAccountDetails.getAccountName());
-        socialAccount.setAccountIdentifier(socialAccountDetails.getAccountIdentifier());
-        socialAccount.setBalance(socialAccountDetails.getBalance());
-        socialAccount.setNotes(socialAccountDetails.getNotes());
+        otherDepositAccount.setAccountName(otherDepositAccountDetails.getAccountName());
+        otherDepositAccount.setAccountIdentifier(otherDepositAccountDetails.getAccountIdentifier());
+        otherDepositAccount.setBalance(otherDepositAccountDetails.getBalance());
+        otherDepositAccount.setNotes(otherDepositAccountDetails.getNotes());
 
-        return socialAccountRepository.save(socialAccount);
+        return socialAccountRepository.save(otherDepositAccount);
     }
 }

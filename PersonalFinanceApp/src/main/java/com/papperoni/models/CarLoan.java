@@ -12,45 +12,56 @@ import java.util.Objects;
 public class CarLoan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "CarLoanID")
     private Long carLoanId;
 
     @ManyToOne
-    @JoinColumn(name = "ownerId", nullable = false)
+    @JoinColumn(name = "OwnerID", nullable = false)
     @NotNull(message = "Owner is mandatory")
     private OwnerOfAccount owner;
 
-    @Size(max = 50, message = "Account identifier should not exceed 50 characters")
+    @Size(max = 100, message = "Account identifier should not exceed 100 characters")
+    @Column(name = "AccountIdentifier", nullable = false)
     private String accountIdentifier;
 
     @Size(max = 100, message = "Account name should not exceed 100 characters")
+    @Column(name = "AccountName")
     private String accountName;
 
     @DecimalMin(value = "0.0", inclusive = false, message = "Balance must be positive")
+    @Column(name = "Balance", precision = 15, scale = 2)
     private BigDecimal balance;
 
     @Min(value = 1, message = "Payment date must be between 1 and 31")
     @Max(value = 31, message = "Payment date must be between 1 and 31")
+    @Column(name = "PaymentDate")
     private Integer paymentDate;
 
     @DecimalMin(value = "0.0", inclusive = false, message = "Minimum monthly payment must be positive")
+    @Column(name = "MinMonthlyPayment", precision = 15, scale = 2)
     private BigDecimal minMonthlyPayment;
 
+    @Column(name = "AutoPay", nullable = false)
     private Boolean autoPay;
 
-    @Size(max = 50, message = "From account should not exceed 50 characters")
-    private String fromAccount;
+    @Size(max = 100, message = "Default payment should not exceed 100 characters")
+    @Column(name = "DefaultPayment")
+    private String defaultPayment;
 
+    @Column(name = "Updated", nullable = false)
     @PastOrPresent(message = "Updated date cannot be in the future")
     private LocalDate updated;
 
     @DecimalMin(value = "0.0", inclusive = false, message = "APR must be positive")
     @DecimalMax(value = "100.0", message = "APR must be less than or equal to 100")
+    @Column(name = "APR", precision = 5, scale = 2)
     private BigDecimal apr;
 
-    @PastOrPresent(message = "Creation date cannot be in the future")
+    @Column(name = "CreatedAt", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
 
     @Size(max = 255, message = "Notes should not exceed 255 characters")
+    @Column(name = "Notes")
     private String notes;
 
     // Constructors, getters, setters, equals, hashCode, and toString methods
@@ -58,7 +69,7 @@ public class CarLoan {
     public CarLoan() {
     }
 
-    public CarLoan(Long carLoanId, OwnerOfAccount owner, String accountIdentifier, String accountName, BigDecimal balance, Integer paymentDate, BigDecimal minMonthlyPayment, Boolean autoPay, String fromAccount, LocalDate updated, BigDecimal apr, LocalDateTime createdAt, String notes) {
+    public CarLoan(Long carLoanId, OwnerOfAccount owner, String accountIdentifier, String accountName, BigDecimal balance, Integer paymentDate, BigDecimal minMonthlyPayment, Boolean autoPay, String defaultPayment, LocalDate updated, BigDecimal apr, LocalDateTime createdAt, String notes) {
         this.carLoanId = carLoanId;
         this.owner = owner;
         this.accountIdentifier = accountIdentifier;
@@ -67,7 +78,7 @@ public class CarLoan {
         this.paymentDate = paymentDate;
         this.minMonthlyPayment = minMonthlyPayment;
         this.autoPay = autoPay;
-        this.fromAccount = fromAccount;
+        this.defaultPayment = defaultPayment;
         this.updated = updated;
         this.apr = apr;
         this.createdAt = createdAt;
@@ -138,12 +149,12 @@ public class CarLoan {
         this.autoPay = autoPay;
     }
 
-    public String getFromAccount() {
-        return fromAccount;
+    public String getDefaultPayment() {
+        return defaultPayment;
     }
 
-    public void setFromAccount(String fromAccount) {
-        this.fromAccount = fromAccount;
+    public void setDefaultPayment(String defaultPayment) {
+        this.defaultPayment = defaultPayment;
     }
 
     public LocalDate getUpdated() {
@@ -183,12 +194,12 @@ public class CarLoan {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CarLoan carLoan = (CarLoan) o;
-        return Objects.equals(carLoanId, carLoan.carLoanId) && Objects.equals(owner, carLoan.owner) && Objects.equals(accountIdentifier, carLoan.accountIdentifier) && Objects.equals(accountName, carLoan.accountName) && Objects.equals(balance, carLoan.balance) && Objects.equals(paymentDate, carLoan.paymentDate) && Objects.equals(minMonthlyPayment, carLoan.minMonthlyPayment) && Objects.equals(autoPay, carLoan.autoPay) && Objects.equals(fromAccount, carLoan.fromAccount) && Objects.equals(updated, carLoan.updated) && Objects.equals(apr, carLoan.apr) && Objects.equals(createdAt, carLoan.createdAt) && Objects.equals(notes, carLoan.notes);
+        return Objects.equals(carLoanId, carLoan.carLoanId) && Objects.equals(owner, carLoan.owner) && Objects.equals(accountIdentifier, carLoan.accountIdentifier) && Objects.equals(accountName, carLoan.accountName) && Objects.equals(balance, carLoan.balance) && Objects.equals(paymentDate, carLoan.paymentDate) && Objects.equals(minMonthlyPayment, carLoan.minMonthlyPayment) && Objects.equals(autoPay, carLoan.autoPay) && Objects.equals(defaultPayment, carLoan.defaultPayment) && Objects.equals(updated, carLoan.updated) && Objects.equals(apr, carLoan.apr) && Objects.equals(createdAt, carLoan.createdAt) && Objects.equals(notes, carLoan.notes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(carLoanId, owner, accountIdentifier, accountName, balance, paymentDate, minMonthlyPayment, autoPay, fromAccount, updated, apr, createdAt, notes);
+        return Objects.hash(carLoanId, owner, accountIdentifier, accountName, balance, paymentDate, minMonthlyPayment, autoPay, defaultPayment, updated, apr, createdAt, notes);
     }
 
     @Override
@@ -202,7 +213,7 @@ public class CarLoan {
                 ", paymentDate=" + paymentDate +
                 ", minMonthlyPayment=" + minMonthlyPayment +
                 ", autoPay=" + autoPay +
-                ", fromAccount='" + fromAccount + '\'' +
+                ", defaultPayment='" + defaultPayment + '\'' +
                 ", updated=" + updated +
                 ", apr=" + apr +
                 ", createdAt=" + createdAt +

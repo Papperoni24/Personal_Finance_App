@@ -1,9 +1,6 @@
 package com.papperoni.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
@@ -11,39 +8,39 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(name = "SocialAccounts")
-public class SocialAccount {
+@Table(name = "OtherDepositAccounts")
+public class OtherDepositAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "OtherDepositID")
     private Long socialId;
 
     @ManyToOne
-    @JoinColumn(name = "ownerId", nullable = false)
-    @NotNull
+    @JoinColumn(name = "OwnerID", nullable = false)
     private OwnerOfAccount owner;
 
-    @NotBlank
-    @Size(max = 50)
+    @Size(max = 100)
+    @Column(name = "AccountIdentifier", length = 100)
     private String accountIdentifier;
 
-    @NotBlank
     @Size(max = 100)
+    @Column(name = "AccountName", length = 100)
     private String accountName;
 
-    @NotNull
-    @PositiveOrZero
+    @Column(name = "Balance", precision = 15, scale = 2)
     private BigDecimal balance;
 
-    @NotNull
+    @Column(name = "CreatedAt", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
 
-    @Size(max = 500)
+    @Size(max = 255)
+    @Column(name = "Notes", length = 255)
     private String notes;
 
-    public SocialAccount() {
+    public OtherDepositAccount() {
     }
 
-    public SocialAccount(Long socialId, String accountIdentifier, OwnerOfAccount owner, String accountName, BigDecimal balance, LocalDateTime createdAt, String notes) {
+    public OtherDepositAccount(Long socialId, String accountIdentifier, OwnerOfAccount owner, String accountName, BigDecimal balance, LocalDateTime createdAt, String notes) {
         this.socialId = socialId;
         this.accountIdentifier = accountIdentifier;
         this.owner = owner;
@@ -113,7 +110,7 @@ public class SocialAccount {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SocialAccount that = (SocialAccount) o;
+        OtherDepositAccount that = (OtherDepositAccount) o;
         return Objects.equals(socialId, that.socialId) && Objects.equals(owner, that.owner) && Objects.equals(accountIdentifier, that.accountIdentifier) && Objects.equals(accountName, that.accountName) && Objects.equals(balance, that.balance) && Objects.equals(createdAt, that.createdAt) && Objects.equals(notes, that.notes);
     }
 
@@ -124,7 +121,7 @@ public class SocialAccount {
 
     @Override
     public String toString() {
-        return "SocialAccount{" +
+        return "OtherDepositAccount{" +
                 "socialId=" + socialId +
                 ", owner=" + owner +
                 ", accountIdentifier='" + accountIdentifier + '\'' +
