@@ -25,7 +25,7 @@ public class TransactionController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Transaction> getTransactionById(@PathVariable Long id) {
+    public ResponseEntity<Transaction> getTransactionById(@PathVariable int id) {
         Transaction transaction = transactionService.getTransactionById(id)
                 .orElseThrow(() -> new RuntimeException("Transaction not found"));
         return ResponseEntity.ok(transaction);
@@ -37,13 +37,13 @@ public class TransactionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Transaction> updateTransaction(@PathVariable Long id, @RequestBody Transaction transactionDetails) {
+    public ResponseEntity<Transaction> updateTransaction(@PathVariable int id, @RequestBody Transaction transactionDetails) {
         Transaction updatedTransaction = transactionService.updateTransaction(id, transactionDetails);
         return ResponseEntity.ok(updatedTransaction);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTransaction(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteTransaction(@PathVariable int id) {
         transactionService.deleteTransaction(id);
         return ResponseEntity.noContent().build();
     }

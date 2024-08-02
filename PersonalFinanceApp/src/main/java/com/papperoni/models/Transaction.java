@@ -1,25 +1,33 @@
 package com.papperoni.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name = "Transaction")
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "TransactionID")
-    private Long transactionId;
+    @Column(name = "TransactionId")
+    private int transactionId;
 
+    @Getter
+    @NotNull(message = "Amount must not be null")
+    @DecimalMin(value = "0.00", inclusive = false, message = "Amount must be greater than zero")
     @Column(name = "Amount", nullable = false)
     private BigDecimal amount;
 
     @Column(name = "Description")
     private String description;
 
+    @NotNull(message = "Account ID must not be null") // Add this annotation
     @Column(name = "AccountID", nullable = false)
     private Integer accountId;
 
@@ -37,9 +45,11 @@ public class Transaction {
     @Column(name = "AssociatedAccountType", length = 50)
     private String associatedAccountType;
 
+    @NotNull(message = "TransactionDate must not be null")
     @Column(name = "TransactionDate", nullable = false)
     private LocalDateTime transactionDate;
 
+    @NotNull(message = "UploadDate must not be null")
     @Column(name = "UploadDate", updatable = false, nullable = false)
     private LocalDateTime uploadDate;
 
@@ -54,16 +64,12 @@ public class Transaction {
     }
 
     // Getters and Setters
-    public Long getTransactionId() {
+    public int getTransactionID() {
         return transactionId;
     }
 
-    public void setTransactionId(Long transactionId) {
+    public void setTransactionId(int transactionId) {
         this.transactionId = transactionId;
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
     }
 
     public void setAmount(BigDecimal amount) {
@@ -78,7 +84,7 @@ public class Transaction {
         this.description = description;
     }
 
-    public Integer getAccountId() {
+    public int getAccountId() {
         return accountId;
     }
 
@@ -179,6 +185,9 @@ public class Transaction {
         return Objects.hash(transactionId, amount, description, accountId, placeOfBusiness, transactionType, associatedAccountId, associatedAccountType, transactionDate, uploadDate, lastUpdated, isRecurring);
     }
 
+    // Add this formatter to the class
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+
     @Override
     public String toString() {
         return "Transaction{" +
@@ -186,14 +195,15 @@ public class Transaction {
                 ", amount=" + amount +
                 ", description='" + description + '\'' +
                 ", accountId=" + accountId +
-                ", placeOfBusiness=" + placeOfBusiness +
-                ", transactionType=" + transactionType +
+                ", placeOfBusiness=" + (placeOfBusiness != null ? placeOfBusiness : "null") +
+                ", transactionType=" + (transactionType != null ? transactionType : "null") +
                 ", associatedAccountId=" + associatedAccountId +
-                ", associatedAccountType='" + associatedAccountType + '\'' +
-                ", transactionDate=" + transactionDate +
-                ", uploadDate=" + uploadDate +
-                ", lastUpdated=" + lastUpdated +
-                ", isRecurring=" + isRecurring +
+                ", associatedAccountType=" + (associatedAccountType != null ? associatedAccountType : "null") +
+                ", transactionDate=" + (transactionDate != null ? transactionDate.format(DATE_TIME_FORMATTER) : "null") +
+                ", uploadDate=" + (uploadDate != null ? uploadDate.format(DATE_TIME_FORMATTER) : "null") +
+                ", lastUpdated=" + (lastUpdated != null ? lastUpdated.format(DATE_TIME_FORMATTER) : "null") +
+                ", isRecurring=" + (isRecurring != null ? isRecurring : "null") +
                 '}';
     }
+
 }

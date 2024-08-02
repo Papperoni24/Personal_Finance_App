@@ -2,6 +2,7 @@ package com.papperoni.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.Objects;
 
@@ -17,9 +18,11 @@ public class PlaceOfBusiness {
     @Column(name = "Name", nullable = false, unique = true, length = 100)
     private String name;
 
+    @Size(max = 100, message = "Default payment cannot exceed 100 characters")
     @Column(name = "DefaultPayment", length = 100)
     private String defaultPayment;
 
+    @Size(max = 255, message = "Notes cannot exceed 255 characters")
     @Column(name = "Notes", length = 255)
     private String notes;
 

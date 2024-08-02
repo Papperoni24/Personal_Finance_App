@@ -9,12 +9,12 @@ public interface TransactionService {
 
     List<Transaction> getAllTransactions();
 
-    Optional<Transaction> getTransactionById(Long id);
+    Optional<Transaction> getTransactionById(int id);
 
     Transaction saveTransaction(Transaction transaction);
 
-    void deleteTransaction(Long id);
+    void deleteTransaction(int id);
 
-    Transaction updateTransaction(Long id, Transaction transactionDetails);
+    Transaction updateTransaction(int id, Transaction transactionDetails);
 }
 
