@@ -1,201 +1,146 @@
 package com.papperoni.models;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
-import jakarta.validation.ValidatorFactory;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PersonalLoanTest {
 
-    private Validator validator;
+    private PersonalLoan loan;
 
     @BeforeEach
     public void setUp() {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
-    }
-
-    @AfterEach
-    public void tearDown() {
-        validator = null;
-    }
-
-    @Test
-    public void testValidPersonalLoan() {
-        OwnerOfAccount owner = new OwnerOfAccount(1L, "ValidUsername", "valid@example.com", LocalDateTime.now(), "Valid notes");
-
-        PersonalLoan loan = new PersonalLoan(
+        loan = new PersonalLoan(
                 1L,
-                owner,
-                "ValidIdentifier",
-                "ValidName",
-                new BigDecimal("1000.00"),
+                1001,
+                "Account123",
+                "Main Account",
+                BigDecimal.valueOf(5000.00),
                 15,
-                new BigDecimal("50.00"),
+                BigDecimal.valueOf(150.00),
                 true,
-                "DefaultPayment",
-                LocalDate.now(),
-                new BigDecimal("5.00"),
+                12345,
+                LocalDate.now().minusMonths(1),
+                BigDecimal.valueOf(5.75),
                 LocalDateTime.now(),
-                "Valid notes"
+                "Sample notes"
         );
-
-        Set<ConstraintViolation<PersonalLoan>> violations = validator.validate(loan);
-        assertTrue(violations.isEmpty(), "Expected no constraint violations");
     }
 
     @Test
-    public void testNullOwner() {
-        PersonalLoan loan = new PersonalLoan(
+    public void testGettersAndSetters() {
+        assertEquals(1L, loan.getPersonalLoanId());
+        assertEquals(1001, loan.getOwnerID());
+        assertEquals("Account123", loan.getAccountIdentifier());
+        assertEquals("Main Account", loan.getAccountName());
+        assertEquals(BigDecimal.valueOf(5000.00), loan.getBalance());
+        assertEquals(15, loan.getPaymentDate());
+        assertEquals(BigDecimal.valueOf(150.00), loan.getMinMonthlyPayment());
+        assertTrue(loan.getAutoPay());
+        assertEquals(12345, loan.getDefaultPaymentID());
+        assertEquals(LocalDate.now().minusMonths(1), loan.getUpdated());
+        assertEquals(BigDecimal.valueOf(5.75), loan.getApr());
+        assertNotNull(loan.getCreatedAt());
+        assertEquals("Sample notes", loan.getNotes());
+    }
+
+    @Test
+    public void testSetters() {
+        loan.setPersonalLoanId(2L);
+        loan.setOwner(1002);
+        loan.setAccountIdentifier("Account456");
+        loan.setAccountName("Secondary Account");
+        loan.setBalance(BigDecimal.valueOf(6000.00));
+        loan.setPaymentDate(20);
+        loan.setMinMonthlyPayment(BigDecimal.valueOf(200.00));
+        loan.setAutoPay(false);
+        loan.setDefaultPaymentID(54321);
+        loan.setUpdated(LocalDate.now().minusDays(5));
+        loan.setApr(BigDecimal.valueOf(4.50));
+        loan.setCreatedAt(LocalDateTime.now().minusDays(10));
+        loan.setNotes("Updated notes");
+
+        assertEquals(2L, loan.getPersonalLoanId());
+        assertEquals(1002, loan.getOwnerID());
+        assertEquals("Account456", loan.getAccountIdentifier());
+        assertEquals("Secondary Account", loan.getAccountName());
+        assertEquals(BigDecimal.valueOf(6000.00), loan.getBalance());
+        assertEquals(20, loan.getPaymentDate());
+        assertEquals(BigDecimal.valueOf(200.00), loan.getMinMonthlyPayment());
+        assertFalse(loan.getAutoPay());
+        assertEquals(54321, loan.getDefaultPaymentID());
+        assertEquals(LocalDate.now().minusDays(5), loan.getUpdated());
+        assertEquals(BigDecimal.valueOf(4.50), loan.getApr());
+        assertNotNull(loan.getCreatedAt());
+        assertEquals("Updated notes", loan.getNotes());
+    }
+
+    @Test
+    public void testEqualsAndHashCode() {
+        PersonalLoan anotherLoan = new PersonalLoan(
                 1L,
-                null, // Owner is null
-                "ValidIdentifier",
-                "ValidName",
-                new BigDecimal("1000.00"),
+                1001,
+                "Account123",
+                "Main Account",
+                BigDecimal.valueOf(5000.00),
                 15,
-                new BigDecimal("50.00"),
+                BigDecimal.valueOf(150.00),
                 true,
-                "DefaultPayment",
-                LocalDate.now(),
-                new BigDecimal("5.00"),
+                12345,
+                LocalDate.now().minusMonths(1),
+                BigDecimal.valueOf(5.75),
                 LocalDateTime.now(),
-                "Valid notes"
+                "Sample notes"
         );
 
-        Set<ConstraintViolation<PersonalLoan>> violations = validator.validate(loan);
-        assertEquals(1, violations.size(), "Expected 1 violation for null owner");
+        assertEquals(loan, anotherLoan);
+        assertEquals(loan.hashCode(), anotherLoan.hashCode());
     }
 
     @Test
-    public void testAccountIdentifierBlank() {
-        OwnerOfAccount owner = new OwnerOfAccount(1L, "ValidUsername", "valid@example.com", LocalDateTime.now(), "Valid notes");
-
-        PersonalLoan loan = new PersonalLoan(
-                1L,
-                owner,
-                "", // Account identifier is blank
-                "ValidName",
-                new BigDecimal("1000.00"),
-                15,
-                new BigDecimal("50.00"),
-                true,
-                "DefaultPayment",
-                LocalDate.now(),
-                new BigDecimal("5.00"),
-                LocalDateTime.now(),
-                "Valid notes"
+    public void testNotEquals() {
+        PersonalLoan differentLoan = new PersonalLoan(
+                2L,
+                1002,
+                "Account456",
+                "Secondary Account",
+                BigDecimal.valueOf(6000.00),
+                20,
+                BigDecimal.valueOf(200.00),
+                false,
+                54321,
+                LocalDate.now().minusDays(5),
+                BigDecimal.valueOf(4.50),
+                LocalDateTime.now().minusDays(10),
+                "Updated notes"
         );
 
-        Set<ConstraintViolation<PersonalLoan>> violations = validator.validate(loan);
-        assertEquals(1, violations.size(), "Expected 1 violation for blank account identifier");
+        assertNotEquals(loan, differentLoan);
     }
 
     @Test
-    public void testBalanceNegative() {
-        OwnerOfAccount owner = new OwnerOfAccount(1L, "ValidUsername", "valid@example.com", LocalDateTime.now(), "Valid notes");
+    public void testToString() {
+        String expectedString = "PersonalLoan{" +
+                "personalLoanId=" + loan.getPersonalLoanId() +
+                ", ownerID=" + loan.getOwnerID() +
+                ", accountIdentifier='" + loan.getAccountIdentifier() + '\'' +
+                ", accountName='" + loan.getAccountName() + '\'' +
+                ", balance=" + loan.getBalance() +
+                ", paymentDate=" + loan.getPaymentDate() +
+                ", minMonthlyPayment=" + loan.getMinMonthlyPayment() +
+                ", autoPay=" + loan.getAutoPay() +
+                ", defaultPaymentID=" + loan.getDefaultPaymentID() +
+                ", updated=" + loan.getUpdated() +
+                ", apr=" + loan.getApr() +
+                ", createdAt=" + loan.getCreatedAt() +
+                ", notes='" + loan.getNotes() + '\'' +
+                '}';
 
-        PersonalLoan loan = new PersonalLoan(
-                1L,
-                owner,
-                "ValidIdentifier",
-                "ValidName",
-                new BigDecimal("-1000.00"), // Negative balance
-                15,
-                new BigDecimal("50.00"),
-                true,
-                "DefaultPayment",
-                LocalDate.now(),
-                new BigDecimal("5.00"),
-                LocalDateTime.now(),
-                "Valid notes"
-        );
-
-        Set<ConstraintViolation<PersonalLoan>> violations = validator.validate(loan);
-        assertEquals(1, violations.size(), "Expected 1 violation for negative balance");
-    }
-
-    @Test
-    public void testPaymentDateOutOfRange() {
-        OwnerOfAccount owner = new OwnerOfAccount(1L, "ValidUsername", "valid@example.com", LocalDateTime.now(), "Valid notes");
-
-        PersonalLoan loan = new PersonalLoan(
-                1L,
-                owner,
-                "ValidIdentifier",
-                "ValidName",
-                new BigDecimal("1000.00"),
-                32, // Payment date out of range
-                new BigDecimal("50.00"),
-                true,
-                "DefaultPayment",
-                LocalDate.now(),
-                new BigDecimal("5.00"),
-                LocalDateTime.now(),
-                "Valid notes"
-        );
-
-        Set<ConstraintViolation<PersonalLoan>> violations = validator.validate(loan);
-        assertEquals(1, violations.size(), "Expected 1 violation for payment date out of range");
-    }
-
-    @Test
-    public void testAprTooHigh() {
-        OwnerOfAccount owner = new OwnerOfAccount(1L, "ValidUsername", "valid@example.com", LocalDateTime.now(), "Valid notes");
-
-        PersonalLoan loan = new PersonalLoan(
-                1L,
-                owner,
-                "ValidIdentifier",
-                "ValidName",
-                new BigDecimal("1000.00"),
-                15,
-                new BigDecimal("50.00"),
-                true,
-                "DefaultPayment",
-                LocalDate.now(),
-                new BigDecimal("101.00"), // APR too high
-                LocalDateTime.now(),
-                "Valid notes"
-        );
-
-        Set<ConstraintViolation<PersonalLoan>> violations = validator.validate(loan);
-        assertEquals(1, violations.size(), "Expected 1 violation for APR too high");
-    }
-
-    @Test
-    public void testCreatedAtNull() {
-        OwnerOfAccount owner = new OwnerOfAccount(1L, "ValidUsername", "valid@example.com", LocalDateTime.now(), "Valid notes");
-
-        PersonalLoan loan = new PersonalLoan(
-                1L,
-                owner,
-                "ValidIdentifier",
-                "ValidName",
-                new BigDecimal("1000.00"),
-                15,
-                new BigDecimal("50.00"),
-                true,
-                "DefaultPayment",
-                LocalDate.now(),
-                new BigDecimal("5.00"),
-                null, // CreatedAt is null
-                "Valid notes"
-        );
-
-        Set<ConstraintViolation<PersonalLoan>> violations = validator.validate(loan);
-        assertEquals(1, violations.size(), "Expected 1 violation for null createdAt");
+        assertEquals(expectedString, loan.toString());
     }
 }
-

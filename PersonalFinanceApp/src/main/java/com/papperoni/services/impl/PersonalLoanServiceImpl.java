@@ -44,14 +44,14 @@ public class PersonalLoanServiceImpl implements PersonalLoanService {
         PersonalLoan personalLoan = personalLoanRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("PersonalLoan not found"));
 
-        personalLoan.setOwner(personalLoanDetails.getOwner());
+        personalLoan.setOwner(personalLoanDetails.getOwnerID());
         personalLoan.setAccountIdentifier(personalLoanDetails.getAccountIdentifier());
         personalLoan.setAccountName(personalLoanDetails.getAccountName());
         personalLoan.setBalance(personalLoanDetails.getBalance());
         personalLoan.setPaymentDate(personalLoanDetails.getPaymentDate());
         personalLoan.setMinMonthlyPayment(personalLoanDetails.getMinMonthlyPayment());
         personalLoan.setAutoPay(personalLoanDetails.getAutoPay());
-        personalLoan.setDefaultPayment(personalLoanDetails.getDefaultPayment());
+        personalLoan.setDefaultPaymentID(personalLoanDetails.getDefaultPaymentID());
         personalLoan.setUpdated(personalLoanDetails.getUpdated());
         personalLoan.setApr(personalLoanDetails.getApr());
         personalLoan.setCreatedAt(personalLoanDetails.getCreatedAt());

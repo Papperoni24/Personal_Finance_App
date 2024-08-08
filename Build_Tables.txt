@@ -65,7 +65,7 @@ CREATE TABLE CreditCards (
     PaymentDate INT,
     MinMonthlyPayment DECIMAL(15, 2),
     AutoPay BOOLEAN DEFAULT FALSE,
-    DefaultPayment VARCHAR(100) REFERENCES AllAccounts(AccountIdentifier), -- Must populate from AllAccounts table
+    DefaultPayment INT REFERENCES AllAccounts(AccountID), -- Must populate from AllAccounts table
     Updated DATE NOT NULL,
     APR DECIMAL(5, 2),
     AnnualFee DECIMAL(15, 2),
@@ -83,7 +83,7 @@ CREATE TABLE OtherCreditAccounts (
     PaymentDate INT,
     MinMonthlyPayment DECIMAL(15, 2),
     AutoPay BOOLEAN DEFAULT FALSE,
-    DefaultPayment VARCHAR(100) REFERENCES AllAccounts(AccountIdentifier), -- Must populate from AllAccounts table
+    DefaultPaymentID INT REFERENCES AllAccounts(AccountID), -- Must populate from AllAccounts table
     Updated DATE NOT NULL,
     APR DECIMAL(5, 2),
     AnnualFee DECIMAL(15, 2),
@@ -100,7 +100,7 @@ CREATE TABLE StudentLoans (
     PaymentDate INT,
     MinMonthlyPayment DECIMAL(15, 2),
     AutoPay BOOLEAN DEFAULT FALSE,
-    DefaultPayment VARCHAR(100) REFERENCES AllAccounts(AccountIdentifier), -- Must populate from AllAccounts table
+    DefaultPayment INT REFERENCES AllAccounts(AccountID), -- Must populate from AllAccounts table
     Updated DATE NOT NULL,
     APR DECIMAL(5, 2),
     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -116,7 +116,7 @@ CREATE TABLE PersonalLoans (
     PaymentDate INT,
     MinMonthlyPayment DECIMAL(15, 2),
     AutoPay BOOLEAN DEFAULT FALSE,
-    DefaultPayment VARCHAR(100) REFERENCES AllAccounts(AccountIdentifier), -- Must populate from AllAccounts table
+    DefaultPaymentID INT REFERENCES AllAccounts(AccountID), -- Must populate from AllAccounts table
     Updated DATE NOT NULL,
     APR DECIMAL(5, 2),
     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -148,7 +148,7 @@ CREATE TABLE Mortgages (
     PaymentDate INT,
     MinMonthlyPayment DECIMAL(15, 2),
     AutoPay BOOLEAN DEFAULT FALSE,
-    DefaultPayment VARCHAR(100) REFERENCES AllAccounts(AccountIdentifier), -- Must populate from AllAccounts table
+    DefaultPayment INT REFERENCES AllAccounts(AccountID), -- Must populate from AllAccounts table
     Updated DATE NOT NULL,
     APR DECIMAL(5, 2),
     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -166,12 +166,12 @@ CREATE TABLE TransactionTypes (
 CREATE TABLE PlaceOfBusiness (
     PlaceOfBusinessID SERIAL PRIMARY KEY,
     Name VARCHAR(100) UNIQUE NOT NULL,
-    DefaultPayment VARCHAR(100) REFERENCES AllAccounts(AccountIdentifier), -- Must populate from AllAccounts table
+    DefaultPayment INT REFERENCES AllAccounts(AccountID), -- Must populate from AllAccounts table
     Notes VARCHAR(255) -- Added Notes column
 );
 
 -- Transaction Description Table
-CREATE TABLE TransactionDescription (
+CREATE TABLE TransactionDescriptionMappingToBusiness (
     TransactionDescriptionID SERIAL PRIMARY KEY,
     Description VARCHAR(255) UNIQUE NOT NULL,
     PlaceOfBusinessID INT REFERENCES PlaceOfBusiness(PlaceOfBusinessID) ON DELETE SET NULL,
@@ -188,7 +188,7 @@ CREATE TABLE ExpenseCategory (
 
 -- Create Transaction Table
 CREATE TABLE Transaction (
-    TransactionID SERIAL PRIMARY KEY,
+    TransactionId SERIAL PRIMARY KEY,
     Amount DECIMAL(15, 2) NOT NULL,
     Description VARCHAR(255), -- Added Description column
     AccountID INT NOT NULL, -- Required to associate the transaction with an account
@@ -196,7 +196,7 @@ CREATE TABLE Transaction (
     TransactionTypeID INT REFERENCES TransactionTypes(TransactionTypeID) ON DELETE SET NULL,
     AssociatedAccountID INT,
     AssociatedAccountType VARCHAR(50), -- Use VARCHAR for associated account types
-    TransactionDate TIMESTAMP NOT NULL, -- Required TransactionDate
+    TransactionDate DATE NOT NULL, -- Required TransactionDate
     UploadDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Reflects when the row was first created
     LastUpdated TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- No ON UPDATE CURRENT_TIMESTAMP support in PostgreSQL
     IsRecurring BOOLEAN -- Added IsRecurring column

@@ -18,7 +18,7 @@ public class Mortgage {
     @ManyToOne
     @JoinColumn(name = "OwnerID", nullable = false)
     @NotNull(message = "Owner is required")
-    private OwnerOfAccount owner;
+    private int ownerID;
 
     @NotBlank(message = "Account identifier is required")
     @Column(name = "AccountIdentifier", nullable = false, length = 100)
@@ -45,8 +45,8 @@ public class Mortgage {
     @Column(name = "AutoPay", nullable = false)
     private Boolean autoPay = false;
 
-    @Column(name = "DefaultPayment", length = 100)
-    private String defaultPayment;
+    @Column(name = "DefaultPayment")
+    private int defaultPaymentID;
 
     @NotNull(message = "Updated date is required")
     @Column(name = "Updated", nullable = false)
@@ -69,16 +69,16 @@ public class Mortgage {
     public Mortgage() {
     }
 
-    public Mortgage(Long mortgageId, OwnerOfAccount owner, String accountIdentifier, String accountName, BigDecimal balance, Integer paymentDate, BigDecimal minMonthlyPayment, Boolean autoPay, String defaultPayment, LocalDate updated, BigDecimal apr, LocalDateTime createdAt, String notes) {
+    public Mortgage(Long mortgageId, int ownerID, String accountIdentifier, String accountName, BigDecimal balance, Integer paymentDate, BigDecimal minMonthlyPayment, Boolean autoPay, int defaultPaymentID, LocalDate updated, BigDecimal apr, LocalDateTime createdAt, String notes) {
         this.mortgageId = mortgageId;
-        this.owner = owner;
+        this.ownerID = ownerID;
         this.accountIdentifier = accountIdentifier;
         this.accountName = accountName;
         this.balance = balance;
         this.paymentDate = paymentDate;
         this.minMonthlyPayment = minMonthlyPayment;
         this.autoPay = autoPay;
-        this.defaultPayment = defaultPayment;
+        this.defaultPaymentID = defaultPaymentID;
         this.updated = updated;
         this.apr = apr;
         this.createdAt = createdAt;
@@ -93,12 +93,12 @@ public class Mortgage {
         this.mortgageId = mortgageId;
     }
 
-    public OwnerOfAccount getOwner() {
-        return owner;
+    public int getOwnerID() {
+        return ownerID;
     }
 
-    public void setOwner(OwnerOfAccount owner) {
-        this.owner = owner;
+    public void setOwnerID(int owner) {
+        this.ownerID = owner;
     }
 
     public String getAccountIdentifier() {
@@ -149,12 +149,12 @@ public class Mortgage {
         this.autoPay = autoPay;
     }
 
-    public String getDefaultPayment() {
-        return defaultPayment;
+    public int getDefaultPaymentID() {
+        return defaultPaymentID;
     }
 
-    public void setDefaultPayment(String defaultPayment) {
-        this.defaultPayment = defaultPayment;
+    public void setDefaultPaymentID(int defaultPayment) {
+        this.defaultPaymentID = defaultPaymentID;
     }
 
     public LocalDate getUpdated() {
@@ -194,26 +194,26 @@ public class Mortgage {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Mortgage mortgage = (Mortgage) o;
-        return Objects.equals(mortgageId, mortgage.mortgageId) && Objects.equals(owner, mortgage.owner) && Objects.equals(accountIdentifier, mortgage.accountIdentifier) && Objects.equals(accountName, mortgage.accountName) && Objects.equals(balance, mortgage.balance) && Objects.equals(paymentDate, mortgage.paymentDate) && Objects.equals(minMonthlyPayment, mortgage.minMonthlyPayment) && Objects.equals(autoPay, mortgage.autoPay) && Objects.equals(defaultPayment, mortgage.defaultPayment) && Objects.equals(updated, mortgage.updated) && Objects.equals(apr, mortgage.apr) && Objects.equals(createdAt, mortgage.createdAt) && Objects.equals(notes, mortgage.notes);
+        return Objects.equals(mortgageId, mortgage.mortgageId) && Objects.equals(ownerID, mortgage.ownerID) && Objects.equals(accountIdentifier, mortgage.accountIdentifier) && Objects.equals(accountName, mortgage.accountName) && Objects.equals(balance, mortgage.balance) && Objects.equals(paymentDate, mortgage.paymentDate) && Objects.equals(minMonthlyPayment, mortgage.minMonthlyPayment) && Objects.equals(autoPay, mortgage.autoPay) && Objects.equals(defaultPaymentID, mortgage.defaultPaymentID) && Objects.equals(updated, mortgage.updated) && Objects.equals(apr, mortgage.apr) && Objects.equals(createdAt, mortgage.createdAt) && Objects.equals(notes, mortgage.notes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(mortgageId, owner, accountIdentifier, accountName, balance, paymentDate, minMonthlyPayment, autoPay, defaultPayment, updated, apr, createdAt, notes);
+        return Objects.hash(mortgageId, ownerID, accountIdentifier, accountName, balance, paymentDate, minMonthlyPayment, autoPay, defaultPaymentID, updated, apr, createdAt, notes);
     }
 
     @Override
     public String toString() {
         return "Mortgage{" +
                 "mortgageId=" + mortgageId +
-                ", owner=" + owner +
+                ", owner=" + ownerID +
                 ", accountIdentifier='" + accountIdentifier + '\'' +
                 ", accountName='" + accountName + '\'' +
                 ", balance=" + balance +
                 ", paymentDate=" + paymentDate +
                 ", minMonthlyPayment=" + minMonthlyPayment +
                 ", autoPay=" + autoPay +
-                ", defaultPayment='" + defaultPayment + '\'' +
+                ", defaultPayment='" + defaultPaymentID + '\'' +
                 ", updated=" + updated +
                 ", apr=" + apr +
                 ", createdAt=" + createdAt +

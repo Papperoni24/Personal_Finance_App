@@ -20,7 +20,8 @@ public class AccountType implements Serializable {
     private String notes;
 
     // Default constructor
-    public AccountType() {}
+    public AccountType() {
+    }
 
     // Parameterized constructor
     public AccountType(String accountTypeName, String notes) {

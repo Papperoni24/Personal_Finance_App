@@ -44,7 +44,7 @@ public class OtherCreditAccountServiceImpl implements OtherCreditAccountService 
         OtherCreditAccount otherCreditAccount = otherCreditAccountRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("OtherCreditAccount not found"));
 
-        otherCreditAccount.setOwner(otherCreditAccountDetails.getOwner());
+        otherCreditAccount.setOwnerID(otherCreditAccountDetails.getOwnerID());
         otherCreditAccount.setAccountIdentifier(otherCreditAccountDetails.getAccountIdentifier());
         otherCreditAccount.setAccountName(otherCreditAccountDetails.getAccountName());
         otherCreditAccount.setCreditLimit(otherCreditAccountDetails.getCreditLimit());
@@ -52,7 +52,7 @@ public class OtherCreditAccountServiceImpl implements OtherCreditAccountService 
         otherCreditAccount.setPaymentDate(otherCreditAccountDetails.getPaymentDate());
         otherCreditAccount.setMinMonthlyPayment(otherCreditAccountDetails.getMinMonthlyPayment());
         otherCreditAccount.setAutoPay(otherCreditAccountDetails.getAutoPay());
-        otherCreditAccount.setDefaultPayment(otherCreditAccountDetails.getDefaultPayment());
+        otherCreditAccount.setDefaultPaymentID(otherCreditAccountDetails.getDefaultPaymentID());
         otherCreditAccount.setUpdated(otherCreditAccountDetails.getUpdated());
         otherCreditAccount.setApr(otherCreditAccountDetails.getApr());
         otherCreditAccount.setAnnualFee(otherCreditAccountDetails.getAnnualFee());

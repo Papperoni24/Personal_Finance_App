@@ -21,7 +21,7 @@ public class SavingsAccount {
     @ManyToOne
     @JoinColumn(name = "OwnerID", nullable = false)
     @NotNull(message = "Owner is mandatory")
-    private OwnerOfAccount owner;
+    private int ownerID;
 
     @Size(max = 100, message = "Account identifier cannot exceed 100 characters")
     @Column(name = "AccountIdentifier", length = 100)
@@ -47,12 +47,12 @@ public class SavingsAccount {
     public SavingsAccount() {
     }
 
-    public SavingsAccount(Long savingsId, String accountIdentifier, String accountName, BigDecimal balance, OwnerOfAccount owner, LocalDateTime createdAt, String notes) {
+    public SavingsAccount(Long savingsId, String accountIdentifier, String accountName, BigDecimal balance, int ownerID, LocalDateTime createdAt, String notes) {
         this.savingsId = savingsId;
         this.accountIdentifier = accountIdentifier;
         this.accountName = accountName;
         this.balance = balance;
-        this.owner = owner;
+        this.ownerID = ownerID;
         this.createdAt = createdAt;
         this.notes = notes;
     }
@@ -65,12 +65,12 @@ public class SavingsAccount {
         this.savingsId = savingsId;
     }
 
-    public OwnerOfAccount getOwner() {
-        return owner;
+    public int getOwnerID() {
+        return ownerID;
     }
 
-    public void setOwner(OwnerOfAccount owner) {
-        this.owner = owner;
+    public void setOwner(int ownerID) {
+        this.ownerID = ownerID;
     }
 
     public String getAccountIdentifier() {
@@ -119,7 +119,7 @@ public class SavingsAccount {
         if (o == null || getClass() != o.getClass()) return false;
         SavingsAccount that = (SavingsAccount) o;
         return Objects.equals(savingsId, that.savingsId) &&
-                Objects.equals(owner, that.owner) &&
+                Objects.equals(ownerID, that.ownerID) &&
                 Objects.equals(accountIdentifier, that.accountIdentifier) &&
                 Objects.equals(accountName, that.accountName) &&
                 Objects.equals(balance, that.balance) &&
@@ -129,14 +129,14 @@ public class SavingsAccount {
 
     @Override
     public int hashCode() {
-        return Objects.hash(savingsId, owner, accountIdentifier, accountName, balance, createdAt, notes);
+        return Objects.hash(savingsId, ownerID, accountIdentifier, accountName, balance, createdAt, notes);
     }
 
     @Override
     public String toString() {
         return "SavingsAccount{" +
                 "savingsId=" + savingsId +
-                ", owner=" + owner +
+                ", ownerID=" + ownerID +
                 ", accountIdentifier='" + accountIdentifier + '\'' +
                 ", accountName='" + accountName + '\'' +
                 ", balance=" + balance +

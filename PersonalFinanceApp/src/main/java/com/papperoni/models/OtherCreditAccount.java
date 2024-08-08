@@ -18,7 +18,7 @@ public class OtherCreditAccount {
     @ManyToOne
     @JoinColumn(name = "OwnerID", nullable = false)
     @NotNull(message = "Owner cannot be null")
-    private OwnerOfAccount owner;
+    private int ownerID;
 
     @NotBlank(message = "Account identifier cannot be blank")
     @Column(name = "AccountIdentifier", nullable = false, length = 100)
@@ -50,8 +50,8 @@ public class OtherCreditAccount {
     @Column(name = "AutoPay", nullable = false)
     private Boolean autoPay = false;
 
-    @Column(name = "DefaultPayment", length = 100)
-    private String defaultPayment;
+    @Column(name = "DefaultPaymentID")
+    private int defaultPaymentID;
 
     @NotNull(message = "Updated date is required")
     @Column(name = "Updated", nullable = false)
@@ -79,16 +79,16 @@ public class OtherCreditAccount {
     public OtherCreditAccount() {
     }
 
-    public OtherCreditAccount(Long otherCreditAccountId, OwnerOfAccount owner, String accountIdentifier, String accountName, BigDecimal creditLimit, BigDecimal balance, Integer paymentDate, BigDecimal minMonthlyPayment, String defaultPayment, Boolean autoPay, LocalDate updated, BigDecimal apr, BigDecimal annualFee, LocalDateTime createdAt, String notes) {
+    public OtherCreditAccount(Long otherCreditAccountId, int ownerID, String accountIdentifier, String accountName, BigDecimal creditLimit, BigDecimal balance, Integer paymentDate, BigDecimal minMonthlyPayment, int defaultPaymentID, Boolean autoPay, LocalDate updated, BigDecimal apr, BigDecimal annualFee, LocalDateTime createdAt, String notes) {
         this.otherCreditAccountId = otherCreditAccountId;
-        this.owner = owner;
+        this.ownerID = ownerID;
         this.accountIdentifier = accountIdentifier;
         this.accountName = accountName;
         this.creditLimit = creditLimit;
         this.balance = balance;
         this.paymentDate = paymentDate;
         this.minMonthlyPayment = minMonthlyPayment;
-        this.defaultPayment = defaultPayment;
+        this.defaultPaymentID = defaultPaymentID;
         this.autoPay = autoPay;
         this.updated = updated;
         this.apr = apr;
@@ -105,12 +105,12 @@ public class OtherCreditAccount {
         this.otherCreditAccountId = otherCreditAccountId;
     }
 
-    public OwnerOfAccount getOwner() {
-        return owner;
+    public int getOwnerID() {
+        return ownerID;
     }
 
-    public void setOwner(OwnerOfAccount owner) {
-        this.owner = owner;
+    public void setOwnerID(int ownerID) {
+        this.ownerID = ownerID;
     }
 
     public String getAccountIdentifier() {
@@ -169,12 +169,12 @@ public class OtherCreditAccount {
         this.autoPay = autoPay;
     }
 
-    public String getDefaultPayment() {
-        return defaultPayment;
+    public int getDefaultPaymentID() {
+        return defaultPaymentID;
     }
 
-    public void setDefaultPayment(String defaultPayment) {
-        this.defaultPayment = defaultPayment;
+    public void setDefaultPaymentID(int defaultPaymentID) {
+        this.defaultPaymentID = defaultPaymentID;
     }
 
     public LocalDate getUpdated() {
@@ -222,19 +222,19 @@ public class OtherCreditAccount {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OtherCreditAccount that = (OtherCreditAccount) o;
-        return Objects.equals(otherCreditAccountId, that.otherCreditAccountId) && Objects.equals(owner, that.owner) && Objects.equals(accountIdentifier, that.accountIdentifier) && Objects.equals(accountName, that.accountName) && Objects.equals(creditLimit, that.creditLimit) && Objects.equals(balance, that.balance) && Objects.equals(paymentDate, that.paymentDate) && Objects.equals(minMonthlyPayment, that.minMonthlyPayment) && Objects.equals(autoPay, that.autoPay) && Objects.equals(defaultPayment, that.defaultPayment) && Objects.equals(updated, that.updated) && Objects.equals(apr, that.apr) && Objects.equals(annualFee, that.annualFee) && Objects.equals(createdAt, that.createdAt) && Objects.equals(notes, that.notes);
+        return Objects.equals(otherCreditAccountId, that.otherCreditAccountId) && Objects.equals(ownerID, that.ownerID) && Objects.equals(accountIdentifier, that.accountIdentifier) && Objects.equals(accountName, that.accountName) && Objects.equals(creditLimit, that.creditLimit) && Objects.equals(balance, that.balance) && Objects.equals(paymentDate, that.paymentDate) && Objects.equals(minMonthlyPayment, that.minMonthlyPayment) && Objects.equals(autoPay, that.autoPay) && Objects.equals(defaultPaymentID, that.defaultPaymentID) && Objects.equals(updated, that.updated) && Objects.equals(apr, that.apr) && Objects.equals(annualFee, that.annualFee) && Objects.equals(createdAt, that.createdAt) && Objects.equals(notes, that.notes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(otherCreditAccountId, owner, accountIdentifier, accountName, creditLimit, balance, paymentDate, minMonthlyPayment, autoPay, defaultPayment, updated, apr, annualFee, createdAt, notes);
+        return Objects.hash(otherCreditAccountId, ownerID, accountIdentifier, accountName, creditLimit, balance, paymentDate, minMonthlyPayment, autoPay, defaultPaymentID, updated, apr, annualFee, createdAt, notes);
     }
 
     @Override
     public String toString() {
         return "OtherCreditAccount{" +
                 "otherCreditAccountId=" + otherCreditAccountId +
-                ", owner=" + owner +
+                ", owner=" + ownerID +
                 ", accountIdentifier='" + accountIdentifier + '\'' +
                 ", accountName='" + accountName + '\'' +
                 ", creditLimit=" + creditLimit +
@@ -242,7 +242,7 @@ public class OtherCreditAccount {
                 ", paymentDate=" + paymentDate +
                 ", minMonthlyPayment=" + minMonthlyPayment +
                 ", autoPay=" + autoPay +
-                ", defaultPayment='" + defaultPayment + '\'' +
+                ", defaultPaymentID=" + defaultPaymentID +
                 ", updated=" + updated +
                 ", apr=" + apr +
                 ", annualFee=" + annualFee +

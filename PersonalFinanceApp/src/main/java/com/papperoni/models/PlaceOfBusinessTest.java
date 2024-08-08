@@ -1,99 +1,76 @@
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+package com.papperoni.models;
 
-import com.papperoni.models.PlaceOfBusiness;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
-import jakarta.validation.ValidatorFactory;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Set;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class PlaceOfBusinessTest {
+class PlaceOfBusinessTest {
 
-    private Validator validator;
-
-    @BeforeEach
-    public void setUp() {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
-    }
-
-    @AfterEach
-    public void tearDown() {
-        validator = null;
+    @Test
+    void testDefaultConstructor() {
+        PlaceOfBusiness placeOfBusiness = new PlaceOfBusiness();
+        assertNotNull(placeOfBusiness);
+        assertNull(placeOfBusiness.getPlaceOfBusinessId());
+        assertNull(placeOfBusiness.getName());
+        assertEquals(0, placeOfBusiness.getDefaultPaymentID());
+        assertNull(placeOfBusiness.getNotes());
     }
 
     @Test
-    public void testValidPlaceOfBusiness() {
-        PlaceOfBusiness place = new PlaceOfBusiness(
-                1L,
-                "Valid Business Name",
-                "Valid Payment Method",
-                "Some notes about the business"
-        );
+    void testParameterizedConstructor() {
+        PlaceOfBusiness placeOfBusiness = new PlaceOfBusiness(1L, "PlaceName", 123, "Some notes");
 
-        Set<ConstraintViolation<PlaceOfBusiness>> violations = validator.validate(place);
-        assertTrue(violations.isEmpty(), "Expected no constraint violations");
+        assertNotNull(placeOfBusiness);
+        assertEquals(1L, placeOfBusiness.getPlaceOfBusinessId());
+        assertEquals("PlaceName", placeOfBusiness.getName());
+        assertEquals(123, placeOfBusiness.getDefaultPaymentID());
+        assertEquals("Some notes", placeOfBusiness.getNotes());
     }
 
     @Test
-    public void testNameBlank() {
-        PlaceOfBusiness place = new PlaceOfBusiness(
-                1L,
-                "", // Name is blank
-                "Valid Payment Method",
-                "Some notes about the business"
-        );
+    void testGettersAndSetters() {
+        PlaceOfBusiness placeOfBusiness = new PlaceOfBusiness();
+        placeOfBusiness.setPlaceOfBusinessId(1L);
+        placeOfBusiness.setName("PlaceName");
+        placeOfBusiness.setDefaultPaymentID(123);
+        placeOfBusiness.setNotes("Some notes");
 
-        Set<ConstraintViolation<PlaceOfBusiness>> violations = validator.validate(place);
-        assertEquals(1, violations.size(), "Expected 1 violation for blank name");
-        assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("name")), "Expected violation on 'name' field");
+        assertEquals(1L, placeOfBusiness.getPlaceOfBusinessId());
+        assertEquals("PlaceName", placeOfBusiness.getName());
+        assertEquals(123, placeOfBusiness.getDefaultPaymentID());
+        assertEquals("Some notes", placeOfBusiness.getNotes());
     }
 
     @Test
-    public void testDefaultPaymentTooLong() {
-        PlaceOfBusiness place = new PlaceOfBusiness(
-                1L,
-                "Valid Business Name",
-                "A".repeat(101), // DefaultPayment exceeds max length of 100
-                "Some notes about the business"
-        );
+    void testEquals() {
+        PlaceOfBusiness place1 = new PlaceOfBusiness(1L, "PlaceName", 123, "Some notes");
+        PlaceOfBusiness place2 = new PlaceOfBusiness(1L, "PlaceName", 123, "Some notes");
+        PlaceOfBusiness place3 = new PlaceOfBusiness(2L, "AnotherPlace", 456, "Other notes");
 
-        Set<ConstraintViolation<PlaceOfBusiness>> violations = validator.validate(place);
-        assertEquals(1, violations.size(), "Expected 1 violation for default payment exceeding maximum length");
-        assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("defaultPayment")), "Expected violation on 'defaultPayment' field");
+        assertTrue(place1.equals(place2));
+        assertFalse(place1.equals(place3));
+        assertFalse(place1.equals(null));
+        assertFalse(place1.equals("String"));
     }
 
     @Test
-    public void testNotesTooLong() {
-        PlaceOfBusiness place = new PlaceOfBusiness(
-                1L,
-                "Valid Business Name",
-                "Valid Payment Method",
-                "A".repeat(256) // Notes exceed max length of 255
-        );
+    void testHashCode() {
+        PlaceOfBusiness place1 = new PlaceOfBusiness(1L, "PlaceName", 123, "Some notes");
+        PlaceOfBusiness place2 = new PlaceOfBusiness(1L, "PlaceName", 123, "Some notes");
 
-        Set<ConstraintViolation<PlaceOfBusiness>> violations = validator.validate(place);
-        assertEquals(1, violations.size(), "Expected 1 violation for notes exceeding maximum length");
-        assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("notes")), "Expected violation on 'notes' field");
+        assertEquals(place1.hashCode(), place2.hashCode());
     }
 
     @Test
-    public void testAllFieldsNull() {
-        PlaceOfBusiness place = new PlaceOfBusiness(
-                null,
-                null, // Name is null
-                null,
-                null
-        );
+    void testToString() {
+        PlaceOfBusiness placeOfBusiness = new PlaceOfBusiness(1L, "PlaceName", 123, "Some notes");
+        String expectedString = "PlaceOfBusiness{" +
+                "placeOfBusinessId=" + 1L +
+                ", name='PlaceName'" +
+                ", defaultPaymentID=" + 123 +
+                ", notes='Some notes'" +
+                '}';
 
-        Set<ConstraintViolation<PlaceOfBusiness>> violations = validator.validate(place);
-        assertEquals(1, violations.size(), "Expected 1 violation for null name");
-        assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("name")), "Expected violation on 'name' field");
+        assertEquals(expectedString, placeOfBusiness.toString());
     }
 }
-

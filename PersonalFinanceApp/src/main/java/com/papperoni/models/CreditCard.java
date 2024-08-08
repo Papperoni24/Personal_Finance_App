@@ -50,8 +50,8 @@ public class CreditCard {
     @Column(name = "AutoPay", nullable = false)
     private Boolean autoPay = false;
 
-    @Column(name = "DefaultPayment", length = 100)
-    private String defaultPayment;
+    @Column(name = "DefaultPayment")
+    private int defaultPaymentID;
 
     @PastOrPresent(message = "Updated date cannot be in the future")
     @Column(name = "Updated", nullable = false)
@@ -88,7 +88,7 @@ public class CreditCard {
         this.paymentDate = paymentDate;
         this.minMonthlyPayment = minMonthlyPayment;
         this.autoPay = autoPay;
-        this.defaultPayment = defaultPayment;
+        this.defaultPaymentID = defaultPaymentID;
         this.updated = updated;
         this.apr = apr;
         this.annualFee = annualFee;
@@ -168,12 +168,12 @@ public class CreditCard {
         this.autoPay = autoPay;
     }
 
-    public String getDefaultPayment() {
-        return defaultPayment;
+    public int getDefaultPaymentID() {
+        return defaultPaymentID;
     }
 
-    public void setDefaultPayment(String defaultPayment) {
-        this.defaultPayment = defaultPayment;
+    public void setDefaultPaymentID(int defaultPayment) {
+        this.defaultPaymentID = defaultPaymentID;
     }
 
     public LocalDate getUpdated() {
@@ -221,12 +221,12 @@ public class CreditCard {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CreditCard that = (CreditCard) o;
-        return Objects.equals(creditCardId, that.creditCardId) && Objects.equals(owner, that.owner) && Objects.equals(accountIdentifier, that.accountIdentifier) && Objects.equals(accountName, that.accountName) && Objects.equals(creditLimit, that.creditLimit) && Objects.equals(balance, that.balance) && Objects.equals(paymentDate, that.paymentDate) && Objects.equals(minMonthlyPayment, that.minMonthlyPayment) && Objects.equals(autoPay, that.autoPay) && Objects.equals(defaultPayment, that.defaultPayment) && Objects.equals(updated, that.updated) && Objects.equals(apr, that.apr) && Objects.equals(annualFee, that.annualFee) && Objects.equals(createdAt, that.createdAt) && Objects.equals(notes, that.notes);
+        return Objects.equals(creditCardId, that.creditCardId) && Objects.equals(owner, that.owner) && Objects.equals(accountIdentifier, that.accountIdentifier) && Objects.equals(accountName, that.accountName) && Objects.equals(creditLimit, that.creditLimit) && Objects.equals(balance, that.balance) && Objects.equals(paymentDate, that.paymentDate) && Objects.equals(minMonthlyPayment, that.minMonthlyPayment) && Objects.equals(autoPay, that.autoPay) && Objects.equals(defaultPaymentID, that.defaultPaymentID) && Objects.equals(updated, that.updated) && Objects.equals(apr, that.apr) && Objects.equals(annualFee, that.annualFee) && Objects.equals(createdAt, that.createdAt) && Objects.equals(notes, that.notes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(creditCardId, owner, accountIdentifier, accountName, creditLimit, balance, paymentDate, minMonthlyPayment, autoPay, defaultPayment, updated, apr, annualFee, createdAt, notes);
+        return Objects.hash(creditCardId, owner, accountIdentifier, accountName, creditLimit, balance, paymentDate, minMonthlyPayment, autoPay, defaultPaymentID, updated, apr, annualFee, createdAt, notes);
     }
 
     @Override
@@ -241,7 +241,7 @@ public class CreditCard {
                 ", paymentDate=" + paymentDate +
                 ", minMonthlyPayment=" + minMonthlyPayment +
                 ", autoPay=" + autoPay +
-                ", defaultPayment='" + defaultPayment + '\'' +
+                ", defaultPayment='" + defaultPaymentID + '\'' +
                 ", updated=" + updated +
                 ", apr=" + apr +
                 ", annualFee=" + annualFee +

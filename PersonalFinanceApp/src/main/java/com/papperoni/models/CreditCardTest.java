@@ -49,7 +49,7 @@ class CreditCardTest {
         assertEquals(15, creditCard.getPaymentDate());
         assertEquals(new BigDecimal("200.00"), creditCard.getMinMonthlyPayment());
         assertTrue(creditCard.getAutoPay());
-        assertEquals("Default Payment", creditCard.getDefaultPayment());
+        assertEquals("Default Payment", creditCard.getDefaultPaymentID());
         assertEquals(today, creditCard.getUpdated());
         assertEquals(new BigDecimal("15.99"), creditCard.getApr());
         assertEquals(new BigDecimal("50.00"), creditCard.getAnnualFee());
@@ -73,7 +73,7 @@ class CreditCardTest {
         creditCard.setPaymentDate(25);
         creditCard.setMinMonthlyPayment(new BigDecimal("300.00"));
         creditCard.setAutoPay(false);
-        creditCard.setDefaultPayment("No Default");
+        creditCard.setDefaultPaymentID(1);
         creditCard.setUpdated(today);
         creditCard.setApr(new BigDecimal("19.99"));
         creditCard.setAnnualFee(new BigDecimal("75.00"));
@@ -89,7 +89,7 @@ class CreditCardTest {
         assertEquals(25, creditCard.getPaymentDate());
         assertEquals(new BigDecimal("300.00"), creditCard.getMinMonthlyPayment());
         assertFalse(creditCard.getAutoPay());
-        assertEquals("No Default", creditCard.getDefaultPayment());
+        assertEquals("No Default", creditCard.getDefaultPaymentID());
         assertEquals(today, creditCard.getUpdated());
         assertEquals(new BigDecimal("19.99"), creditCard.getApr());
         assertEquals(new BigDecimal("75.00"), creditCard.getAnnualFee());

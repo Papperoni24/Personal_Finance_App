@@ -18,7 +18,7 @@ public class StudentLoan {
     @ManyToOne
     @JoinColumn(name = "OwnerID", nullable = false)
     @NotNull(message = "Owner is required")
-    private OwnerOfAccount owner;
+    private int ownerID;
 
     @NotBlank(message = "Account identifier is required")
     @Size(max = 100, message = "Account identifier cannot exceed 100 characters")
@@ -43,9 +43,8 @@ public class StudentLoan {
     @Column(name = "AutoPay", nullable = false)
     private Boolean autoPay;
 
-    @Size(max = 100, message = "From account cannot exceed 100 characters")
-    @Column(name = "DefaultPayment", length = 100)
-    private String fromAccount;
+    @Column(name = "DefaultPayment")
+    private int defaultPaymentID;
 
     @NotNull(message = "Updated date is required")
     @Column(name = "Updated", nullable = false)
@@ -65,16 +64,16 @@ public class StudentLoan {
     public StudentLoan() {
     }
 
-    public StudentLoan(Long studentLoanId, OwnerOfAccount owner, String accountIdentifier, BigDecimal balance, String accountName, Integer paymentDate, BigDecimal minMonthlyPayment, Boolean autoPay, String fromAccount, LocalDate updated, BigDecimal apr, LocalDateTime createdAt, String notes) {
+    public StudentLoan(Long studentLoanId, int ownerID, String accountIdentifier, BigDecimal balance, String accountName, Integer paymentDate, BigDecimal minMonthlyPayment, Boolean autoPay, int defaultPaymentID, LocalDate updated, BigDecimal apr, LocalDateTime createdAt, String notes) {
         this.studentLoanId = studentLoanId;
-        this.owner = owner;
+        this.ownerID = ownerID;
         this.accountIdentifier = accountIdentifier;
         this.balance = balance;
         this.accountName = accountName;
         this.paymentDate = paymentDate;
         this.minMonthlyPayment = minMonthlyPayment;
         this.autoPay = autoPay;
-        this.fromAccount = fromAccount;
+        this.defaultPaymentID = defaultPaymentID;
         this.updated = updated;
         this.apr = apr;
         this.createdAt = createdAt;
@@ -89,12 +88,12 @@ public class StudentLoan {
         this.studentLoanId = studentLoanId;
     }
 
-    public OwnerOfAccount getOwner() {
-        return owner;
+    public int getOwnerID() {
+        return ownerID;
     }
 
-    public void setOwner(OwnerOfAccount owner) {
-        this.owner = owner;
+    public void setOwnerID(int ownerID) {
+        this.ownerID = ownerID;
     }
 
     public String getAccountIdentifier() {
@@ -145,12 +144,12 @@ public class StudentLoan {
         this.autoPay = autoPay;
     }
 
-    public String getFromAccount() {
-        return fromAccount;
+    public int getDefaultPaymentID() {
+        return defaultPaymentID;
     }
 
-    public void setFromAccount(String fromAccount) {
-        this.fromAccount = fromAccount;
+    public void setDefaultPaymentID(int defaultPaymentID) {
+        this.defaultPaymentID = defaultPaymentID;
     }
 
     public LocalDate getUpdated() {
@@ -191,14 +190,14 @@ public class StudentLoan {
         if (o == null || getClass() != o.getClass()) return false;
         StudentLoan that = (StudentLoan) o;
         return Objects.equals(studentLoanId, that.studentLoanId) &&
-                Objects.equals(owner, that.owner) &&
+                Objects.equals(ownerID, that.ownerID) &&
                 Objects.equals(accountIdentifier, that.accountIdentifier) &&
                 Objects.equals(accountName, that.accountName) &&
                 Objects.equals(balance, that.balance) &&
                 Objects.equals(paymentDate, that.paymentDate) &&
                 Objects.equals(minMonthlyPayment, that.minMonthlyPayment) &&
                 Objects.equals(autoPay, that.autoPay) &&
-                Objects.equals(fromAccount, that.fromAccount) &&
+                Objects.equals(defaultPaymentID, that.defaultPaymentID) &&
                 Objects.equals(updated, that.updated) &&
                 Objects.equals(apr, that.apr) &&
                 Objects.equals(createdAt, that.createdAt) &&
@@ -207,21 +206,21 @@ public class StudentLoan {
 
     @Override
     public int hashCode() {
-        return Objects.hash(studentLoanId, owner, accountIdentifier, accountName, balance, paymentDate, minMonthlyPayment, autoPay, fromAccount, updated, apr, createdAt, notes);
+        return Objects.hash(studentLoanId, ownerID, accountIdentifier, accountName, balance, paymentDate, minMonthlyPayment, autoPay, defaultPaymentID, updated, apr, createdAt, notes);
     }
 
     @Override
     public String toString() {
         return "StudentLoan{" +
                 "studentLoanId=" + studentLoanId +
-                ", owner=" + owner +
+                ", ownerID=" + ownerID +
                 ", accountIdentifier='" + accountIdentifier + '\'' +
                 ", accountName='" + accountName + '\'' +
                 ", balance=" + balance +
                 ", paymentDate=" + paymentDate +
                 ", minMonthlyPayment=" + minMonthlyPayment +
                 ", autoPay=" + autoPay +
-                ", fromAccount='" + fromAccount + '\'' +
+                ", defaultPaymentID=" + defaultPaymentID +
                 ", updated=" + updated +
                 ", apr=" + apr +
                 ", createdAt=" + createdAt +

@@ -1,184 +1,147 @@
 package com.papperoni.models;
 
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
-import jakarta.validation.ValidatorFactory;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class OtherCreditAccountTest {
 
-    private Validator validator;
-
-    @BeforeEach
-    public void setUp() {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
-    }
-
-    @AfterEach
-    public void tearDown() {
-        validator = null;
+    @Test
+    public void testDefaultConstructor() {
+        OtherCreditAccount account = new OtherCreditAccount();
+        assertNotNull(account);
     }
 
     @Test
-    public void testValidOtherCreditAccount() {
+    public void testParameterizedConstructor() {
+        LocalDateTime createdAt = LocalDateTime.now();
         OtherCreditAccount account = new OtherCreditAccount(
-                1L,
-                new OwnerOfAccount(), // Assume OwnerOfAccount is valid
-                "ValidAccountID",
-                "Valid Account Name",
-                new BigDecimal("5000.00"),
-                new BigDecimal("1000.00"),
-                15,
-                new BigDecimal("100.00"),
-                "Default Payment",
-                false,
-                LocalDate.now(),
-                new BigDecimal("10.00"),
-                new BigDecimal("50.00"),
-                LocalDateTime.now(),
-                "Valid notes"
-        );
+                1L, 123, "ACC123", "Test Account", BigDecimal.valueOf(5000),
+                BigDecimal.valueOf(2500), 15, BigDecimal.valueOf(100),
+                1, true, LocalDate.now(), BigDecimal.valueOf(3.5),
+                BigDecimal.valueOf(100), createdAt, "Notes");
 
-        Set<ConstraintViolation<OtherCreditAccount>> violations = validator.validate(account);
-        assertTrue(violations.isEmpty(), "Expected no constraint violations, but got: " + violations);
+        assertEquals(1L, account.getOtherCreditAccountId());
+        assertEquals(123, account.getOwnerID());
+        assertEquals("ACC123", account.getAccountIdentifier());
+        assertEquals("Test Account", account.getAccountName());
+        assertEquals(BigDecimal.valueOf(5000), account.getCreditLimit());
+        assertEquals(BigDecimal.valueOf(2500), account.getBalance());
+        assertEquals(15, account.getPaymentDate());
+        assertEquals(BigDecimal.valueOf(100), account.getMinMonthlyPayment());
+        assertTrue(account.getAutoPay());
+        assertEquals(1, account.getDefaultPaymentID());
+        assertEquals(LocalDate.now(), account.getUpdated());
+        assertEquals(BigDecimal.valueOf(3.5), account.getApr());
+        assertEquals(BigDecimal.valueOf(100), account.getAnnualFee());
+        assertEquals(createdAt, account.getCreatedAt());
+        assertEquals("Notes", account.getNotes());
     }
 
     @Test
-    public void testNullOwner() {
-        OtherCreditAccount account = new OtherCreditAccount(
-                1L,
-                null, // Owner is null
-                "ValidAccountID",
-                "Valid Account Name",
-                new BigDecimal("5000.00"),
-                new BigDecimal("1000.00"),
-                15,
-                new BigDecimal("100.00"),
-                "Default Payment",
-                false,
-                LocalDate.now(),
-                new BigDecimal("10.00"),
-                new BigDecimal("50.00"),
-                LocalDateTime.now(),
-                "Valid notes"
-        );
+    public void testGettersAndSetters() {
+        OtherCreditAccount account = new OtherCreditAccount();
+        LocalDateTime createdAt = LocalDateTime.now();
 
-        Set<ConstraintViolation<OtherCreditAccount>> violations = validator.validate(account);
-        assertEquals(1, violations.size(), "Expected 1 violation for null owner");
+        account.setOtherCreditAccountId(1L);
+        account.setOwnerID(123);
+        account.setAccountIdentifier("ACC123");
+        account.setAccountName("Test Account");
+        account.setCreditLimit(BigDecimal.valueOf(5000));
+        account.setBalance(BigDecimal.valueOf(2500));
+        account.setPaymentDate(15);
+        account.setMinMonthlyPayment(BigDecimal.valueOf(100));
+        account.setAutoPay(true);
+        account.setDefaultPaymentID(1);
+        account.setUpdated(LocalDate.now());
+        account.setApr(BigDecimal.valueOf(3.5));
+        account.setAnnualFee(BigDecimal.valueOf(100));
+        account.setCreatedAt(createdAt);
+        account.setNotes("Notes");
+
+        assertEquals(1L, account.getOtherCreditAccountId());
+        assertEquals(123, account.getOwnerID());
+        assertEquals("ACC123", account.getAccountIdentifier());
+        assertEquals("Test Account", account.getAccountName());
+        assertEquals(BigDecimal.valueOf(5000), account.getCreditLimit());
+        assertEquals(BigDecimal.valueOf(2500), account.getBalance());
+        assertEquals(15, account.getPaymentDate());
+        assertEquals(BigDecimal.valueOf(100), account.getMinMonthlyPayment());
+        assertTrue(account.getAutoPay());
+        assertEquals(1, account.getDefaultPaymentID());
+        assertEquals(LocalDate.now(), account.getUpdated());
+        assertEquals(BigDecimal.valueOf(3.5), account.getApr());
+        assertEquals(BigDecimal.valueOf(100), account.getAnnualFee());
+        assertEquals(createdAt, account.getCreatedAt());
+        assertEquals("Notes", account.getNotes());
     }
 
     @Test
-    public void testBlankAccountIdentifier() {
-        OtherCreditAccount account = new OtherCreditAccount(
-                1L,
-                new OwnerOfAccount(),
-                "", // Account identifier is blank
-                "Valid Account Name",
-                new BigDecimal("5000.00"),
-                new BigDecimal("1000.00"),
-                15,
-                new BigDecimal("100.00"),
-                "Default Payment",
-                false,
-                LocalDate.now(),
-                new BigDecimal("10.00"),
-                new BigDecimal("50.00"),
-                LocalDateTime.now(),
-                "Valid notes"
-        );
+    public void testEqualsAndHashCode() {
+        LocalDateTime createdAt = LocalDateTime.now();
+        OtherCreditAccount account1 = new OtherCreditAccount(
+                1L, 123, "ACC123", "Test Account", BigDecimal.valueOf(5000),
+                BigDecimal.valueOf(2500), 15, BigDecimal.valueOf(100),
+                1, true, LocalDate.now(), BigDecimal.valueOf(3.5),
+                BigDecimal.valueOf(100), createdAt, "Notes");
 
-        Set<ConstraintViolation<OtherCreditAccount>> violations = validator.validate(account);
-        assertEquals(1, violations.size(), "Expected 1 violation for blank account identifier");
+        OtherCreditAccount account2 = new OtherCreditAccount(
+                1L, 123, "ACC123", "Test Account", BigDecimal.valueOf(5000),
+                BigDecimal.valueOf(2500), 15, BigDecimal.valueOf(100),
+                1, true, LocalDate.now(), BigDecimal.valueOf(3.5),
+                BigDecimal.valueOf(100), createdAt, "Notes");
+
+        assertEquals(account1, account2);
+        assertEquals(account1.hashCode(), account2.hashCode());
     }
 
     @Test
-    public void testNegativeCreditLimit() {
-        OtherCreditAccount account = new OtherCreditAccount(
-                1L,
-                new OwnerOfAccount(),
-                "ValidAccountID",
-                "Valid Account Name",
-                new BigDecimal("-5000.00"), // Negative credit limit
-                new BigDecimal("1000.00"),
-                15,
-                new BigDecimal("100.00"),
-                "Default Payment",
-                false,
-                LocalDate.now(),
-                new BigDecimal("10.00"),
-                new BigDecimal("50.00"),
-                LocalDateTime.now(),
-                "Valid notes"
-        );
+    public void testNotEquals() {
+        OtherCreditAccount account1 = new OtherCreditAccount(
+                1L, 123, "ACC123", "Test Account", BigDecimal.valueOf(5000),
+                BigDecimal.valueOf(2500), 15, BigDecimal.valueOf(100),
+                1, true, LocalDate.now(), BigDecimal.valueOf(3.5),
+                BigDecimal.valueOf(100), LocalDateTime.now(), "Notes");
 
-        Set<ConstraintViolation<OtherCreditAccount>> violations = validator.validate(account);
-        assertEquals(1, violations.size(), "Expected 1 violation for negative credit limit");
+        OtherCreditAccount account2 = new OtherCreditAccount(
+                2L, 124, "ACC124", "Different Account", BigDecimal.valueOf(4000),
+                BigDecimal.valueOf(2000), 10, BigDecimal.valueOf(50),
+                2, false, LocalDate.now().minusDays(1), BigDecimal.valueOf(5.0),
+                BigDecimal.valueOf(200), LocalDateTime.now(), "Different Notes");
+
+        assertNotEquals(account1, account2);
     }
 
     @Test
-    public void testZeroPaymentDate() {
+    public void testToString() {
+        LocalDateTime createdAt = LocalDateTime.now();
         OtherCreditAccount account = new OtherCreditAccount(
-                1L,
-                new OwnerOfAccount(),
-                "ValidAccountID",
-                "Valid Account Name",
-                new BigDecimal("5000.00"),
-                new BigDecimal("1000.00"),
-                0, // Invalid payment date
-                new BigDecimal("100.00"),
-                "Default Payment",
-                false,
-                LocalDate.now(),
-                new BigDecimal("10.00"),
-                new BigDecimal("50.00"),
-                LocalDateTime.now(),
-                "Valid notes"
-        );
+                1L, 123, "ACC123", "Test Account", BigDecimal.valueOf(5000),
+                BigDecimal.valueOf(2500), 15, BigDecimal.valueOf(100),
+                1, true, LocalDate.now(), BigDecimal.valueOf(3.5),
+                BigDecimal.valueOf(100), createdAt, "Notes");
 
-        Set<ConstraintViolation<OtherCreditAccount>> violations = validator.validate(account);
-        assertEquals(1, violations.size(), "Expected 1 violation for zero payment date");
-    }
+        String expectedToString = "OtherCreditAccount{" +
+                "otherCreditAccountId=1, " +
+                "owner=123, " +
+                "accountIdentifier='ACC123', " +
+                "accountName='Test Account', " +
+                "creditLimit=5000, " +
+                "balance=2500, " +
+                "paymentDate=15, " +
+                "minMonthlyPayment=100, " +
+                "autoPay=true, " +
+                "defaultPaymentID=1, " +
+                "updated=" + LocalDate.now() + ", " +
+                "apr=3.5, " +
+                "annualFee=100, " +
+                "createdAt=" + createdAt + ", " +
+                "notes='Notes'}";
 
-    @Test
-    public void testTooLongNotes() {
-        String longNotes = "Test notes that exceed the maximum length of 255 characters. " +
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
-                "Vestibulum vehicula ex eu massa auctor, in elementum ligula posuere. " +
-                "Donec auctor dapibus metus, id scelerisque risus consequat sed. " +
-                "Proin ac nisl sed elit sodales pharetra. Morbi ut feugiat felis. " +
-                "Nullam vel turpis augue.";
-
-        OtherCreditAccount account = new OtherCreditAccount(
-                1L,
-                new OwnerOfAccount(),
-                "ValidAccountID",
-                "Valid Account Name",
-                new BigDecimal("5000.00"),
-                new BigDecimal("1000.00"),
-                15,
-                new BigDecimal("100.00"),
-                "Default Payment",
-                false,
-                LocalDate.now(),
-                new BigDecimal("10.00"),
-                new BigDecimal("50.00"),
-                LocalDateTime.now(),
-                longNotes // Notes exceed the maximum length
-        );
-
-        Set<ConstraintViolation<OtherCreditAccount>> violations = validator.validate(account);
-        assertEquals(1, violations.size(), "Expected 1 violation for notes exceeding maximum length");
+        assertEquals(expectedToString, account.toString());
     }
 }

@@ -3,37 +3,37 @@ package com.papperoni.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-
 import java.util.Objects;
 
 @Entity
-@Table(name = "TransDescMappingToBiz")
-public class TransDescMappingToBiz {
+@Table(name = "TransactionDescriptionMappingToBusiness")
+public class TransactionDescriptionMappingToBusiness {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "TransactionDescriptionID")
     private Long transactionDescriptionId;
 
-    @NotBlank
-    @Size(max = 255)
-    @Column(name = "Description", nullable = false, unique = true)
+    @NotBlank(message = "Description is required")
+    @Size(max = 255, message = "Description cannot exceed 255 characters")
+    @Column(name = "Description", length = 255, unique = true, nullable = false)
     private String description;
 
     @ManyToOne
     @JoinColumn(name = "PlaceOfBusinessID")
-    private PlaceOfBusiness placeOfBusiness;
+    private int placeOfBusinessID;
 
-    @Size(max = 255)
-    @Column(name = "Notes")
+    @Size(max = 255, message = "Notes cannot exceed 255 characters")
+    @Column(name = "Notes", length = 255)
     private String notes;
 
-    public TransDescMappingToBiz() {
+    public TransactionDescriptionMappingToBusiness() {
     }
 
-    public TransDescMappingToBiz(Long transactionDescriptionId, String description, PlaceOfBusiness placeOfBusiness, String notes) {
+    public TransactionDescriptionMappingToBusiness(Long transactionDescriptionId, String description, int placeOfBusinessID, String notes) {
         this.transactionDescriptionId = transactionDescriptionId;
         this.description = description;
-        this.placeOfBusiness = placeOfBusiness;
+        this.placeOfBusinessID = placeOfBusinessID;
         this.notes = notes;
     }
 
@@ -53,12 +53,12 @@ public class TransDescMappingToBiz {
         this.description = description;
     }
 
-    public PlaceOfBusiness getPlaceOfBusiness() {
-        return placeOfBusiness;
+    public int getPlaceOfBusinessID() {
+        return placeOfBusinessID;
     }
 
-    public void setPlaceOfBusiness(PlaceOfBusiness placeOfBusiness) {
-        this.placeOfBusiness = placeOfBusiness;
+    public void setPlaceOfBusinessID(int placeOfBusinessID) {
+        this.placeOfBusinessID = placeOfBusinessID;
     }
 
     public String getNotes() {
@@ -73,24 +73,24 @@ public class TransDescMappingToBiz {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TransDescMappingToBiz that = (TransDescMappingToBiz) o;
+        TransactionDescriptionMappingToBusiness that = (TransactionDescriptionMappingToBusiness) o;
         return Objects.equals(transactionDescriptionId, that.transactionDescriptionId) &&
                 Objects.equals(description, that.description) &&
-                Objects.equals(placeOfBusiness, that.placeOfBusiness) &&
+                Objects.equals(placeOfBusinessID, that.placeOfBusinessID) &&
                 Objects.equals(notes, that.notes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(transactionDescriptionId, description, placeOfBusiness, notes);
+        return Objects.hash(transactionDescriptionId, description, placeOfBusinessID, notes);
     }
 
     @Override
     public String toString() {
-        return "TransDescMappingToBiz{" +
+        return "TransactionDescriptionMappingToBusiness{" +
                 "transactionDescriptionId=" + transactionDescriptionId +
                 ", description='" + description + '\'' +
-                ", placeOfBusiness=" + placeOfBusiness +
+                ", placeOfBusinessID=" + placeOfBusinessID +
                 ", notes='" + notes + '\'' +
                 '}';
     }

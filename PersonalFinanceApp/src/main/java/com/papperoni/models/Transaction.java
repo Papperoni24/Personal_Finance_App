@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.time.format.DateTimeFormatter;
@@ -47,7 +48,7 @@ public class Transaction {
 
     @NotNull(message = "TransactionDate must not be null")
     @Column(name = "TransactionDate", nullable = false)
-    private LocalDateTime transactionDate;
+    private LocalDate transactionDate;
 
     @NotNull(message = "UploadDate must not be null")
     @Column(name = "UploadDate", updatable = false, nullable = false)
@@ -61,6 +62,21 @@ public class Transaction {
 
     public Transaction() {
         this.uploadDate = LocalDateTime.now(); // Set uploadDate on creation
+    }
+
+    public Transaction(BigDecimal amount, int transactionId, String description, Integer accountId, PlaceOfBusiness placeOfBusiness, TransactionType transactionType, Integer associatedAccountId, String associatedAccountType, LocalDate transactionDate, LocalDateTime uploadDate, LocalDateTime lastUpdated, Boolean isRecurring) {
+        this.amount = amount;
+        this.transactionId = transactionId;
+        this.description = description;
+        this.accountId = accountId;
+        this.placeOfBusiness = placeOfBusiness;
+        this.transactionType = transactionType;
+        this.associatedAccountId = associatedAccountId;
+        this.associatedAccountType = associatedAccountType;
+        this.transactionDate = transactionDate;
+        this.uploadDate = uploadDate;
+        this.lastUpdated = lastUpdated;
+        this.isRecurring = isRecurring;
     }
 
     // Getters and Setters
@@ -124,11 +140,11 @@ public class Transaction {
         this.associatedAccountType = associatedAccountType;
     }
 
-    public LocalDateTime getTransactionDate() {
+    public LocalDate getTransactionDate() {
         return transactionDate;
     }
 
-    public void setTransactionDate(LocalDateTime transactionDate) {
+    public void setTransactionDate(LocalDate transactionDate) {
         this.transactionDate = transactionDate;
     }
 

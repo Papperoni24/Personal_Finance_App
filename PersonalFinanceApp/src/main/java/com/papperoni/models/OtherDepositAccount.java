@@ -13,11 +13,11 @@ public class OtherDepositAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "OtherDepositID")
-    private Long socialId;
+    private Long otherDepositID;
 
     @ManyToOne
     @JoinColumn(name = "OwnerID", nullable = false)
-    private OwnerOfAccount owner;
+    private int ownerID;
 
     @Size(max = 100)
     @Column(name = "AccountIdentifier", length = 100)
@@ -40,30 +40,30 @@ public class OtherDepositAccount {
     public OtherDepositAccount() {
     }
 
-    public OtherDepositAccount(Long socialId, String accountIdentifier, OwnerOfAccount owner, String accountName, BigDecimal balance, LocalDateTime createdAt, String notes) {
-        this.socialId = socialId;
+    public OtherDepositAccount(Long otherDepositID, String accountIdentifier, int ownerID, String accountName, BigDecimal balance, LocalDateTime createdAt, String notes) {
+        this.otherDepositID = otherDepositID;
         this.accountIdentifier = accountIdentifier;
-        this.owner = owner;
+        this.ownerID = ownerID;
         this.accountName = accountName;
         this.balance = balance;
         this.createdAt = createdAt;
         this.notes = notes;
     }
 
-    public Long getSocialId() {
-        return socialId;
+    public Long getOtherDepositID() {
+        return otherDepositID;
     }
 
-    public void setSocialId(Long socialId) {
-        this.socialId = socialId;
+    public void setOtherDepositID(Long otherDepositID) {
+        this.otherDepositID = otherDepositID;
     }
 
-    public OwnerOfAccount getOwner() {
-        return owner;
+    public int getOwnerID() {
+        return ownerID;
     }
 
-    public void setOwner(OwnerOfAccount owner) {
-        this.owner = owner;
+    public void setOwnerID(int ownerID) {
+        this.ownerID = ownerID;
     }
 
     public String getAccountIdentifier() {
@@ -111,19 +111,19 @@ public class OtherDepositAccount {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OtherDepositAccount that = (OtherDepositAccount) o;
-        return Objects.equals(socialId, that.socialId) && Objects.equals(owner, that.owner) && Objects.equals(accountIdentifier, that.accountIdentifier) && Objects.equals(accountName, that.accountName) && Objects.equals(balance, that.balance) && Objects.equals(createdAt, that.createdAt) && Objects.equals(notes, that.notes);
+        return Objects.equals(otherDepositID, that.otherDepositID) && Objects.equals(ownerID, that.ownerID) && Objects.equals(accountIdentifier, that.accountIdentifier) && Objects.equals(accountName, that.accountName) && Objects.equals(balance, that.balance) && Objects.equals(createdAt, that.createdAt) && Objects.equals(notes, that.notes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(socialId, owner, accountIdentifier, accountName, balance, createdAt, notes);
+        return Objects.hash(otherDepositID, ownerID, accountIdentifier, accountName, balance, createdAt, notes);
     }
 
     @Override
     public String toString() {
         return "OtherDepositAccount{" +
-                "socialId=" + socialId +
-                ", owner=" + owner +
+                "otherDepositID=" + otherDepositID +
+                ", ownerID=" + ownerID +
                 ", accountIdentifier='" + accountIdentifier + '\'' +
                 ", accountName='" + accountName + '\'' +
                 ", balance=" + balance +

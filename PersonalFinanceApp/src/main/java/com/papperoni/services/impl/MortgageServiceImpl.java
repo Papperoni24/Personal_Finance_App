@@ -44,14 +44,14 @@ public class MortgageServiceImpl implements MortgageService {
         Mortgage mortgage = mortgageRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Mortgage not found"));
 
-        mortgage.setOwner(mortgageDetails.getOwner());
+        mortgage.setOwnerID(mortgageDetails.getOwnerID());
         mortgage.setAccountIdentifier(mortgageDetails.getAccountIdentifier());
         mortgage.setAccountName(mortgageDetails.getAccountName());
         mortgage.setBalance(mortgageDetails.getBalance());
         mortgage.setPaymentDate(mortgageDetails.getPaymentDate());
         mortgage.setMinMonthlyPayment(mortgageDetails.getMinMonthlyPayment());
         mortgage.setAutoPay(mortgageDetails.getAutoPay());
-        mortgage.setDefaultPayment(mortgageDetails.getDefaultPayment());
+        mortgage.setDefaultPaymentID(mortgageDetails.getDefaultPaymentID());
         mortgage.setUpdated(mortgageDetails.getUpdated());
         mortgage.setApr(mortgageDetails.getApr());
         mortgage.setCreatedAt(mortgageDetails.getCreatedAt());

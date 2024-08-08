@@ -18,9 +18,8 @@ public class PlaceOfBusiness {
     @Column(name = "Name", nullable = false, unique = true, length = 100)
     private String name;
 
-    @Size(max = 100, message = "Default payment cannot exceed 100 characters")
-    @Column(name = "DefaultPayment", length = 100)
-    private String defaultPayment;
+    @Column(name = "DefaultPaymentID")
+    private int defaultPaymentID;
 
     @Size(max = 255, message = "Notes cannot exceed 255 characters")
     @Column(name = "Notes", length = 255)
@@ -29,10 +28,10 @@ public class PlaceOfBusiness {
     public PlaceOfBusiness() {
     }
 
-    public PlaceOfBusiness(Long placeOfBusinessId, String name, String defaultPayment, String notes) {
+    public PlaceOfBusiness(Long placeOfBusinessId, String name, int defaultPaymentID, String notes) {
         this.placeOfBusinessId = placeOfBusinessId;
         this.name = name;
-        this.defaultPayment = defaultPayment;
+        this.defaultPaymentID = defaultPaymentID;
         this.notes = notes;
     }
 
@@ -52,12 +51,12 @@ public class PlaceOfBusiness {
         this.name = name;
     }
 
-    public String getDefaultPayment() {
-        return defaultPayment;
+    public int getDefaultPaymentID() {
+        return defaultPaymentID;
     }
 
-    public void setDefaultPayment(String defaultPayment) {
-        this.defaultPayment = defaultPayment;
+    public void setDefaultPaymentID(int defaultPaymentID) {
+        this.defaultPaymentID = defaultPaymentID;
     }
 
     public String getNotes() {
@@ -73,12 +72,12 @@ public class PlaceOfBusiness {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PlaceOfBusiness that = (PlaceOfBusiness) o;
-        return Objects.equals(placeOfBusinessId, that.placeOfBusinessId) && Objects.equals(name, that.name) && Objects.equals(defaultPayment, that.defaultPayment) && Objects.equals(notes, that.notes);
+        return Objects.equals(placeOfBusinessId, that.placeOfBusinessId) && Objects.equals(name, that.name) && Objects.equals(defaultPaymentID, that.defaultPaymentID) && Objects.equals(notes, that.notes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(placeOfBusinessId, name, defaultPayment, notes);
+        return Objects.hash(placeOfBusinessId, name, defaultPaymentID, notes);
     }
 
     @Override
@@ -86,7 +85,7 @@ public class PlaceOfBusiness {
         return "PlaceOfBusiness{" +
                 "placeOfBusinessId=" + placeOfBusinessId +
                 ", name='" + name + '\'' +
-                ", defaultPayment='" + defaultPayment + '\'' +
+                ", defaultPaymentID=" + defaultPaymentID +
                 ", notes='" + notes + '\'' +
                 '}';
     }

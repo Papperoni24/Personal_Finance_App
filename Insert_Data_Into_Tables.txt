@@ -19,7 +19,8 @@ INSERT INTO AccountTypes (AccountTypeName) VALUES
 
 -- Insert Data into OwnerOfAccounts Table
 INSERT INTO OwnerOfAccounts (Username, Email, Notes) VALUES
-('JacobSWPapp', 'jacob.sw.papp@gmail.com', NULL);
+('JacobSWPapp', 'jacob.sw.papp@gmail.com', NULL),
+('TestDummy', 'test.dummy@gmail.com', "added to allow testing of the updating transaction service");
 
 -- Insert Data into CheckingAccounts Table
 INSERT INTO CheckingAccounts (OwnerID, AccountIdentifier, AccountName, Balance, Notes) VALUES

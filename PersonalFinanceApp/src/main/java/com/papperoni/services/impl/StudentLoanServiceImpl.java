@@ -50,7 +50,7 @@ public class StudentLoanServiceImpl implements StudentLoanService {
         studentLoan.setPaymentDate(studentLoanDetails.getPaymentDate());
         studentLoan.setMinMonthlyPayment(studentLoanDetails.getMinMonthlyPayment());
         studentLoan.setAutoPay(studentLoanDetails.getAutoPay());
-        studentLoan.setFromAccount(studentLoanDetails.getFromAccount());
+        studentLoan.setDefaultPaymentID(studentLoanDetails.getDefaultPaymentID());
         studentLoan.setUpdated(studentLoanDetails.getUpdated());
         studentLoan.setApr(studentLoanDetails.getApr());
         studentLoan.setCreatedAt(studentLoanDetails.getCreatedAt());

@@ -24,14 +24,14 @@ class MortgageTest {
 
         Mortgage mortgage = new Mortgage(
                 1L,
-                owner,
+                1,
                 "123-456-789",
                 "Home Loan",
                 new BigDecimal("200000.00"),
                 15,
                 new BigDecimal("1500.00"),
                 true,
-                "Credit Card",
+                1,
                 today,
                 new BigDecimal("3.50"),
                 now,
@@ -39,14 +39,14 @@ class MortgageTest {
         );
 
         assertEquals(1L, mortgage.getMortgageId());
-        assertEquals(owner, mortgage.getOwner());
+        assertEquals(1, mortgage.getOwnerID());
         assertEquals("123-456-789", mortgage.getAccountIdentifier());
         assertEquals("Home Loan", mortgage.getAccountName());
         assertEquals(new BigDecimal("200000.00"), mortgage.getBalance());
         assertEquals(15, mortgage.getPaymentDate());
         assertEquals(new BigDecimal("1500.00"), mortgage.getMinMonthlyPayment());
         assertTrue(mortgage.getAutoPay());
-        assertEquals("Credit Card", mortgage.getDefaultPayment());
+        assertEquals(1, mortgage.getDefaultPaymentID());
         assertEquals(today, mortgage.getUpdated());
         assertEquals(new BigDecimal("3.50"), mortgage.getApr());
         assertEquals(now, mortgage.getCreatedAt());
@@ -61,28 +61,28 @@ class MortgageTest {
         LocalDate today = LocalDate.now();
 
         mortgage.setMortgageId(2L);
-        mortgage.setOwner(owner);
+        mortgage.setOwnerID(1);
         mortgage.setAccountIdentifier("987-654-321");
         mortgage.setAccountName("Second Home Loan");
         mortgage.setBalance(new BigDecimal("300000.00"));
         mortgage.setPaymentDate(20);
         mortgage.setMinMonthlyPayment(new BigDecimal("2000.00"));
         mortgage.setAutoPay(false);
-        mortgage.setDefaultPayment("Bank Transfer");
+        mortgage.setDefaultPaymentID(1);
         mortgage.setUpdated(today);
         mortgage.setApr(new BigDecimal("4.00"));
         mortgage.setCreatedAt(now);
         mortgage.setNotes("Second home mortgage");
 
         assertEquals(2L, mortgage.getMortgageId());
-        assertEquals(owner, mortgage.getOwner());
+        assertEquals(owner, mortgage.getOwnerID());
         assertEquals("987-654-321", mortgage.getAccountIdentifier());
         assertEquals("Second Home Loan", mortgage.getAccountName());
         assertEquals(new BigDecimal("300000.00"), mortgage.getBalance());
         assertEquals(20, mortgage.getPaymentDate());
         assertEquals(new BigDecimal("2000.00"), mortgage.getMinMonthlyPayment());
         assertFalse(mortgage.getAutoPay());
-        assertEquals("Bank Transfer", mortgage.getDefaultPayment());
+        assertEquals("Bank Transfer", mortgage.getDefaultPaymentID());
         assertEquals(today, mortgage.getUpdated());
         assertEquals(new BigDecimal("4.00"), mortgage.getApr());
         assertEquals(now, mortgage.getCreatedAt());
@@ -97,14 +97,14 @@ class MortgageTest {
 
         Mortgage mortgage = new Mortgage(
                 1L,
-                owner,
+                2,
                 "123-456-789",
                 "Home Loan",
                 new BigDecimal("200000.00"),
                 15,
                 new BigDecimal("1500.00"),
                 true,
-                "Credit Card",
+                2,
                 today,
                 new BigDecimal("3.50"),
                 now,
@@ -120,7 +120,7 @@ class MortgageTest {
                 ", paymentDate=15" +
                 ", minMonthlyPayment=1500.00" +
                 ", autoPay=true" +
-                ", defaultPayment='Credit Card'" +
+                ", defaultPayment=2" +
                 ", updated=" + today +
                 ", apr=3.50" +
                 ", createdAt=" + now +
@@ -139,14 +139,14 @@ class MortgageTest {
 
         Mortgage mortgage1 = new Mortgage(
                 1L,
-                owner1,
+                3,
                 "123-456-789",
                 "Home Loan",
                 new BigDecimal("200000.00"),
                 15,
                 new BigDecimal("1500.00"),
                 true,
-                "Credit Card",
+                3,
                 today,
                 new BigDecimal("3.50"),
                 now,
@@ -155,14 +155,14 @@ class MortgageTest {
 
         Mortgage mortgage2 = new Mortgage(
                 1L,
-                owner1,
+                4,
                 "123-456-789",
                 "Home Loan",
                 new BigDecimal("200000.00"),
                 15,
                 new BigDecimal("1500.00"),
                 true,
-                "Credit Card",
+                4,
                 today,
                 new BigDecimal("3.50"),
                 now,
@@ -171,14 +171,14 @@ class MortgageTest {
 
         Mortgage mortgage3 = new Mortgage(
                 2L,
-                owner2,
+                5,
                 "987-654-321",
                 "Second Home Loan",
                 new BigDecimal("300000.00"),
                 20,
                 new BigDecimal("2000.00"),
                 false,
-                "Bank Transfer",
+                5,
                 today,
                 new BigDecimal("4.00"),
                 now,

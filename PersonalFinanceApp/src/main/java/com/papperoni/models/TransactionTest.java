@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
@@ -37,7 +38,7 @@ public class TransactionTest {
         transaction.setAmount(new BigDecimal("100.00"));
         transaction.setDescription("Sample Transaction");
         transaction.setAccountId(1);
-        transaction.setTransactionDate(LocalDateTime.now());
+        transaction.setTransactionDate(LocalDate.now());
         transaction.setUploadDate(LocalDateTime.now());
         transaction.setLastUpdated(LocalDateTime.now());
         transaction.setIsRecurring(false);
@@ -52,7 +53,7 @@ public class TransactionTest {
         transaction.setAmount(null); // Amount is null
         transaction.setDescription("Sample Transaction");
         transaction.setAccountId(1);
-        transaction.setTransactionDate(LocalDateTime.now());
+        transaction.setTransactionDate(LocalDate.now());
         transaction.setUploadDate(LocalDateTime.now());
         transaction.setLastUpdated(LocalDateTime.now());
         transaction.setIsRecurring(false);
@@ -68,7 +69,7 @@ public class TransactionTest {
         transaction.setAmount(new BigDecimal("100.00"));
         transaction.setDescription("Sample Transaction");
         transaction.setAccountId(null); // AccountId is null
-        transaction.setTransactionDate(LocalDateTime.now());
+        transaction.setTransactionDate(LocalDate.now());
         transaction.setUploadDate(LocalDateTime.now());
         transaction.setLastUpdated(LocalDateTime.now());
         transaction.setIsRecurring(false);
@@ -100,7 +101,7 @@ public class TransactionTest {
         transaction.setAmount(new BigDecimal("100.00"));
         transaction.setDescription("Sample Transaction");
         transaction.setAccountId(1);
-        transaction.setTransactionDate(LocalDateTime.now());
+        transaction.setTransactionDate(LocalDate.now());
         transaction.setUploadDate(null); // UploadDate is null
         transaction.setLastUpdated(LocalDateTime.now());
         transaction.setIsRecurring(false);
@@ -116,7 +117,7 @@ public class TransactionTest {
         transaction.setAmount(new BigDecimal("100.00"));
         transaction.setDescription("Sample Transaction");
         transaction.setAccountId(1);
-        transaction.setTransactionDate(LocalDateTime.now());
+        transaction.setTransactionDate(LocalDate.now());
         transaction.setUploadDate(LocalDateTime.now());
 
         // Simulate update
@@ -133,7 +134,7 @@ public class TransactionTest {
         transaction.setAmount(new BigDecimal("100.00"));
         transaction.setDescription("Sample Transaction");
         transaction.setAccountId(1);
-        transaction.setTransactionDate(LocalDateTime.now());
+        transaction.setTransactionDate(LocalDate.now());
         transaction.setUploadDate(LocalDateTime.now());
         transaction.setLastUpdated(LocalDateTime.now());
         transaction.setIsRecurring(false);
